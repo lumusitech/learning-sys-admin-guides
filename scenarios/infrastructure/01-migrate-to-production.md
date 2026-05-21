@@ -1,13 +1,15 @@
 # Escenario: Migrar aplicación a servidor de producción
 
-**Quick command:** `rsync -avz --delete -e "ssh -p 2222" /var/www/miapp/ deploy@prod:/home/deploy/miapp/`
+**Quick command (portable):** `ssh deploy@prod "systemctl is-active nginx && systemctl is-active docker && df -h /"`
+
+**Quick command (original):** `rsync -avz --delete -e "ssh -p 2222" /var/www/miapp/ deploy@prod:/home/deploy/miapp/`
 
 **Cuándo usar este escenario:**
 - Migrar una app desde desarrollo a producción
 - Provisionar un servidor nuevo con hardening + Docker + nginx
 - Backup y migración de base de datos MySQL
 
-**Archivo de práctica:** Docker compose (`from-scratch/ubuntu-bare`)
+**Archivo(s) de práctica:** Docker compose (`from-scratch/ubuntu-bare`)
 
 ---
 

@@ -5,14 +5,16 @@
 **Herramientas:** `grep`, `awk`, `sort`, `uniq`, `head` (+ opcional `iptables`)
 **Datos:** Producción `/var/log/auth.log` | Práctica `labs/auth.log`
 
-**Quick command:** `awk '/Failed password/{for(i=1;i<=NF;i++)if($i=="from")print $(i+1)}' labs/auth.log | sort | uniq -c | sort -rn | head`
+**Quick command (portable):** `awk '/Failed password/ { for(i=1;i<=NF;i++) if($i=="from") { print $(i+1); break } }' labs/auth.log | sort | uniq -c | sort -rn | head`
+
+**Quick command (original):** `awk '/Failed password/{for(i=1;i<=NF;i++)if($i=="from")print $(i+1)}' labs/auth.log | sort | uniq -c | sort -rn | head`
 
 **Cuándo usar este escenario:**
 - Servidor lento, CPU alta con muchos procesos sshd
 - Logs de autenticación creciendo rápido
 - Sospecha de ataque de fuerza bruta
 
-**Archivo de práctica:** `labs/auth.log`
+**Archivo(s) de práctica:** `labs/auth.log`
 
 ---
 

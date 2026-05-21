@@ -5,14 +5,16 @@
 **Herramientas:** `awk`, `grep`, `sort`, `uniq`, `head`, `cut`
 **Archivos:** `labs/nginx_access.log`
 
-**Quick command:** `awk '{print $7}' labs/nginx_access.log | sort | uniq -c | sort -rn | head`
+**Quick command (portable):** `awk '{print $7}' labs/nginx_access.log | sort | uniq -c | sort -rn | head -10`
+
+**Quick command (original):** `awk '{print $7}' labs/nginx_access.log | sort | uniq -c | sort -rn | head`
 
 **Cuándo usar este escenario:**
 - Servidor web lento o con errores
 - Detectar qué rutas son las más solicitadas
 - Identificar crawlers o escaneos
 
-**Archivo de práctica:** `labs/nginx_access.log`
+**Archivo(s) de práctica:** `labs/nginx_access.log`
 
 ---
 

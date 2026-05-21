@@ -5,14 +5,16 @@
 **Herramientas:** `awk`, `grep`, `sort`, `uniq`, `bc`, `sed`
 **Archivos:** `labs/nginx_access.log`
 
-**Quick command:** `awk '{print $NF, $7}' labs/nginx_access.log | sort -rn | head -10 | awk '{printf "%6.3fs %s\n", $1, $2}'`
+**Quick command (portable):** `awk '{print $NF, $7}' labs/nginx_access.log | sort -rn | head -10`
+
+**Quick command (original):** `awk '{print $NF, $7}' labs/nginx_access.log | sort -rn | head -10 | awk '{printf "%6.3fs %s\n", $1, $2}'`
 
 **Cuándo usar este escenario:**
 - Sitio web lento o con errores 5xx
 - Detectar rutas lentas y picos de tráfico
 - Identificar crawlers abusivos o escaneos
 
-**Archivo de práctica:** `labs/nginx_access.log`
+**Archivo(s) de práctica:** `labs/nginx_access.log`
 
 ---
 

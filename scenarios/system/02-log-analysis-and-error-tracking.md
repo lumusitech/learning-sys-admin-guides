@@ -5,14 +5,16 @@
 **Herramientas:** `grep`, `awk`, `sort`, `uniq`, `sed`, `journalctl`, `tail`
 **Archivos:** `labs/syslog.log`
 
-**Quick command:** `grep -i "error\|fail\|critical" labs/syslog.log | awk '{print $5}' | sort | uniq -c | sort -rn | head`
+**Quick command (portable):** `grep -iE "error|fail|critical" labs/syslog.log | awk '{print $5}' | sort | uniq -c | sort -rn | head`
+
+**Quick command (original):** `grep -i "error\|fail\|critical" labs/syslog.log | awk '{print $5}' | sort | uniq -c | sort -rn | head`
 
 **Cuándo usar este escenario:**
 - Servidor inestable o con fallos intermitentes
 - Buscar qué servicio genera más errores
 - Detectar OOM, disco lleno, segfaults
 
-**Archivo de práctica:** `labs/syslog.log`
+**Archivo(s) de práctica:** `labs/syslog.log`
 
 ---
 

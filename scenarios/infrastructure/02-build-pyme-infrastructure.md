@@ -1,13 +1,15 @@
 # Escenario: Construir infraestructura PYME desde cero
 
-**Quick command:** `ip link add link eth1 name eth1.10 type vlan id 10 && ip addr add 10.0.10.1/24 dev eth1.10 && ip link set dev eth1.10 up`
+**Quick command (portable):** `ip a && ss -tuln && ping -c 2 8.8.8.8`
+
+**Quick command (original):** `ip link add link eth1 name eth1.10 type vlan id 10 && ip addr add 10.0.10.1/24 dev eth1.10 && ip link set dev eth1.10 up`
 
 **Cuándo usar este escenario:**
 - Diseñar la red de una PYME desde cero
 - Segmentar por departamentos con VLANs y firewall
 - Montar NAS (Samba+NFS), DHCP, DNS y web server
 
-**Archivo de práctica:** Docker compose (`docker-compose.network.yml`)
+**Archivo(s) de práctica:** Docker compose (`docker-compose.network.yml`)
 
 ---
 
