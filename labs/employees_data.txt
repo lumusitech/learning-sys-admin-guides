@@ -1,0 +1,9 @@
+EID | Nombre | Departamento | Salario
+101 | Juan Perez | Ventas | 4500
+102 | Ana Garcia | Dirección | 8000
+103 | Luis Torres | IT | 6200
+104 | María Ruiz | Ventas | 3900
+105 | Pedro Lopez | Administración | 4800
+106 | Silvia Kim | Dirección | 7500
+107 | Carlos Vega | IT | 9100
+108 | Paula Mora | Ventas | 5500

@@ -1,0 +1,8 @@
+ID NOMBRE EDAD CIUDAD SALARIO
+1 Ana 28 BuenosAires 1200
+2 Luis 35 Cordoba 1500
+3 Maria 22 Rosario 900
+4 Juan 40 Mendoza 2000
+5 Ana 30 Cordoba 1300
+6 Pedro 28 BuenosAires 1100
+7 Luis 35 Cordoba 1500

@@ -1,0 +1,13 @@
+Netid  State      Recv-Q  Send-Q  Local Address:Port    Peer Address:Port
+tcp    LISTEN     0       128     0.0.0.0:22            0.0.0.0:*
+tcp    LISTEN     0       128     [::]:22               [::]:*
+tcp    LISTEN     0       511     *:80                  *:*
+tcp    LISTEN     0       511     *:443                 *:*
+tcp    ESTAB      0       0       192.168.1.10:22       10.0.0.50:33000
+tcp    ESTAB      0       0       192.168.1.10:443      142.250.80.14:54321
+tcp    ESTAB      0       0       192.168.1.10:80       198.51.100.20:12345
+tcp    TIME_WAIT  0       0       192.168.1.10:54321    203.0.113.5:80
+tcp    TIME_WAIT  0       0       192.168.1.10:54322    203.0.113.5:80
+udp    UNCONN     0       0       0.0.0.0:53            0.0.0.0:*
+udp    UNCONN     0       0       0.0.0.0:123           0.0.0.0:*
+udp    UNCONN     0       0       [::]:123              [::]:*

@@ -1,0 +1,15 @@
+May 21 10:15:32 server1 sshd[1234]: Failed password for root from 203.0.113.5 port 22
+May 21 10:15:45 server1 sshd[1234]: Failed password for admin from 203.0.113.5 port 22
+May 21 10:16:01 server1 kernel: [12345.678901] eth0: link up
+May 21 10:16:20 server1 sshd[1234]: Accepted publickey for admin from 192.168.1.10 port 22
+May 21 10:16:50 server1 sshd[1235]: Failed password for root from 198.51.100.20 port 22
+May 21 10:17:05 server1 sudo:  admin : TTY=pts/0 ; PWD=/home/admin ; USER=root ; COMMAND=/bin/systemctl restart nginx
+May 21 10:17:30 server1 kernel: [12346.123456] Out of memory: Killed process 5678 (apache2)
+May 21 10:18:00 server1 dhclient[2345]: DHCPACK from 192.168.1.1
+May 21 10:18:15 server1 sshd[1236]: Failed password for root from 203.0.113.5 port 22
+May 21 10:18:30 server1 kernel: [12347.789012] eth0: link down
+May 21 10:18:35 server1 kernel: [12347.789015] eth0: link up
+May 21 10:19:00 server1 dhclient[2345]: DHCPOFFER from 192.168.1.1
+May 21 10:19:10 server1 sshd[1237]: Accepted publickey for deploy from 10.0.0.50 port 22
+May 21 10:20:00 server1 sudo:  deploy : TTY=pts/1 ; PWD=/var/www ; USER=root ; COMMAND=/bin/systemctl reload nginx
+May 21 10:20:30 server1 kernel: [12348.123456] nginx: out of memory
