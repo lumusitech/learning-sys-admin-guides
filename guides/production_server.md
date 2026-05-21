@@ -1,5 +1,17 @@
 # Servidor de producción — Guía completa
 
+**Nivel:** 🔴 Avanzado
+**Archivos de práctica:** `labs/docker-compose.from-scratch.yml`
+**Ver escenarios relacionados:** [`system/03-provisioning`](../scenarios/system/03-new-server-provisioning.md), [`infrastructure/01-migrate`](../scenarios/infrastructure/01-migrate-to-production.md)
+
+## ⚡ Quick run
+
+```bash
+sysctl net.ipv4.tcp_syncookies=1 && ulimit -n 65536
+```
+
+---
+
 ## Índice
 1. [Sysctl tuning del kernel](#sysctl)
 2. [Límites de recursos (ulimits)](#ulimits)

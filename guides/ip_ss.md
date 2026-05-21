@@ -1,5 +1,17 @@
 # ip y ss — Guía completa de redes
 
+**Nivel:** 🟢 Básico
+**Archivos de práctica:** Sistema en vivo
+**Ver escenarios relacionados:** [`networking/03-port-scan`](../scenarios/networking/03-port-scan-detection.md), [`infrastructure/02-build-pyme`](../scenarios/infrastructure/02-build-pyme-infrastructure.md)
+
+## ⚡ Quick run
+
+```bash
+ip addr show && ss -tuln
+```
+
+---
+
 ## Índice
 1. [¿Qué son ip y ss?](#qué-son-ip-y-ss)
 2. [ip link — Interfaces de red](#ip-link--interfaces-de-red)

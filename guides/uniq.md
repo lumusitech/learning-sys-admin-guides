@@ -1,5 +1,17 @@
 # uniq — Guía completa
 
+**Nivel:** 🟢 Básico
+**Archivos de práctica:** `labs/auth.log`
+**Ver escenarios relacionados:** [`networking/01-detect-ssh-brute-force`](../scenarios/networking/01-detect-ssh-brute-force.md)
+
+## ⚡ Quick run
+
+```bash
+cut -d' ' -f1 labs/nginx_access.log | sort | uniq -c | sort -rn | head -5
+```
+
+---
+
 ## Índice
 1. [¿Qué es uniq?](#qué-es-uniq)
 2. [Sintaxis básica](#sintaxis-básica)

@@ -11,44 +11,44 @@ labs/          → archivos de ejemplo para practicar
 
 ### Procesamiento de texto y datos
 
-| Guía                   | Descripción                                                                               |
-| ---------------------- | ----------------------------------------------------------------------------------------- |
-| [`ssh.md`](ssh.md)     | Administración remota, hardening, claves, túneles, ProxyJump, automatización, WSL2, Docker lab |
-| [`awk.md`](awk.md)     | Lenguaje de procesamiento por campos. Patrones, arrays, funciones, getline, combinaciones |
-| [`sed.md`](sed.md)     | Editor de flujo. Sustituciones, rangos, hold space, branching, edición in-place           |
-| [`grep.md`](grep.md)   | Búsqueda con expresiones regulares. PCRE, contexto, recursividad, escenarios de seguridad |
-| [`cut.md`](cut.md)     | Extracción de columnas por caracteres, campos y bytes                                     |
-| [`sort.md`](sort.md)   | Ordenamiento alfabético, numérico, por campos, versiones, humano                          |
-| [`uniq.md`](uniq.md)   | Filtrado y conteo de duplicados                                                           |
-| [`wc.md`](wc.md)       | Conteo de líneas, palabras, caracteres y bytes                                            |
-| [`find.md`](find.md)   | Búsqueda de archivos por nombre, tipo, tamaño, fecha, permisos, contenido                 |
-| [`xargs.md`](xargs.md) | Construcción de comandos desde stdin. Paralelismo, seguridad con `-0`                     |
+| Guía                   | Nivel      | Descripción                                                                               |
+| ---------------------- | ---------- | ----------------------------------------------------------------------------------------- |
+| [`ssh.md`](ssh.md)     | 🟡 Intermedio | Administración remota, hardening, claves, túneles, ProxyJump, automatización, WSL2, Docker lab |
+| [`awk.md`](awk.md)     | 🟡 Intermedio | Lenguaje de procesamiento por campos. Patrones, arrays, funciones, getline, combinaciones |
+| [`sed.md`](sed.md)     | 🟡 Intermedio | Editor de flujo. Sustituciones, rangos, hold space, branching, edición in-place           |
+| [`grep.md`](grep.md)   | 🟢 Básico   | Búsqueda con expresiones regulares. PCRE, contexto, recursividad, escenarios de seguridad |
+| [`cut.md`](cut.md)     | 🟢 Básico   | Extracción de columnas por caracteres, campos y bytes                                     |
+| [`sort.md`](sort.md)   | 🟢 Básico   | Ordenamiento alfabético, numérico, por campos, versiones, humano                          |
+| [`uniq.md`](uniq.md)   | 🟢 Básico   | Filtrado y conteo de duplicados                                                           |
+| [`wc.md`](wc.md)       | 🟢 Básico   | Conteo de líneas, palabras, caracteres y bytes                                            |
+| [`find.md`](find.md)   | 🟡 Intermedio | Búsqueda de archivos por nombre, tipo, tamaño, fecha, permisos, contenido                 |
+| [`xargs.md`](xargs.md) | 🟡 Intermedio | Construcción de comandos desde stdin. Paralelismo, seguridad con `-0`                     |
 
 ### Redes y conectividad
 
-| Guía                                       | Descripción                                                                         |
-| ------------------------------------------ | ----------------------------------------------------------------------------------- |
-| [`ip_ss.md`](ip_ss.md)                     | Configuración de red (ip) y sockets (ss). Interfaces, rutas, ARP, estados TCP       |
-| [`tcpdump.md`](tcpdump.md)                 | Captura de paquetes. Filtros BPF, análisis de ataques, resolución de problemas      |
-| [`ping_traceroute.md`](ping_traceroute.md) | Diagnóstico ICMP. ping, traceroute, mtr, interpretación de TTL y latencia           |
-| [`dig_curl.md`](dig_curl.md)               | DNS (dig) y transferencias HTTP/API (curl). Autenticación, SSL, medición de tiempos |
-| [`nmap.md`](nmap.md)                       | Escaneo de puertos y servicios. NSE, detección de SO, evasión de firewalls          |
-| [`iptables.md`](iptables.md)               | Firewall Netfilter. Reglas, NAT, mitigación de ataques, rate limiting               |
+| Guía                                       | Nivel      | Descripción                                                                         |
+| ------------------------------------------ | ---------- | ----------------------------------------------------------------------------------- |
+| [`ip_ss.md`](ip_ss.md)                     | 🟢 Básico   | Configuración de red (ip) y sockets (ss). Interfaces, rutas, ARP, estados TCP       |
+| [`tcpdump.md`](tcpdump.md)                 | 🔴 Avanzado | Captura de paquetes. Filtros BPF, análisis de ataques, resolución de problemas      |
+| [`ping_traceroute.md`](ping_traceroute.md) | 🟢 Básico   | Diagnóstico ICMP. ping, traceroute, mtr, interpretación de TTL y latencia           |
+| [`dig_curl.md`](dig_curl.md)               | 🟡 Intermedio | DNS (dig) y transferencias HTTP/API (curl). Autenticación, SSL, medición de tiempos |
+| [`nmap.md`](nmap.md)                       | 🔴 Avanzado | Escaneo de puertos y servicios. NSE, detección de SO, evasión de firewalls          |
+| [`iptables.md`](iptables.md)               | 🔴 Avanzado | Firewall Netfilter. Reglas, NAT, mitigación de ataques, rate limiting               |
 
 ### Sistema
 
-| Guía                                             | Descripción                                                                         |
-| ------------------------------------------------ | ----------------------------------------------------------------------------------- |
-| [`systemd_journalctl.md`](systemd_journalctl.md) | Gestión de servicios (systemctl) y logs (journalctl). Análisis de arranque, filtros |
+| Guía                                             | Nivel      | Descripción                                                                         |
+| ------------------------------------------------ | ---------- | ----------------------------------------------------------------------------------- |
+| [`systemd_journalctl.md`](systemd_journalctl.md) | 🟡 Intermedio | Gestión de servicios (systemctl) y logs (journalctl). Análisis de arranque, filtros |
 
 ### Infraestructura y producción
 
-| Guía                                                   | Descripción                                                                               |
-| ------------------------------------------------------ | ----------------------------------------------------------------------------------------- |
-| [`nginx.md`](nginx.md)                                 | Servidor web. Virtual hosts, proxy reverso, SSL, rate limiting, geo, load balancing, caché |
-| [`storage_backup.md`](storage_backup.md)               | NFS, Samba, rsync, rclone, restic, 3-2-1, rotación, monitoreo                             |
-| [`network_segmentation.md`](network_segmentation.md)   | VLANs, subnetting, router Linux, ACLs con iptables, DHCP por segmento, bridges            |
-| [`production_server.md`](production_server.md)         | Sysctl, ulimits, swap, logrotate, systemd resource control, Docker en producción, fail2ban |
+| Guía                                                   | Nivel      | Descripción                                                                               |
+| ------------------------------------------------------ | ---------- | ----------------------------------------------------------------------------------------- |
+| [`nginx.md`](nginx.md)                                 | 🟡 Intermedio | Servidor web. Virtual hosts, proxy reverso, SSL, rate limiting, geo, load balancing, caché |
+| [`storage_backup.md`](storage_backup.md)               | 🟡 Intermedio | NFS, Samba, rsync, rclone, restic, 3-2-1, rotación, monitoreo                             |
+| [`network_segmentation.md`](network_segmentation.md)   | 🔴 Avanzado | VLANs, subnetting, router Linux, ACLs con iptables, DHCP por segmento, bridges            |
+| [`production_server.md`](production_server.md)         | 🔴 Avanzado | Sysctl, ulimits, swap, logrotate, systemd resource control, Docker en producción, fail2ban |
 
 ## 🎯 Enfoque
 

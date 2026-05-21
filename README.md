@@ -1,10 +1,10 @@
 # 🐧 sys-admin-guides
 
 Guías de referencia + laboratorio Docker + escenarios prácticos para **administración de servidores Linux y redes**.
-Enfoque: **cada opción explicada**, **cada salida interpretada**, y **casos reales** de troubleshooting, fallas y seguridad.
 
-> ✅ "Aprendo herramienta por herramienta, pero practico como se usa en conjunto"
-> Este repo está pensado exactamente así: primero dominas herramientas (guides), luego practicás con datos y un lab (labs), y finalmente resolvés incidentes reales (scenarios).
+**Enfoque:** cada opción explicada, cada salida interpretada, uso real en troubleshooting, fallas y seguridad.
+
+> ✅ *"Aprendo herramienta por herramienta, pero practico cómo se usan en conjunto."*
 
 ---
 
@@ -15,66 +15,77 @@ git clone https://github.com/lumusitech/learning-sys-admin-guides.git
 cd learning-sys-admin-guides
 ```
 
-Elegí tu modo (según tu objetivo):
+### Modos de uso
 
-- **📚 Referencia por herramienta**: empezá por el índice de guías → [`guides/`](guides/README.md)
-- **🧪 Practicar sin riesgo (Docker lab)**: levantá el laboratorio → [`labs/`](labs/README.md)
-- **🧩 Resolver problemas reales (pipes)**: hacé escenarios → [`scenarios/`](scenarios/README.md)
-
----
-
-## 🧭 Navegación (índices)
-
-- [📚 Guías por herramienta](guides/README.md)
-- [🧪 Laboratorio Docker + dataset](labs/README.md)
-- [🧩 Escenarios prácticos (pipes)](scenarios/README.md)
+| Modo | Ruta |
+|------|------|
+| 📚 **Aprendizaje clásico** | `guides/` → `labs/` → `scenarios/` |
+| 🧪 **Modo producción** | `scenarios/` → `labs/` → `guides/` |
+| ⚡ **Referencia rápida** | Abrir guía y copiar comando |
 
 ---
 
-## 🧱 ¿Qué hay dentro?
+## 🧱 Estructura
 
-### `guides/` — guías por herramienta (base sólida)
+### `guides/` — guías por herramienta
 
-Incluye herramientas de texto/datos (`awk`/`sed`/`grep`/`find`/`xargs`...), redes (`ip`/`ss`/`tcpdump`/`nmap`/`iptables`...), sistema (`systemd`/`journalctl`) y también guías de infra y producción (nginx, backups, segmentación de red, servidor de producción, etc.).
+Incluye herramientas de texto/datos (`awk` `sed` `grep` `find` `xargs`…), redes (`ip` `ss` `tcpdump` `nmap` `iptables`…), sistema (`systemd` `journalctl`) e infraestructura (nginx, backups, segmentación de red, servidor de producción).
 
-[Ver índice completo →](guides/README.md)
+[Ver índice →](guides/README.md)
 
-### `labs/` — dataset + laboratorio Docker (práctica sin romper nada)
+### `labs/` — archivos de práctica + laboratorio Docker
 
-Trae logs/outputs de ejemplo y un laboratorio Docker con **5 compose files** distintos: servicios funcionando, servicios rotos, servidores desde cero, escenarios de red y servicios vulnerables. Incluye prácticas sugeridas (brute force, port scan, capturas, túneles, etc.).
+Logs de ejemplo (`auth.log`, `nginx_access.log`, `firewall.log`…) y **5 compose files** para practicar sin riesgo: servicios funcionando, rotos, desde cero, escenarios de red y servicios vulnerables.
 
 [Ver laboratorio →](labs/README.md)
 
-### `scenarios/` — problemas reales (cómo se usa todo junto)
+### `scenarios/` — problemas reales que combinan herramientas
 
-Escenarios agrupados por dominio: **networking**, **system**, **security**, **web**, **infrastructure**. Cada uno resuelve un incidente real combinando herramientas con pipes. Se integra con el lab y las guías.
+Incidentes agrupados por dominio: **networking**, **system**, **security**, **web**, **infrastructure**. Cada uno resuelve un problema con pipes y se integra con el lab.
 
 [Ver escenarios →](scenarios/README.md)
 
----
+### `concepts/` — patrones de pensamiento de sysadmin
 
-## 🧠 Filosofía (por qué este repo es distinto)
+Guías conceptuales sobre cómo pensar como administrador de sistemas: patrones normales vs anómalos, lectura de logs, latencia vs pérdida, errores comunes.
 
-- **No solo comandos**: interpretación de columnas, flags, estados, errores.
-- **No solo teoría**: datos reales (logs/outputs) y lab reproducible.
-- **No solo "seguridad"**: también fallas reales, performance y recuperación.
-- **Pipes de sysadmin**: `grep | awk | sort | uniq` para reportes, diagnósticos, mitigación.
+[Ver conceptos →](concepts/)
 
 ---
 
-## 🧪 Ruta recomendada (sin obligarte a un "path" rígido)
+## 🧠 Filosofía
 
-**Ruta A — herramienta por herramienta (tu estilo)**
+- **No solo comandos:** interpretación de outputs (columnas, flags, estados, errores)
+- **No solo teoría:** datos reales (logs) y laboratorio reproducible (Docker)
+- **No solo "seguridad":** también fallas reales, performance y recuperación
+- **Pensamiento real de sysadmin:** pipes y troubleshooting
 
-1. Elegí una herramienta en `guides/`
-2. Practicá con un archivo de `labs/`
-3. Cerrá con un escenario que la combine
+---
 
-**Ruta B — por incidente (modo producción)**
+## 🧪 Cómo aprender
 
-1. Elegí un escenario en `scenarios/`
-2. Ejecutá/analizá con datos de `labs/`
-3. Volvé a las guías para profundizar la herramienta que te faltó
+### Ruta A — herramienta por herramienta
+
+1. Leer guía en `guides/`
+2. Probar con logs en `labs/`
+3. Aplicar en `scenarios/`
+
+### Ruta B — modo incidente
+
+1. Elegir escenario en `scenarios/`
+2. Usar logs del `labs/`
+3. Volver a `guides/` para entender las herramientas
+
+---
+
+## 💡 Diferencial
+
+| Este repo NO es | Este repo ES |
+|----------------|--------------|
+| Solo cheat sheet | Handbook de sysadmin |
+| Solo teoría | Laboratorio reproducible |
+| Herramientas aisladas | Simulador de incidentes reales |
+| Comandos sin contexto | Cada salida interpretada |
 
 ---
 

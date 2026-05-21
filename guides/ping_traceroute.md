@@ -1,5 +1,17 @@
 # ping y traceroute — Guía completa
 
+**Nivel:** 🟢 Básico
+**Archivos de práctica:** `labs/ping.txt`, `labs/traceroute.txt`
+**Ver escenarios relacionados:** [`networking`](../scenarios/networking/), [`concepts/how-to-think-like-sysadmin`](../concepts/how-to-think-like-sysadmin.md)
+
+## ⚡ Quick run
+
+```bash
+ping -c 4 google.com && traceroute google.com
+```
+
+---
+
 ## Índice
 1. [ping — Introducción](#ping--introducción)
 2. [Opciones de ping](#opciones-de-ping)

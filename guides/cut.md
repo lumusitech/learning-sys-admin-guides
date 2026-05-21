@@ -1,5 +1,17 @@
 # cut — Guía completa
 
+**Nivel:** 🟢 Básico
+**Archivos de práctica:** `labs/datos.txt`
+**Ver escenarios relacionados:** [`networking/02-web-traffic`](../scenarios/networking/02-analyze-web-traffic-patterns.md)
+
+## ⚡ Quick run
+
+```bash
+cut -d: -f1,3 /etc/passwd | head -5
+```
+
+---
+
 ## Índice
 1. [¿Qué es cut?](#qué-es-cut)
 2. [Sintaxis básica](#sintaxis-básica)

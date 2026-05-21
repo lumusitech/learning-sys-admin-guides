@@ -1,5 +1,17 @@
 # Segmentación de red — Guía completa
 
+**Nivel:** 🔴 Avanzado
+**Archivos de práctica:** `labs/docker-compose.network.yml`
+**Ver escenarios relacionados:** [`infrastructure/02-build-pyme`](../scenarios/infrastructure/02-build-pyme-infrastructure.md)
+
+## ⚡ Quick run
+
+```bash
+ip link add link eth0 name eth0.10 type vlan id 10
+```
+
+---
+
 ## Índice
 1. [Conceptos clave](#conceptos)
 2. [Subnetting por departamento](#subnetting)

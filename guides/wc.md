@@ -1,5 +1,17 @@
 # wc — Guía completa
 
+**Nivel:** 🟢 Básico
+**Archivos de práctica:** `labs/auth.log`
+**Ver escenarios relacionados:** [`web/01-performance`](../scenarios/web/01-performance-and-error-analysis.md)
+
+## ⚡ Quick run
+
+```bash
+wc -l labs/auth.log
+```
+
+---
+
 ## Índice
 1. [¿Qué es wc?](#qué-es-wc)
 2. [Sintaxis básica](#sintaxis-básica)

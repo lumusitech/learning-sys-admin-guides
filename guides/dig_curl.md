@@ -1,4 +1,16 @@
-# dig — Guía completa de DNS
+# dig y curl — Guía completa de DNS y HTTP
+
+**Nivel:** 🟡 Intermedio
+**Archivos de práctica:** `labs/dig_output.txt`
+**Ver escenarios relacionados:** [`networking/02-web-traffic`](../scenarios/networking/02-analyze-web-traffic-patterns.md)
+
+## ⚡ Quick run
+
+```bash
+dig +short google.com && curl -sI https://google.com | head -5
+```
+
+---
 
 ## Índice
 1. [¿Qué es dig?](#qué-es-dig)

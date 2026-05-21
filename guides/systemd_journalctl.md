@@ -1,5 +1,17 @@
 # systemd y journalctl — Guía completa
 
+**Nivel:** 🟡 Intermedio
+**Archivos de práctica:** Sistema en vivo
+**Ver escenarios relacionados:** [`system/01-top-processes`](../scenarios/system/01-top-processes-and-resources.md), [`system/02-log-analysis`](../scenarios/system/02-log-analysis-and-error-tracking.md)
+
+## ⚡ Quick run
+
+```bash
+systemctl status sshd && journalctl -u sshd -b --no-pager | tail -10
+```
+
+---
+
 ## Índice
 1. [¿Qué es systemd?](#qué-es-systemd)
 2. [Unidades (units)](#unidades-units)

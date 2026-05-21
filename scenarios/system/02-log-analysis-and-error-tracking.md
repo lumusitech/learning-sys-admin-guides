@@ -1,153 +1,179 @@
-# Escenario: Análisis de logs del sistema y tracking de errores
+# 🧩 Escenario: Análisis de logs del sistema y tracking de errores
 
-## Problema
+**Dominio:** system
+**Nivel:** 🟢 Básico
+**Herramientas:** `grep`, `awk`, `sort`, `uniq`, `sed`, `journalctl`, `tail`
+**Archivos:** `labs/syslog.log`
 
-El servidor está generando errores en los logs que deben ser analizados para identificar la causa raíz de inestabilidad.
+---
 
-## Pipeline: Errores por servicio (facilidad)
+## 🎯 Objetivo
+
+1. Identificar los servicios que más errores generan.
+2. Detectar patrones de error cíclicos y problemas de recursos (OOM, disco).
+3. Generar reportes de errores por hora y por servicio.
+
+---
+
+## 🧠 Contexto
+
+El servidor genera errores en logs que deben ser analizados para identificar la causa raíz de inestabilidad. Los errores pueden ser de aplicación, sistema, hardware o seguridad.
+
+---
+
+## ✅ Datos de entrada
+
+- **Producción:** `/var/log/syslog`, `/var/log/messages`, `journalctl`
+- **Práctica:** `labs/syslog.log`
+
+---
+
+## ⚡ Quick run (errores por servicio)
 
 ```bash
-grep -i "error\|fail\|critical" labs/syslog.log \
-  | awk '{ print $5 }' \
-  | sort \
-  | uniq -c \
-  | sort -rn \
-  | head -10 \
-  | awk '{ printf "%-30s %d errores\n", $2, $1 }'
+grep -i "error\|fail\|critical" labs/syslog.log | awk '{ print $5 }' | sort | uniq -c | sort -rn | head -10
 ```
 
-### Explicación paso a paso
+---
 
-1. **`grep -i "error\|fail\|critical"`** — Busca líneas con palabras clave (insensible a mayúsculas)
-2. **`awk '{ print $5 }'`** — Extrae el nombre del servicio (campo 5 en syslog típico)
-3. **`sort`** — Ordena alfabéticamente
-4. **`uniq -c`** — Cuenta ocurrencias por servicio
-5. **`sort -rn`** — Ordena descendente
-6. **`awk '{ printf "%-30s %d errores\n" ... }'`** — Formatea salida en columnas
+## 🔍 Paso a paso
 
-## Pipeline: Errores por hora
+1. `grep -i "error\|fail\|critical"` → filtra líneas con palabras clave (case-insensitive)
+2. `awk '{ print $5 }'` → extrae el nombre del servicio (campo 5)
+3. `sort | uniq -c | sort -rn` → cuenta y ordena por frecuencia
+4. `head -10` → top 10 servicios con más errores
 
-```bash
-grep -i "error\|fail\|critical" labs/syslog.log \
-  | awk '{
-      split($3, t, ":")
-      hora = t[1]
-      errores[hora]++
-    }
-    END {
-      for (h in errores) printf "%02d:00 %d\n", h, errores[h]
-    }' \
-  | sort
+---
+
+## ✅ Salida esperada
+
+```
+150 sshd
+ 89 kernel
+ 45 mysqld
 ```
 
-## Pipeline: Últimos 20 errores con contexto
+- `kernel` con muchos errores → posible hardware (disco, memoria)
+- `sshd` con muchos fallos → fuerza bruta SSH
+- Un servicio de app con muchos errores → bug/fuga de recursos
+
+---
+
+## 📌 Pipelines de diagnóstico
+
+### Errores por hora
 
 ```bash
-grep -n "error\|fail\|critical" labs/syslog.log \
-  | tail -20 \
-  | while IFS=: read -r num linea; do
-      echo "--- Línea $num ---"
-      echo "$linea"
-      echo ""
-    done
+grep -i "error\|fail\|critical" labs/syslog.log | awk '{ split($3,t,":"); h=t[1]; e[h]++ } END { for(h in e) printf "%02d:00 %d\n", h, e[h] }' | sort
 ```
 
-## Pipeline: Líneas entre marcas de tiempo (rango de tiempo)
+### Últimos 20 errores con contexto
 
 ```bash
-sed -n '/14:30:00/,/15:00:00/p' labs/syslog.log \
-  | grep -i "error"
+grep -n "error\|fail\|critical" labs/syslog.log | tail -20 | while IFS=: read -r n l; do echo "--- Línea $n ---"; echo "$l"; echo ""; done
 ```
 
-## Pipeline: Detectar patrones repetitivos (posible problema cíclico)
+### Detectar patrones repetitivos (problema cíclico)
 
 ```bash
-awk '{
-  # Extraer mensaje (después del PID o servicio)
-  msg = $0
-  gsub(/^[^ ]+ [^ ]+ [^ ]+ [^ ]+ [^ ]+ /, "", msg)
-  msgs[msg]++
-}
-END {
-  for (m in msgs) {
-    if (msgs[m] > 3) print msgs[m], substr(m, 1, 80)
-  }
-}' labs/syslog.log \
-  | sort -rn \
-  | head -15
+awk '{ msg=$0; gsub(/^[^ ]+ [^ ]+ [^ ]+ [^ ]+ [^ ]+ /,"",msg); msgs[msg]++ }
+END { for(m in msgs) if(msgs[m]>3) print msgs[m], substr(m,1,80) }' labs/syslog.log | sort -rn | head -15
 ```
 
-## Pipeline: Correlacionar journalctl con syslog
+### Monitoreo de OOM (Out of Memory)
 
 ```bash
-journalctl -u sshd -b --no-pager \
-  | awk '{ print $1, $2, $3, $5 }' \
-  | grep -i "fail\|error\|invalid"
+grep -i "oom\|killed\|out of memory" labs/syslog.log
 ```
 
-## Pipeline: Monitoreo de OOM (Out of Memory)
+### Watch en tiempo real
 
 ```bash
-grep -i "oom\|killed\|out of memory" labs/syslog.log \
-  | awk '{
-      pid = ""
-      proceso = ""
-      if (match($0, /pid=([0-9]+)/)) pid = substr($0, RSTART+4, RLENGTH-4)
-      if (match($0, /process=([^ ]+)/)) proceso = substr($0, RSTART+8, RLENGTH-8)
-      print $1, $2, $3, pid, proceso, "OOM KILLED"
-    }' \
-  | column -t
+tail -f /var/log/syslog | grep --line-buffered -i "error\|fail\|critical"
 ```
 
-## Pipeline: Watch de errores en tiempo real
+### Reporte diario completo
 
 ```bash
-tail -f /var/log/syslog \
-  | grep --line-buffered -i "error\|fail\|critical" \
-  | awk '{ print strftime("%H:%M:%S"), $0 }'
-```
-
-## Pipeline: Reporte diario de errores
-
-```bash
-#!/bin/bash
-echo "=== Reporte de errores: $(date +%Y-%m-%d) ==="
-echo ""
-
+echo "=== Reporte $(date +%Y-%m-%d) ==="
 echo "--- Por servicio ---"
-grep -i "error\|fail\|critical" labs/syslog.log \
-  | awk '{ print $5 }' \
-  | sort \
-  | uniq -c \
-  | sort -rn \
-  | awk '{ printf "%-20s %d\n", $2, $1 }'
-
-echo ""
+grep -i "error\|fail\|critical" labs/syslog.log | awk '{ print $5 }' | sort | uniq -c | sort -rn \
+| awk '{ printf "%-20s %d\n", $2, $1 }'
 echo "--- Por hora ---"
-grep -i "error\|fail\|critical" labs/syslog.log \
-  | awk '{ split($3,t,":"); h[t[1]]++ } END { for (i in h) printf "%02d:00 %d\n", i, h[i] }' \
-  | sort
-
-echo ""
-echo "--- Últimos 5 errores críticos ---"
+grep -i "error\|fail\|critical" labs/syslog.log | awk '{ split($3,t,":"); h[t[1]]++ } END { for(i in h) printf "%02d:00 %d\n", i, h[i] }' | sort
+echo "--- Últimos críticos ---"
 grep -i "critical" labs/syslog.log | tail -5
 ```
 
-## Interpretación
+---
 
-| Patrón | Significado |
-|--------|-------------|
-| `OOM` seguido de `killed process` | Falta de RAM, el kernel mata procesos |
-| `EXT4-fs error` | Error de sistema de archivos (disco fallando) |
-| `segfault` en un servicio | Bug del servicio: crashea con violación de segmento |
-| `Connection refused` repetido | Un servicio no está escuchando o está caído |
-| `timeout` repetitivo | Red lenta o servicio saturado |
-| `disk full` | Disco lleno, sistema en riesgo |
-| `Permission denied` | Problema de permisos en archivos/directorios |
+## 🧯 Mitigación
 
-## Comandos relacionados
+| Error | Acción |
+|-------|--------|
+| OOM killer | Agregar RAM, limitar memoria por proceso, verificar memory leak |
+| EXT4-fs error | `fsck`, revisar cable/HDD, reemplazar disco |
+| segfault | Reinstalar/recompilar servicio, reportar bug upstream |
+| Connection refused | `systemctl restart <servicio>`, verificar puerto |
+| Disk full | `du -sh /* | sort -rh`, rotar logs, borrar temporales |
 
-- [`grep.md`](../../guides/grep.md) — `-i` para ignorar mayúsculas
-- [`awk.md`](../../guides/awk.md) — arrays, `split`, `substr`
-- [`sed.md`](../../guides/sed.md) — rangos de líneas con `/start/,/end/`
-- [`sort.md`](../../guides/sort.md) + [`uniq.md`](../../guides/uniq.md) — frecuencias
+⚠️ Cuando veas OOM: no agregues swap como solución permanente, buscá la fuga de memoria.
+
+---
+
+## 🛡️ Prevención
+
+- [ ] logrotate configurado para todos los servicios
+- [ ] Alertas de disco >80% (cron + mail)
+- [ ] Monitorear OOM con `dmesg`
+- [ ] Logs centralizados (rsyslog remoto, ELK)
+- [ ] Watch periódico de errores críticos
+
+---
+
+## 🧪 Variantes
+
+### Líneas en rango de tiempo
+
+```bash
+sed -n '/14:30:00/,/15:00:00/p' labs/syslog.log | grep -i "error"
+```
+
+### Correlacionar journalctl con syslog
+
+```bash
+journalctl -u sshd -b --no-pager | grep -i "fail\|error\|invalid"
+```
+
+---
+
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Qué indica un `segfault` repetido? ¿Cómo diferenciar un error de red de un error de aplicación?
+**Ejercicio:** Encontrar los top 3 servicios con errores y proponer una causa para cada uno.
+**Evaluación:** identificación correcta de patrones, clasificación de severidad, propuesta de mitigación realista.
+
+---
+
+## 🧪 Cómo practicarlo en el lab
+
+```bash
+cd labs && docker compose up -d # Usar el monitoring container
+docker exec -it monitoring bash
+# Simular errores
+logger "error: prueba de syslog"
+dmesg | tail -5
+# Aplicar pipelines sobre /var/log/syslog dentro del contenedor
+```
+
+[Ver laboratorio completo →](../../labs/README.md)
+
+---
+
+## 🔗 Referencias
+
+- [`guides/grep.md`](../../guides/grep.md) — `-i` para ignorar mayúsculas
+- [`guides/awk.md`](../../guides/awk.md) — `split`, `substr`
+- [`guides/sed.md`](../../guides/sed.md) — rangos de líneas
+- [`guides/sort.md`](../../guides/sort.md) + [`guides/uniq.md`](../../guides/uniq.md) — frecuencias
+- [`guides/systemd_journalctl.md`](../../guides/systemd_journalctl.md) — journalctl avanzado

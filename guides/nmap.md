@@ -1,5 +1,17 @@
 # nmap — Guía completa
 
+**Nivel:** 🔴 Avanzado
+**Archivos de práctica:** Red local o contenedores Docker
+**Ver escenarios relacionados:** [`networking/03-port-scan`](../scenarios/networking/03-port-scan-detection.md)
+
+## ⚡ Quick run
+
+```bash
+nmap -sS -T4 localhost
+```
+
+---
+
 ## Índice
 1. [¿Qué es nmap?](#qué-es-nmap)
 2. [Tipos de escaneo](#tipos-de-escaneo)

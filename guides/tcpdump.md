@@ -1,5 +1,17 @@
 # tcpdump — Guía completa
 
+**Nivel:** 🔴 Avanzado
+**Archivos de práctica:** `labs/tcpdump.txt`
+**Ver escenarios relacionados:** [`networking/03-port-scan`](../scenarios/networking/03-port-scan-detection.md)
+
+## ⚡ Quick run
+
+```bash
+sudo tcpdump -i any -c 10 port 80
+```
+
+---
+
 ## Índice
 1. [¿Qué es tcpdump?](#qué-es-tcpdump)
 2. [Sintaxis básica](#sintaxis-básica)

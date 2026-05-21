@@ -1,5 +1,17 @@
 # xargs — Guía completa
 
+**Nivel:** 🟡 Intermedio
+**Archivos de práctica:** Sistema de archivos (`/`)
+**Ver escenarios relacionados:** [`security/02-suid-audit`](../scenarios/security/02-suid-audit-and-file-permissions.md)
+
+## ⚡ Quick run
+
+```bash
+find /tmp -type f -mtime +7 -print | xargs rm -f
+```
+
+---
+
 ## Índice
 1. [¿Qué es xargs?](#qué-es-xargs)
 2. [Sintaxis básica](#sintaxis-básica)

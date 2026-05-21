@@ -1,144 +1,193 @@
-# Escenario: Auditoría de archivos SUID y permisos inseguros
+# 🧩 Escenario: Auditoría de archivos SUID y permisos inseguros
 
-## Problema
+**Dominio:** security
+**Nivel:** 🟡 Intermedio
+**Herramientas:** `find`, `xargs`, `awk`, `sort`, `diff`, `ls`
+**Archivos:** Sistema de archivos en vivo (`/`)
 
-Los archivos con permisos SUID/SGID (setuid/setgid) son un riesgo de seguridad: si un atacante logra ejecutarlos, puede escalar privilegios. Necesitamos auditar periódicamente estos archivos, detectar cambios y encontrar permisos inseguros.
+---
 
-## Pipeline: Encontrar todos los archivos SUID
+## 🎯 Objetivo
+
+1. Encontrar archivos con permisos SUID/SGID que permitan escalada de privilegios.
+2. Detectar cambios en la lista de SUID entre snapshots.
+3. Identificar directorios world-writable, archivos sin dueño y enlaces rotos.
+
+---
+
+## 🧠 Contexto
+
+Los archivos con SUID (setuid) se ejecutan con los permisos del dueño del archivo. Si un atacante logra ejecutar un binario SUID que no debería tener ese permiso, puede escalar a root. Es necesario auditar periódicamente.
+
+---
+
+## ✅ Datos de entrada
+
+- **Producción:** Sistema de archivos en vivo (`find / ...`)
+- **Práctica:** Cualquier sistema Linux (o contenedor Docker)
+
+---
+
+## ⚡ Quick run (todos los SUID)
 
 ```bash
-find / -type f -perm -4000 2>/dev/null \
-  | xargs -I {} ls -la {} \
-  | awk '{ print $1, $3, $4, $NF }' \
-  | sort -k4
+find / -type f -perm -4000 2>/dev/null | xargs -I {} ls -la {} | awk '{ print $1, $3, $4, $NF }' | sort -k4
 ```
 
-### Explicación paso a paso
+---
 
-1. **`find / -type f -perm -4000`** — Busca archivos con bit SUID (4000 octal). `-perm -4000` significa "todos los bits de 4000 deben estar presentes"
-2. **`2>/dev/null`** — Descarta errores de permisos (directorios sin acceso)
-3. **`xargs -I {} ls -la {}`** — Ejecuta `ls -la` por cada archivo encontrado
-4. **`awk '{ print $1, $3, $4, $NF }'`** — Extrae permisos, owner, grupo, nombre
-5. **`sort -k4`** — Ordena por nombre de archivo
+## 🔍 Paso a paso
 
-## Pipeline: Archivos SGID
+1. `find / -type f -perm -4000` → busca archivos con bit SUID
+2. `2>/dev/null` → descarta errores de permisos
+3. `xargs -I {} ls -la {}` → lista detalles de cada archivo
+4. `awk '{ print $1, $3, $4, $NF }'` → permisos, owner, grupo, nombre
+5. `sort -k4` → ordena por nombre
 
-```bash
-find / -type f -perm -2000 2>/dev/null \
-  | xargs -I {} ls -la {} \
-  | awk '{ print $1, $3, $4, $NF }'
+---
+
+## ✅ Salida esperada
+
+```
+-rwsr-xr-x root root /usr/bin/passwd
+-rwsr-xr-x root root /usr/bin/su
+-rwsr-xr-x root root /usr/bin/sudo
 ```
 
-## Pipeline: Buscar cambios en archivos SUID (con comparación)
+- Binarios conocidos (passwd, su, sudo, mount) → normal
+- Binarios como `nmap`, `vim`, `python`, `bash` con SUID → **PELIGROSO**
+- Scripts `.sh` o `.py` con SUID → **CRÍTICO**
+
+---
+
+## 📌 Pipelines de diagnóstico
+
+### Archivos SGID
 
 ```bash
-# Tomar snapshot inicial
+find / -type f -perm -2000 2>/dev/null | xargs -I {} ls -la {} | awk '{ print $1, $3, $4, $NF }'
+```
+
+### Detectar cambios en SUID (snapshot)
+
+```bash
+# Snapshot inicial
 find / -type f -perm -4000 2>/dev/null | sort > /tmp/suid_before.txt
-
-# ... tiempo después ...
+# ... después de cambios ...
 find / -type f -perm -4000 2>/dev/null | sort > /tmp/suid_after.txt
-
 # Comparar
-diff /tmp/suid_before.txt /tmp/suid_after.txt \
-  | awk '{
-      if ($1 == ">") print "AÑADIDO:", $2
-      if ($1 == "<") print "ELIMINADO:", $2
-    }'
+diff /tmp/suid_before.txt /tmp/suid_after.txt | awk '{ if($1==">")print "AÑADIDO:", $2; if($1=="<")print "ELIMINADO:", $2 }'
 ```
 
-## Pipeline: Directorios world-writable
+### Directorios world-writable
 
 ```bash
-find / -type d -perm -o+w 2>/dev/null \
-  | grep -v "^/proc\|^/sys\|^/dev" \
-  | head -30 \
-  | xargs -I {} ls -ld {} \
-  | awk '{ print $1, $NF }'
+find / -type d -perm -o+w 2>/dev/null | grep -v "^/proc\|^/sys\|^/dev" | head -30 | xargs -I {} ls -ld {} | awk '{ print $1, $NF }'
 ```
 
-## Pipeline: Archivos sin dueño ni grupo
+### Archivos sin dueño ni grupo
 
 ```bash
-find / -type f \( -nouser -o -nogroup \) 2>/dev/null \
-  | xargs -I {} ls -la {} \
-  | awk '{ print $1, $3, $4, $NF, "-> ORPHAN" }'
+find / -type f \( -nouser -o -nogroup \) 2>/dev/null | xargs -I {} ls -la {} | awk '{ print $1, $3, $4, $NF, "-> ORPHAN" }'
 ```
 
-## Pipeline: Archivos con permisos 777
+### Archivos con permisos 777
 
 ```bash
-find / -type f -perm 777 2>/dev/null \
-  | head -30 \
-  | xargs -I {} ls -la {} \
-  | awk '{ print $1, $NF }'
+find / -type f -perm 777 2>/dev/null | head -30 | xargs -I {} ls -la {} | awk '{ print $1, $NF }'
 ```
 
-## Pipeline: Enlaces simbólicos rotos (potencial race condition)
+### Enlaces simbólicos rotos
 
 ```bash
-find / -type l ! -exec test -e {} \; 2>/dev/null \
-  -print \
-  | head -20 \
-  | while read link; do
-      target=$(readlink "$link")
-      echo "ROTO: $link -> $target"
-    done
+find / -type l ! -exec test -e {} \; 2>/dev/null -print | head -20 | while read l; do echo "ROTO: $l -> $(readlink "$l")"; done
 ```
 
-## Pipeline: Auditoría completa de permisos
+### Auditoría completa
 
 ```bash
-#!/bin/bash
 echo "=== AUDITORÍA DE PERMISOS ==="
-echo ""
-
-echo "Archivos con SUID:"
-find / -type f -perm -4000 2>/dev/null | wc -l
-
-echo ""
-echo "Archivos con SGID:"
-find / -type f -perm -2000 2>/dev/null | wc -l
-
-echo ""
-echo "Directorio world-writable:"
-find / -type d -perm -o+w 2>/dev/null | grep -v "^/proc\|^/sys\|^/dev" | wc -l
-
-echo ""
-echo "Archivos sin dueño:"
-find / -type f -nouser 2>/dev/null | wc -l
-
-echo ""
-echo "Archivos sin grupo:"
-find / -type f -nogroup 2>/dev/null | wc -l
-
-echo ""
-echo "Archivos 777:"
-find / -type f -perm 777 2>/dev/null | wc -l
-
-echo ""
-echo "=== SUID peligroso detectado ==="
-find / -type f -perm -4000 2>/dev/null \
-  | xargs -I {} ls -la {} \
-  | awk '
-    /nmap|find|vim|less|more|bash|sh|python|perl/ {
-      print "PELIGROSO:", $NF, "- puede usarse para escalar privilegios"
-    }'
+echo "SUID: $(find / -type f -perm -4000 2>/dev/null | wc -l)"
+echo "SGID: $(find / -type f -perm -2000 2>/dev/null | wc -l)"
+echo "World-writable: $(find / -type d -perm -o+w 2>/dev/null | grep -v "^/proc\|^/sys\|^/dev" | wc -l)"
+echo "Archivos sin dueño: $(find / -type f -nouser 2>/dev/null | wc -l)"
+echo "Archivos 777: $(find / -type f -perm 777 2>/dev/null | wc -l)"
+echo "--- SUID PELIGROSO ---"
+find / -type f -perm -4000 2>/dev/null | xargs -I {} ls -la {} | awk '/nmap|find|vim|less|more|bash|sh|python|perl/{print "PELIGROSO:", $NF}'
 ```
 
-## Interpretación
+---
 
-| Hallazgo | Riesgo | Acción |
-|----------|--------|--------|
-| SUID en binarios no estándar | Alto | Investigar por qué tiene SUID |
-| SUID en scripts (bash, python, perl) | Crítico | Escalada directa a root |
-| World-writable en /etc | Crítico | Cualquier usuario puede modificar configs |
-| Archivos sin dueño | Medio | Posible remanente de paquete desinstalado |
-| Enlaces rotos en /tmp | Bajo-Medio | Posible race condition (TOCTOU) |
-| Directorios sin sticky bit | Medio | Cualquiera puede borrar archivos ajenos |
+## 🧯 Mitigación
 
-## Comandos relacionados
+| Hallazgo | Acción |
+|----------|--------|
+| SUID en binario no estándar | `chmod u-s <archivo>` |
+| SUID en script (bash/python) | `chmod u-s <archivo>` y revisar por qué tiene SUID |
+| World-writable en /etc | `chmod o-w <directorio>` |
+| Archivo sin dueño | `chown root:root <archivo>` |
 
-- [`find.md`](../../guides/find.md) — `-perm`, `-nouser`, `-nogroup`, `-type`
-- [`xargs.md`](../../guides/xargs.md) — ejecución de comandos sobre resultados
-- [`awk.md`](../../guides/awk.md) — formateo y filtrado de salida
-- [`sort.md`](../../guides/sort.md) + [`diff`] — comparación de snapshots
+⚠️ No quites SUID de binarios del sistema (`passwd`, `sudo`) sin entender su función.
+
+### Rollback
+
+```bash
+# Si rompiste algo, restaurar SUID original
+chmod u+s /usr/bin/passwd
+```
+
+---
+
+## 🛡️ Prevención
+
+- [ ] Monitorear cambios en SUID con `aide` o `tripwire`
+- [ ] Script de auditoría semanal en cron
+- [ ] Política: "ningún script debe tener SUID"
+- [ ] Usar `capabilities` de Linux en vez de SUID cuando sea posible
+
+---
+
+## 🧪 Variantes
+
+### Buscar SUID en directorios específicos
+
+```bash
+find /usr/local /opt /home -type f -perm -4000 2>/dev/null
+```
+
+### Chequear sticky bit en /tmp
+
+```bash
+ls -ld /tmp | awk '{ print $1 }'
+# Si no tiene 't' al final, falta sticky bit
+```
+
+---
+
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Por qué `nmap` con SUID es peligroso? ¿Qué es un ataque TOCTOU con enlaces simbólicos?
+**Ejercicio:** Hacer snapshot de SUID, instalar un paquete, detectar los cambios. Proponer una política de monitoreo automático.
+**Evaluación:** identificación correcta de SUID peligroso, snapshot funcional, mitigación sin romper el sistema.
+
+---
+
+## 🧪 Cómo practicarlo en el lab
+
+```bash
+cd labs && docker compose -f docker-compose.from-scratch.yml up -d ubuntu-bare
+# Auditar SUID dentro del contenedor
+docker exec -it ubuntu-bare bash
+find / -type f -perm -4000 2>/dev/null | head -20
+```
+
+[Ver laboratorio completo →](../../labs/README.md)
+
+---
+
+## 🔗 Referencias
+
+- [`guides/find.md`](../../guides/find.md) — `-perm`, `-nouser`, `-nogroup`
+- [`guides/xargs.md`](../../guides/xargs.md) — ejecución sobre resultados
+- [`guides/awk.md`](../../guides/awk.md) — formateo y filtrado
+- [`guides/sort.md`](../../guides/sort.md) — ordenamiento

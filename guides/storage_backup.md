@@ -1,5 +1,17 @@
 # Almacenamiento y copias de seguridad — Guía completa
 
+**Nivel:** 🟡 Intermedio
+**Archivos de práctica:** `labs/docker-compose.yml` (volúmenes)
+**Ver escenarios relacionados:** [`infrastructure/02-build-pyme`](../scenarios/infrastructure/02-build-pyme-infrastructure.md), [`infrastructure/03-disaster-recovery`](../scenarios/infrastructure/03-disaster-recovery.md)
+
+## ⚡ Quick run
+
+```bash
+rsync -avz --delete /etc/ /mnt/backups/etc/
+```
+
+---
+
 ## Índice
 1. [NFS: Sistema de archivos en red](#nfs)
 2. [Samba/CIFS: Compatibilidad con Windows](#samba)

@@ -1,5 +1,17 @@
 # nginx — Guía completa
 
+**Nivel:** 🟡 Intermedio
+**Archivos de práctica:** `labs/nginx_access.log`
+**Ver escenarios relacionados:** [`web/01-performance`](../scenarios/web/01-performance-and-error-analysis.md), [`infrastructure/01-migrate`](../scenarios/infrastructure/01-migrate-to-production.md)
+
+## ⚡ Quick run
+
+```bash
+nginx -t && systemctl reload nginx
+```
+
+---
+
 ## Índice
 1. [¿Qué es nginx?](#qué-es-nginx)
 2. [Instalación](#instalación)

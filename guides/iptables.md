@@ -1,5 +1,17 @@
 # iptables — Guía completa
 
+**Nivel:** 🔴 Avanzado
+**Archivos de práctica:** `labs/firewall.log`
+**Ver escenarios relacionados:** [`networking/03-port-scan`](../scenarios/networking/03-port-scan-detection.md), [`infrastructure/02-build-pyme`](../scenarios/infrastructure/02-build-pyme-infrastructure.md)
+
+## ⚡ Quick run
+
+```bash
+iptables -L -v -n | head -10
+```
+
+---
+
 ## Índice
 1. [¿Qué es iptables?](#qué-es-iptables)
 2. [Conceptos fundamentales](#conceptos-fundamentales)

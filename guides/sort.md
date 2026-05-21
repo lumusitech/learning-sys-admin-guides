@@ -1,5 +1,17 @@
 # sort — Guía completa
 
+**Nivel:** 🟢 Básico
+**Archivos de práctica:** `labs/datos.txt`
+**Ver escenarios relacionados:** [`networking/01-detect-ssh-brute-force`](../scenarios/networking/01-detect-ssh-brute-force.md)
+
+## ⚡ Quick run
+
+```bash
+ps aux | sort -k3 -rn | head -5
+```
+
+---
+
 ## Índice
 1. [¿Qué es sort?](#qué-es-sort)
 2. [Sintaxis básica](#sintaxis-básica)

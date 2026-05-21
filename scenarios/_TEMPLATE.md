@@ -1,124 +1,111 @@
 # 🧩 Escenario: <TÍTULO CORTO Y ACCIONABLE>
 
-**Dominio:** <networking | system | security | web | infrastructure>
+**Dominio:** networking / system / security / web / infrastructure
 **Nivel:** 🟢 Básico | 🟡 Intermedio | 🔴 Avanzado
 **Herramientas:** `<tool1>`, `<tool2>`, `<tool3>`
-**Archivos de práctica:** `labs/<archivo1>`, `labs/<archivo2>`
-**Salida:** reporte, comando de mitigación, checklist, etc.
+**Archivos:** `labs/<archivo1>`, `labs/<archivo2>`
 
 ---
 
 ## 🎯 Objetivo
 
-Qué vas a poder hacer al terminar (en 1–3 bullets).
+Qué se aprende o logra al completar el escenario (2–3 ítems).
 
 - Identificar IPs atacantes a partir de logs
-- Generar un reporte reproducible y una acción de mitigación segura
+- Generar un reporte accionable con mitigación
 
 ---
 
 ## 🧠 Contexto (problema real)
 
-Describe el síntoma + el impacto.
+Descripción del síntoma y el impacto.
 
-- Síntoma: CPU alta / timeouts / conexiones fallidas / errores 5xx
-- Impacto: degradación / riesgo / caída del servicio
+- Servidor lento, errores, tráfico sospechoso, logs anómalos
+- Impacto: degradación, riesgo, caída del servicio
 
 ---
 
 ## ✅ Datos de entrada
 
-- **Producción**: rutas reales (ej. `/var/log/auth.log`)
-- **Práctica**: archivos del repo (ej. `labs/auth.log`)
+- **Producción:** ruta real (ej. `/var/log/auth.log`)
+- **Práctica:** archivo del repo (ej. `labs/auth.log`)
 
 ---
 
-## ⚡ Quick run (modo "copiar y pegar")
+## ⚡ Quick run
 
-> Un pipeline único para obtener "lo mínimo útil" rápido.
+Un comando único para resolver el problema rápido.
 
 ```bash
-# (ejemplo)
 cat labs/<archivo>.log | <pipeline>
 ```
 
 ---
 
-## 🔍 Paso a paso (explicación del pipeline)
+## 🔍 Paso a paso
 
-Explica cada etapa del pipe (1–2 líneas por etapa):
+Explicación de cada etapa del pipeline.
 
-1. `grep ...` → qué filtra
-2. `awk ...` → qué extrae/calcula
-3. `sort | uniq -c | sort -rn` → cómo agrega y ordena
+1. `grep ...` → filtra
+2. `awk ...` → extrae
+3. `sort | uniq -c | sort -rn` → agrupa y ordena
 4. `head` → top-N
 
 ---
 
-## ✅ Salida esperada (cómo validar que salió bien)
+## ✅ Salida esperada
 
-Incluye ejemplos y criterios:
+```
+IP         INTENTOS
+10.0.0.5   150
+```
 
-- "Si ves X, significa Y"
-- "Si NO aparece nada, revisá Z"
-
----
-
-## 🧯 Mitigación (acción segura)
-
-Qué harías en producción, con advertencias:
-
-- bloquear IP temporalmente
-- rate limit
-- fail2ban (si aplica)
-- checklist mínimo para no romper servicios
-
-⚠️ Incluí siempre un paso de **rollback**.
+- Si aparece X → significa Y
+- Si NO aparece nada → revisar Z
 
 ---
 
-## 🛡️ Prevención (hardening / mejoras)
+## 🧯 Mitigación
 
-Qué se cambia para evitar que se repita.
+Qué acción tomar en producción.
 
-- configuración
-- políticas
-- monitoreo
-- alertas
+- Bloquear IP
+- Reiniciar servicio
+- Aplicar rate limit
+
+⚠️ Incluir advertencia y **rollback**.
+
+---
+
+## 🛡️ Prevención
+
+Cómo evitar que vuelva a pasar.
+
+- Hardening
+- Monitoreo
+- Configuración
 
 ---
 
 ## 🧪 Variantes
 
-Variantes útiles para distintos enfoques:
+Distintas formas de resolver el mismo problema.
 
-- por usuario
-- por ventana de tiempo
-- por geografía / ASN (si aplica)
-- en tiempo real (`tail -f`)
+- Tiempo real
+- Por usuario
+- Por ventana temporal
 
 ---
 
-## 🧑‍🏫 (Opcional) Modo docente
+## 🧑‍🏫 Modo docente (opcional)
 
-### Preguntas guía
-
-- ¿Qué indica un aumento de X?
-- ¿Qué falsos positivos existen?
-
-### Ejercicio
-
-- "Encontrá las top 3 IPs y justificá si bloqueás o no"
-
-### Criterios de evaluación (rúbrica)
-
-- pipeline correcto
-- interpretación correcta
-- mitigación segura
+**Preguntas:** ¿Qué significa X? ¿Qué patrón ves?
+**Ejercicio:** resolver X con pipeline.
+**Evaluación:** pipeline correcto, interpretación correcta, mitigación segura.
 
 ---
 
 ## 🔗 Referencias
 
-- **Guías relacionadas**: `guides/<tool>.md`
-- **Escenarios relacionados**: `scenarios/<...>.md`
+- [`guides/<tool>.md`](../../guides/<tool>.md)
+- [`labs/README.md`](../../labs/README.md)

@@ -1,5 +1,17 @@
 # awk — Guía completa
 
+**Nivel:** 🟡 Intermedio
+**Archivos de práctica:** `labs/datos.txt`, `labs/employees_data.txt`
+**Ver escenarios relacionados:** [`networking/01-detect-ssh-brute-force`](../scenarios/networking/01-detect-ssh-brute-force.md), [`web/01-performance`](../scenarios/web/01-performance-and-error-analysis.md)
+
+## ⚡ Quick run
+
+```bash
+awk '{ print $1, $3 }' labs/datos.txt | column -t
+```
+
+---
+
 ## Índice
 1. [¿Qué es awk?](#qué-es-awk)
 2. [Estructura básica](#estructura-básica)

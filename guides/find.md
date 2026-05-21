@@ -1,5 +1,17 @@
 # find — Guía completa
 
+**Nivel:** 🟡 Intermedio
+**Archivos de práctica:** Sistema de archivos (`/`)
+**Ver escenarios relacionados:** [`security/02-suid-audit`](../scenarios/security/02-suid-audit-and-file-permissions.md)
+
+## ⚡ Quick run
+
+```bash
+find / -type f -name "*.log" -size +100M 2>/dev/null
+```
+
+---
+
 ## Índice
 1. [¿Qué es find?](#qué-es-find)
 2. [Sintaxis básica](#sintaxis-básica)

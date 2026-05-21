@@ -1,5 +1,17 @@
 # sed — Guía completa
 
+**Nivel:** 🟡 Intermedio
+**Archivos de práctica:** `labs/datos.txt`
+**Ver escenarios relacionados:** [`system/02-log-analysis`](../scenarios/system/02-log-analysis-and-error-tracking.md)
+
+## ⚡ Quick run
+
+```bash
+sed 's/error/ERROR/g' labs/syslog.log | head -10
+```
+
+---
+
 ## Índice
 1. [¿Qué es sed?](#qué-es-sed)
 2. [Sintaxis básica](#sintaxis-básica)

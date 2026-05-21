@@ -1,173 +1,171 @@
-# Escenario: Detectar y bloquear IPs maliciosas
+# 🧩 Escenario: Detectar y bloquear IPs maliciosas
 
-## Problema
+**Dominio:** security
+**Nivel:** 🟡 Intermedio
+**Herramientas:** `grep`, `awk`, `sort`, `uniq`, `comm`, `iptables`, `xargs`
+**Archivos:** `labs/auth.log`, `labs/nginx_access.log`, `labs/firewall.log`
 
-El servidor recibe tráfico malicioso de múltiples IPs. Necesitamos correlacionar logs de diferentes fuentes (auth, acceso web, firewall) para identificar atacantes y bloquearlos automáticamente.
+---
 
-## Pipeline: IPs comunes entre auth.log y access.log
+## 🎯 Objetivo
 
-```bash
-# IPs que aparecen tanto en fallos SSH como en peticiones web
-comm -12 \
-  <(grep "Failed password" labs/auth.log | grep -oP 'from \K[0-9.]+' | sort -u) \
-  <(awk '{ print $1 }' labs/nginx_access.log | sort -u)
-```
+1. Correlacionar logs de múltiples fuentes (SSH, web, firewall) para identificar atacantes.
+2. Calcular un score de amenaza por IP basado en su actividad.
+3. Generar reglas de bloqueo automatizadas.
 
-### Explicación
+---
 
-- **`comm -12`**: muestra líneas comunes entre dos archivos ordenados
-- **`<(comando)`**: process substitution, trata la salida del comando como un archivo
-- Primer subcomando: extrae IPs de intentos SSH fallidos
-- Segundo subcomando: extrae IPs de peticiones web
+## 🧠 Contexto
 
-## Pipeline: Score de amenaza por IP
+El servidor recibe tráfico malicioso de múltiples IPs desde distintas fuentes. Una IP que aparece en logs SSH, web y de firewall simultáneamente tiene alta probabilidad de ser maliciosa.
 
-```bash
-#!/bin/bash
-# Puntúa IPs según actividad sospechosa
-# +1 por intento SSH fallido, +1 por petición 404, +3 por escaneo de puertos
+---
 
-echo "IP PUNTOS RAZONES"
-echo "-- ------ -------"
+## ✅ Datos de entrada
 
-# Obtener IPs de todas las fuentes
-grep "Failed password" labs/auth.log \
-  | grep -oP 'from \K[0-9.]+' \
-  | sort \
-  | uniq -c \
-  | awk '{ print $2, $1 * 2 }'  # SSH fail: 2 puntos c/u
+- **Producción:** `/var/log/auth.log`, `/var/log/nginx/access.log`, `/var/log/kern.log`
+- **Práctica:** `labs/auth.log`, `labs/nginx_access.log`, `labs/firewall.log`
 
-grep " 404 " labs/nginx_access.log \
-  | awk '{ print $1 }' \
-  | sort \
-  | uniq -c \
-  | awk '{ print $1, $2 * 1 }'  # 404: 1 punto c/u
+---
 
-grep "DPT=" labs/firewall.log 2>/dev/null \
-  | grep -oP 'SRC=\K[0-9.]+' \
-  | sort \
-  | uniq -c \
-  | awk '$1 > 5 { print $2, $1 * 3 }'  # Escaneo: 3 puntos c/u
-```
-
-## Pipeline: Bloquear IPs con más de N intentos
+## ⚡ Quick run (IPs comunes entre SSH fallido y web)
 
 ```bash
-# Encontrar IPs candidates
-grep "Failed password" labs/auth.log \
-  | grep -oP 'from \K[0-9.]+' \
-  | sort \
-  | uniq -c \
-  | sort -rn \
-  | awk '$1 > 10 { print $2, $1 }' \
-  | while read ip count; do
-      echo "BLANQUEAR: $ip ($count intentos)"
-      # iptables -A INPUT -s $ip -j DROP
-    done
+comm -12 <(grep "Failed password" labs/auth.log | grep -oP 'from \K[0-9.]+' | sort -u) <(awk '{ print $1 }' labs/nginx_access.log | sort -u)
 ```
 
-## Pipeline: Reporte consolidado de amenazas
+---
+
+## 🔍 Paso a paso
+
+1. Primer subcomando: extrae IPs con SSH fallido
+2. Segundo subcomando: extrae IPs de peticiones web
+3. `comm -12` → solo IPs que aparecen en ambas listas
+4. IPs comunes → alta probabilidad de ataque coordinado
+
+---
+
+## ✅ Salida esperada
+
+```
+10.0.0.5
+192.168.1.200
+```
+
+- Si ves IPs aquí, están atacando SSH y web simultáneamente → bloquear.
+- Si no ves nada, las fuentes de ataque no se superponen.
+
+---
+
+## 📌 Pipelines de diagnóstico
+
+### Score de amenaza por IP
+
+```bash
+echo "=== SCORE DE AMENAZA ==="
+echo "IP PUNTOS RAZON"
+grep "Failed password" labs/auth.log | grep -oP 'from \K[0-9.]+' | sort | uniq -c | awk '{ print $2, $1*2 }'  # SSH: 2 pts c/u
+echo "---"
+grep " 404 " labs/nginx_access.log | awk '{ print $1 }' | sort | uniq -c | awk '{ print $1, $2 }'  # 404: 1 pt c/u
+echo "---"
+grep "DPT=" labs/firewall.log 2>/dev/null | grep -oP 'SRC=\K[0-9.]+' | sort | uniq -c | awk '$1>5{print $2,$1*3}'  # Escaneo: 3 pts c/u
+```
+
+### Reporte consolidado de seguridad
 
 ```bash
 echo "=== REPORTE DE SEGURIDAD ==="
 echo ""
-
 echo "→ Intentos SSH fallidos por IP:"
-grep "Failed password" labs/auth.log \
-  | grep -oP 'from \K[0-9.]+' \
-  | sort \
-  | uniq -c \
-  | sort -rn \
-  | head -10 \
-  | awk '{ printf "  %-15s %d intentos\n", $2, $1 }'
-
+grep "Failed password" labs/auth.log | grep -oP 'from \K[0-9.]+' | sort | uniq -c | sort -rn | head -10
 echo ""
 echo "→ Usuarios más atacados:"
-grep "Failed password" labs/auth.log \
-  | grep -oP 'for \K[^ ]+' \
-  | sort \
-  | uniq -c \
-  | sort -rn \
-  | head -10 \
-  | awk '{ printf "  %-15s %d intentos\n", $2, $1 }'
-
+grep "Failed password" labs/auth.log | grep -oP 'for \K[^ ]+' | sort | uniq -c | sort -rn | head -10
 echo ""
-echo "→ IPs que generaron 404:"
-grep " 404 " labs/nginx_access.log \
-  | awk '{ print $1 }' \
-  | sort \
-  | uniq -c \
-  | sort -rn \
-  | head -10 \
-  | awk '{ printf "  %-15s %d accesos\n", $2, $1 }'
-
+echo "→ IPs con 404 en web:"
+grep " 404 " labs/nginx_access.log | awk '{ print $1 }' | sort | uniq -c | sort -rn | head -10
 echo ""
-echo "→ User Agents sospechosos:"
-grep -iE "nikto|sqlmap|nmap|curl|wget|python-requests" labs/nginx_access.log \
-  | awk '{ print $NF }' \
-  | sort \
-  | uniq -c \
-  | sort -rn \
-  | head -10 \
-  | awk '{ printf "  %d %s\n", $1, substr($0, index($0,$2)) }'
-
+echo "→ User-Agents sospechosos:"
+grep -iE "nikto|sqlmap|nmap|curl|python-requests" labs/nginx_access.log | awk '{ print $NF }' | sort | uniq -c | sort -rn | head -10
 echo ""
-echo "→ Puertos escaneados (firewall):"
-grep -oP 'DPT=\K[0-9]+' labs/firewall.log 2>/dev/null \
-  | sort \
-  | uniq -c \
-  | sort -rn \
-  | head -15 \
-  | awk '{ printf "  Puerto %-5s %d intentos\n", $2, $1 }'
+echo "→ Puertos escaneados:"
+grep -oP 'DPT=\K[0-9]+' labs/firewall.log 2>/dev/null | sort | uniq -c | sort -rn | head -15
 ```
 
-## Pipeline: Fail2ban-like con tools estándar
+### Bloquear IPs con más de N intentos
 
 ```bash
-# BAN temporal vía iptables con expiración (simulado)
-grep "Failed password" labs/auth.log \
-  | grep -oP 'from \K[0-9.]+' \
-  | sort \
-  | uniq -c \
-  | sort -rn \
-  | awk '$1 >= 5 {
-      cmd = "iptables -A INPUT -s " $2 " -j DROP"
-      print cmd
-      # system(cmd)  # descomentar para ejecutar
-    }'
+grep "Failed password" labs/auth.log | grep -oP 'from \K[0-9.]+' | sort | uniq -c | sort -rn \
+| awk '$1>10{print "iptables -A INPUT -s", $2, "-j DROP"}' | head -10
 ```
 
-## Pipeline: Detectar ataques DDoS (muchas requests desde muchas IPs)
+---
+
+## 🧯 Mitigación
 
 ```bash
-# Peticiones por segundo (aproximado)
-TOTAL=$(wc -l < labs/nginx_access.log)
-PRIMER=$(head -1 labs/nginx_access.log | awk '{ print $4 }' | tr -d '[')
-ULTIMO=$(tail -1 labs/nginx_access.log | awk '{ print $4 }' | tr -d '[')
-echo "Total peticiones: $TOTAL"
+# Bloquear IP de alto score
+iptables -A INPUT -s 10.0.0.5 -j DROP
 
-# IPs con más requests
-awk '{ print $1 }' labs/nginx_access.log \
-  | sort \
-  | uniq -c \
-  | sort -rn \
-  | head -10 \
-  | awk '$1 > 50 { print $2, $1, "ALTO VOLUMEN" }'
+# Si te equivocaste (rollback)
+iptables -D INPUT -s 10.0.0.5 -j DROP
 ```
 
-## Interpretación
+⚠️ Siempre guardar backup antes: `iptables-save > /root/iptables.backup`
 
-| Puntaje | Acción |
-|---------|--------|
-| 1-5 puntos | Monitorear, posible falso positivo |
-| 5-15 puntos | Rate limiting recomendado |
-| 15-50 puntos | Bloquear inmediatamente |
-| 50+ puntos | Bloquear y reportar a ISP/abuse |
+---
 
-## Comandos relacionados
+## 🛡️ Prevención
 
-- [`grep.md`](../../guides/grep.md) — extracción con `-oP` y `\K`
-- [`awk.md`](../../guides/awk.md) — arrays, formateo
-- [`sort.md`](../../guides/sort.md) + [`uniq.md`](../../guides/uniq.md) — conteo
-- [`iptables.md`](../../guides/iptables.md) — bloqueo de IPs
-- [`xargs.md`](../../guides/xargs.md) — ejecutar comandos en lote
+- [ ] fail2ban con jail personalizado para SSH + web
+- [ ] Rate limiting en nginx + iptables
+- [ ] Whitelist de IPs confiables (VPN, oficina)
+- [ ] Logs centralizados (rsyslog, ELK) para correlación
+
+---
+
+## 🧪 Variantes
+
+### Fail2ban-like con herramientas estándar
+
+```bash
+grep "Failed password" labs/auth.log | grep -oP 'from \K[0-9.]+' | sort | uniq -c \
+| awk '$1>=5{cmd="iptables -A INPUT -s "$2" -j DROP"; print cmd; system(cmd)}'
+```
+
+### Detectar DDoS (muchas IPs, mismas rutas)
+
+```bash
+awk '{ print $1, $7 }' labs/nginx_access.log | sort -u | awk '{ print $2 }' | sort | uniq -c | sort -rn | head -10
+```
+
+---
+
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Por qué una IP en logs SSH + web es más peligrosa que una solo en web? ¿Qué falso positivo puede dar un score alto?
+**Ejercicio:** Calcular el score de amenaza de las top 5 IPs y decidir acción para cada una.
+**Evaluación:** correlación correcta de fuentes, justificación del bloqueo, rollback preparado.
+
+---
+
+## 🧪 Cómo practicarlo en el lab
+
+```bash
+cd labs && docker compose -f docker-compose.security.yml up -d sec-attacker sec-ssh-weak web-outdated
+# Generar actividad maliciosa desde el contenedor atacante
+docker exec sec-attacker nmap -sS sec-ssh-weak web-outdated
+docker logs sec-ssh-weak 2>&1 | grep "Failed password"
+```
+
+[Ver laboratorio completo →](../../labs/README.md)
+
+---
+
+## 🔗 Referencias
+
+- [`guides/grep.md`](../../guides/grep.md) — extracción con `-oP`
+- [`guides/awk.md`](../../guides/awk.md) — arrays y formateo
+- [`guides/sort.md`](../../guides/sort.md) + [`guides/uniq.md`](../../guides/uniq.md) — conteo
+- [`guides/iptables.md`](../../guides/iptables.md) — bloqueo de IPs
+- [`guides/xargs.md`](../../guides/xargs.md) — ejecutar comandos en lote
