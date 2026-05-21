@@ -7,7 +7,7 @@
 
 **Quick command (SRE):** `awk '{for(i=1;i<=NF;i++) if($i ~ /^SRC=/){ip=$i; sub(/^SRC=/,"",ip); c[ip]++}} END{for(ip in c) print c[ip], ip}' labs/firewall.log | sort -rn | head -10`
 
-**Quick command (original):** `grep -oP 'SRC=\K[0-9.]+' labs/firewall.log | sort | uniq -c | sort -rn | head`
+**Quick command (original):** `awk '{for(i=1;i<=NF;i++) if($i ~ /^SRC=/) c[substr($i,5)]++} END{for(ip in c) print c[ip], ip}' labs/firewall.log | sort -rn | head`
 
 **Cuándo usar este escenario:**
 - Logs de firewall con muchas conexiones desde una IP
@@ -42,14 +42,14 @@ Los logs del firewall (iptables) muestran conexiones entrantes a múltiples puer
 ## ⚡ Quick run (IPs que más conexiones hacen)
 
 ```bash
-grep -oP 'SRC=\K[0-9.]+' labs/firewall.log | sort | uniq -c | sort -rn | head -10
+awk '{for(i=1;i<=NF;i++) if($i ~ /^SRC=/) print substr($i,5)}' labs/firewall.log | sort | uniq -c | sort -rn | head -10
 ```
 
 ---
 
 ## 🔍 Paso a paso
 
-1. `grep -oP 'SRC=\K[0-9.]+'` → extrae IP origen después de `SRC=`
+1. `awk '{for(i=1;i<=NF;i++) if($i ~ /^SRC=/) print substr($i,5)}'` → extrae IP origen después de `SRC=`
 2. `sort` → ordena para uniq
 3. `uniq -c` → cuenta conexiones por IP
 4. `sort -rn` → ordena por frecuencia
@@ -76,7 +76,7 @@ grep -oP 'SRC=\K[0-9.]+' labs/firewall.log | sort | uniq -c | sort -rn | head -1
 
 ```bash
 IP_SOSPE="10.0.0.5"
-grep "SRC=$IP_SOSPE" labs/firewall.log | grep -oP 'DPT=\K[0-9]+' | sort -n | uniq \
+grep "SRC=$IP_SOSPE" labs/firewall.log | awk '{for(i=1;i<=NF;i++) if($i ~ /^DPT=/) print substr($i,5)}' | sort -n | uniq \
 | awk '{ print "Puerto:", $1 } END { print "Total puertos únicos:", NR }'
 ```
 
@@ -84,7 +84,7 @@ grep "SRC=$IP_SOSPE" labs/firewall.log | grep -oP 'DPT=\K[0-9]+' | sort -n | uni
 
 ```bash
 grep "SYN" labs/firewall.log | grep -v "ACK" \
-| grep -oP 'SRC=\K[0-9.]+' | sort | uniq -c | sort -rn \
+| awk '{for(i=1;i<=NF;i++) if($i ~ /^SRC=/) print substr($i,5)}' | sort | uniq -c | sort -rn \
 | awk '$1>10{print $2, "->", $1, "SYNs (posible SYN scan)"}'
 ```
 
@@ -99,21 +99,21 @@ grep "SRC=10.0.0.5" labs/firewall.log \
 ### Puertos más escaneados (top 20)
 
 ```bash
-grep -oP 'DPT=\K[0-9]+' labs/firewall.log | sort | uniq -c | sort -rn | head -20 \
+awk '{for(i=1;i<=NF;i++) if($i ~ /^DPT=/) print substr($i,5)}' labs/firewall.log | sort | uniq -c | sort -rn | head -20 \
 | awk '{ p=$2; if(p==22)s="SSH"; else if(p==80)s="HTTP"; else if(p==443)s="HTTPS"; else if(p==3306)s="MySQL"; else if(p==5432)s="PostgreSQL"; else if(p==3389)s="RDP"; else if(p==6379)s="Redis"; else s=""; printf "Puerto %-5s %-12s %d\n", p, s, $1 }'
 ```
 
 ### Generar reglas de bloqueo
 
 ```bash
-grep -oP 'SRC=\K[0-9.]+' labs/firewall.log | sort | uniq -c | sort -rn \
+awk '{for(i=1;i<=NF;i++) if($i ~ /^SRC=/) print substr($i,5)}' labs/firewall.log | sort | uniq -c | sort -rn \
 | awk '$1>20{print "iptables -A INPUT -s", $2, "-j DROP"}'
 ```
 
 ### Watch en tiempo real
 
 ```bash
-tail -f /var/log/kern.log | grep --line-buffered "IPTABLES" | grep -oP 'SRC=\K[0-9.]+' | sort | uniq -c
+tail -f /var/log/kern.log | grep --line-buffered "IPTABLES" | awk '{for(i=1;i<=NF;i++) if($i ~ /^SRC=/) print substr($i,5)}' | sort | uniq -c
 ```
 
 ---
@@ -156,7 +156,7 @@ grep "FIN" labs/firewall.log | grep "PSH" | grep "URG"
 ### Escaneo horizontal (mismo puerto, distintas IPs)
 
 ```bash
-grep "DPT=22" labs/firewall.log | grep -oP 'SRC=\K[0-9.]+' | sort -u | wc -l
+grep "DPT=22" labs/firewall.log | awk '{for(i=1;i<=NF;i++) if($i ~ /^SRC=/) print substr($i,5)}' | sort -u | wc -l
 ```
 
 ---

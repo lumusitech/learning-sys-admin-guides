@@ -7,7 +7,7 @@
 
 **Quick command (SRE):** `awk 'FNR==NR{if($0~/Failed password/){for(i=1;i<=NF;i++) if($i=="from"){a[$(i+1)]=1; break}}; next} {ip=$1; if(ip in a) b[ip]++} END{for(ip in b) print b[ip], ip}' labs/auth.log labs/nginx_access.log | sort -rn | head -10`
 
-**Quick command (original):** `comm -12 <(grep "Failed password" labs/auth.log | grep -oP 'from \K[0-9.]+' | sort -u) <(awk '{print $1}' labs/nginx_access.log | sort -u)`
+**Quick command (original):** `awk 'FNR==NR{if($0~/Failed password/){for(i=1;i<=NF;i++)if($i=="from"){a[$(i+1)]=1;break}};next} $1 in a{print $1}' labs/auth.log labs/nginx_access.log | sort -u`
 
 **Cuándo usar este escenario:**
 - IPs sospechosas aparecen en múltiples logs
@@ -42,7 +42,7 @@ El servidor recibe tráfico malicioso de múltiples IPs desde distintas fuentes.
 ## ⚡ Quick run (IPs comunes entre SSH fallido y web)
 
 ```bash
-comm -12 <(grep "Failed password" labs/auth.log | grep -oP 'from \K[0-9.]+' | sort -u) <(awk '{ print $1 }' labs/nginx_access.log | sort -u)
+awk 'FNR==NR{if($0~/Failed password/){for(i=1;i<=NF;i++)if($i=="from"){a[$(i+1)]=1;break}};next} $1 in a{print $1}' labs/auth.log labs/nginx_access.log | sort -u
 ```
 
 ---
@@ -75,11 +75,11 @@ comm -12 <(grep "Failed password" labs/auth.log | grep -oP 'from \K[0-9.]+' | so
 ```bash
 echo "=== SCORE DE AMENAZA ==="
 echo "IP PUNTOS RAZON"
-grep "Failed password" labs/auth.log | grep -oP 'from \K[0-9.]+' | sort | uniq -c | awk '{ print $2, $1*2 }'  # SSH: 2 pts c/u
+awk '/Failed password/{for(i=1;i<=NF;i++) if($i=="from") print $(i+1)}' labs/auth.log | sort | uniq -c | awk '{ print $2, $1*2 }'  # SSH: 2 pts c/u
 echo "---"
 grep " 404 " labs/nginx_access.log | awk '{ print $1 }' | sort | uniq -c | awk '{ print $1, $2 }'  # 404: 1 pt c/u
 echo "---"
-grep "DPT=" labs/firewall.log 2>/dev/null | grep -oP 'SRC=\K[0-9.]+' | sort | uniq -c | awk '$1>5{print $2,$1*3}'  # Escaneo: 3 pts c/u
+grep "DPT=" labs/firewall.log 2>/dev/null | awk '{for(i=1;i<=NF;i++) if($i ~ /^SRC=/) print substr($i,5)}' | sort | uniq -c | awk '$1>5{print $2,$1*3}'  # Escaneo: 3 pts c/u
 ```
 
 ### Reporte consolidado de seguridad
@@ -88,10 +88,10 @@ grep "DPT=" labs/firewall.log 2>/dev/null | grep -oP 'SRC=\K[0-9.]+' | sort | un
 echo "=== REPORTE DE SEGURIDAD ==="
 echo ""
 echo "→ Intentos SSH fallidos por IP:"
-grep "Failed password" labs/auth.log | grep -oP 'from \K[0-9.]+' | sort | uniq -c | sort -rn | head -10
+awk '/Failed password/{for(i=1;i<=NF;i++) if($i=="from") print $(i+1)}' labs/auth.log | sort | uniq -c | sort -rn | head -10
 echo ""
 echo "→ Usuarios más atacados:"
-grep "Failed password" labs/auth.log | grep -oP 'for \K[^ ]+' | sort | uniq -c | sort -rn | head -10
+awk '/Failed password/{for(i=1;i<=NF;i++) if($i=="for") print $(i+1)}' labs/auth.log | sort | uniq -c | sort -rn | head -10
 echo ""
 echo "→ IPs con 404 en web:"
 grep " 404 " labs/nginx_access.log | awk '{ print $1 }' | sort | uniq -c | sort -rn | head -10
@@ -100,13 +100,13 @@ echo "→ User-Agents sospechosos:"
 grep -iE "nikto|sqlmap|nmap|curl|python-requests" labs/nginx_access.log | awk '{ print $NF }' | sort | uniq -c | sort -rn | head -10
 echo ""
 echo "→ Puertos escaneados:"
-grep -oP 'DPT=\K[0-9]+' labs/firewall.log 2>/dev/null | sort | uniq -c | sort -rn | head -15
+awk '{for(i=1;i<=NF;i++) if($i ~ /^DPT=/) print substr($i,5)}' labs/firewall.log 2>/dev/null | sort | uniq -c | sort -rn | head -15
 ```
 
 ### Bloquear IPs con más de N intentos
 
 ```bash
-grep "Failed password" labs/auth.log | grep -oP 'from \K[0-9.]+' | sort | uniq -c | sort -rn \
+awk '/Failed password/{for(i=1;i<=NF;i++) if($i=="from") print $(i+1)}' labs/auth.log | sort | uniq -c | sort -rn \
 | awk '$1>10{print "iptables -A INPUT -s", $2, "-j DROP"}' | head -10
 ```
 
@@ -140,7 +140,7 @@ iptables -D INPUT -s 10.0.0.5 -j DROP
 ### Fail2ban-like con herramientas estándar
 
 ```bash
-grep "Failed password" labs/auth.log | grep -oP 'from \K[0-9.]+' | sort | uniq -c \
+awk '/Failed password/{for(i=1;i<=NF;i++) if($i=="from") print $(i+1)}' labs/auth.log | sort | uniq -c \
 | awk '$1>=5{cmd="iptables -A INPUT -s "$2" -j DROP"; print cmd; system(cmd)}'
 ```
 
