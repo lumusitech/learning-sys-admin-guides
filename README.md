@@ -15,21 +15,16 @@ git clone https://github.com/lumusitech/learning-sys-admin-guides.git
 cd learning-sys-admin-guides
 ```
 
-### Modos de uso
+Modos de uso:
+- aprendizaje → guides → labs → scenarios
+- producción → scenarios → labs → guides
+- referencia → abrir guía y copiar comando
 
-| Modo | Ruta |
-|------|------|
-| 📚 **Aprendizaje** | `guides/` → `labs/` → `scenarios/` |
-| 🧪 **Producción** | `scenarios/` → `labs/` → `guides/` |
-| ⚡ **Referencia** | Abrir guía y copiar comando |
-
-### Ruta rápida
-
-Si no sabés por dónde empezar:
-
-1. Elegí un **escenario** en `scenarios/`
-2. Probalo con **logs** en `labs/`
-3. Revisá **guides** solo si necesitás entender el comando
+Ruta rápida:
+1. problema → scenarios
+2. correr quick command
+3. validar con labs
+4. volver a guides si hace falta
 
 ---
 
