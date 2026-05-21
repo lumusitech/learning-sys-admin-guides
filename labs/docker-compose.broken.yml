@@ -1,0 +1,192 @@
+# Laboratorio: Servicios rotos — Práctica de diagnóstico y resolución
+# Uso: docker compose -f docker-compose.broken.yml up -d
+# Cada servicio tiene un problema intencional que debes diagnosticar y arreglar
+
+services:
+
+  # === 1. NGINX CON SYNTAX ERROR ===
+  # Problema: nginx no arranca porque la config tiene errores
+  # Tarea: leer logs, encontrar el error, corregir la config, recargar
+  nginx-broken:
+    image: nginx:alpine
+    container_name: nginx-broken
+    hostname: nginx-broken
+    ports:
+      - "8111:80"
+    volumes:
+      - ./broken/nginx-bad.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./www:/usr/share/nginx/html:ro
+    networks:
+      - lab-broken
+
+  # === 2. SSH CON PERMISOS INCORRECTOS ===
+  # Problema: SSH corre pero no deja entrar con clave pública
+  # Tarea: diagnosticar por qué la autenticación falla, corregir permisos
+  ssh-bad-perms:
+    image: linuxserver/openssh-server:latest
+    container_name: ssh-bad-perms
+    hostname: ssh-bad-perms
+    environment:
+      - USER_NAME=practica
+      - PASSWORD_ACCESS=true
+      - USER_PASSWORD=practica123
+      - SUDO_ACCESS=true
+    ports:
+      - "2224:22"
+    volumes:
+      # La config montada fuerza permisos incorrectos en .ssh
+      - ./broken/ssh-permissive-config:/etc/ssh/sshd_config.d/bad.conf:ro
+    networks:
+      - lab-broken
+    restart: unless-stopped
+
+  # === 3. MYSQL CON GRANTS ROTOS ===
+  # Problema: MySQL corre pero los usuarios no tienen permisos reales
+  # Tarea: detectar que los grants están mal, corregirlos
+  mysql-bad-grants:
+    image: mariadb:latest
+    container_name: mysql-bad-grants
+    hostname: mysql-bad-grants
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpass
+      - MYSQL_DATABASE=app
+      - MYSQL_USER=deploy
+      - MYSQL_PASSWORD=deploy123
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./broken/mysql-bad-grants.sql:/docker-entrypoint-initdb.d/01-bad-grants.sql:ro
+      - mysql_bad_data:/var/lib/mysql
+    networks:
+      - lab-broken
+    restart: unless-stopped
+
+  # === 4. CONFLICTO DE PUERTOS ===
+  # Problema: dos contenedores intentan usar el mismo puerto 8222
+  # Tarea: detectar el conflicto al hacer docker compose up, decidir qué hacer
+  port-conflict-a:
+    image: nginx:alpine
+    container_name: port-conflict-a
+    ports:
+      - "8222:80"
+    networks:
+      - lab-broken
+
+  port-conflict-b:
+    image: nginx:alpine
+    container_name: port-conflict-b
+    ports:
+      - "8222:80"
+    networks:
+      - lab-broken
+
+  # === 5. DNS ROTO ===
+  # Problema: el contenedor no resuelve nombres DNS
+  # Tarea: diagnosticar resolución DNS, corregir /etc/resolv.conf
+  dns-broken:
+    image: alpine:latest
+    container_name: dns-broken
+    hostname: dns-broken
+    command: >
+      sh -c "
+        echo 'nameserver 192.0.2.1' > /etc/resolv.conf &&
+        echo '=== DNS roto — no resuelve nombres ===' &&
+        echo 'Intenta: ping google.com' &&
+        tail -f /dev/null
+      "
+    networks:
+      - lab-broken
+
+  # === 6. DISCO LLENO ===
+  # Problema: el disco está casi lleno, las apps no pueden escribir
+  # Tarea: detectar que no hay espacio, encontrar el archivo grande, limpiar
+  disk-full:
+    image: alpine:latest
+    container_name: disk-full
+    hostname: disk-full
+    command: >
+      sh -c "
+        dd if=/dev/zero of=/tmp/basura.dat bs=1M count=50 2>/dev/null &&
+        echo '=== Disco casi lleno (50MB de basura) ===' &&
+        echo 'Ejecuta: df -h, du -sh /*, encuentra y borra el archivo' &&
+        tail -f /dev/null
+      "
+    networks:
+      - lab-broken
+
+  # === 7. PROCESO ZOMBIE ===
+  # Problema: un proceso hijo ha muerto pero el padre no lo recolecta
+  # Tarea: detectar el proceso zombie (ps aux | grep Z)
+  zombie:
+    image: alpine:latest
+    container_name: zombie
+    hostname: zombie
+    command: >
+      sh -c "
+        sleep 1000 &
+        kill -9 \$! 2>/dev/null
+        echo '=== Proceso zombie creado ===' &&
+        echo 'Buscalo con: ps aux | grep Z' &&
+        tail -f /dev/null
+      "
+    networks:
+      - lab-broken
+
+  # === 8. PROCESO CONSUMIENDO CPU ===
+  # Problema: un proceso acapara la CPU
+  # Tarea: encontrar el proceso con top/ps, matarlo
+  cpu-hog:
+    image: alpine:latest
+    container_name: cpu-hog
+    hostname: cpu-hog
+    command: >
+      sh -c "
+        echo '=== Consumiendo CPU (bucle infinito) ===' &&
+        echo 'Ejecuta: top o ps aux y mata el proceso' &&
+        while true; do echo 'scale=5000; 4*a(1)' | bc -l >/dev/null; done
+      "
+    networks:
+      - lab-broken
+
+  # === 9. LOOPBACK CAÍDO ===
+  # Problema: la interfaz loopback (lo) está caída
+  # Tarea: diagnosticar que 127.0.0.1 no responde, levantar la interfaz
+  loopback-down:
+    image: alpine:latest
+    container_name: loopback-down
+    hostname: loopback-down
+    command: >
+      sh -c "
+        ip link set lo down &&
+        echo '=== Loopback caído ===' &&
+        echo 'Prueba: ping 127.0.0.1 o curl localhost' &&
+        echo 'Solucion: ip link set lo up' &&
+        tail -f /dev/null
+      "
+    networks:
+      - lab-broken
+
+  # === 10. CRON SIN EJECUCIÓN ===
+  # Problema: crond no está corriendo (tareas programadas no se ejecutan)
+  # Tarea: detectar que crond no está activo, iniciarlo
+  cron-down:
+    image: alpine:latest
+    container_name: cron-down
+    hostname: cron-down
+    command: >
+      sh -c "
+        echo '0 2 * * * root /backup.sh' > /etc/crontab &&
+        echo '=== crond no está ejecutándose ===' &&
+        echo 'Revisa: ps aux | grep crond' &&
+        echo 'Arrancalo: crond -b' &&
+        tail -f /dev/null
+      "
+    networks:
+      - lab-broken
+
+networks:
+  lab-broken:
+    driver: bridge
+
+volumes:
+  mysql_bad_data:

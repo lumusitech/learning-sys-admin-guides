@@ -1,0 +1,112 @@
+# Laboratorio: Aprovisionamiento desde cero — Práctica de instalación y configuración
+# Uso: docker compose -f docker-compose.from-scratch.yml up -d --build
+# Cada contenedor es un servidor recién instalado. Tú instalas todo.
+
+services:
+
+  # === UBUNTU 22.04 ===
+  # Servidor Ubuntu recién instalado. Solo SSH.
+  # Tarea: aprovisionar como servidor web + base de datos
+  ubuntu-bare:
+    build:
+      context: .
+      dockerfile: from-scratch/ubuntu-bare.Dockerfile
+    container_name: ubuntu-bare
+    hostname: ubuntu-bare
+    ports:
+      - "2201:22"
+      - "8001:80"   # Puerto para cuando instales nginx
+    networks:
+      - lab-scratch
+    restart: unless-stopped
+
+  # === DEBIAN BOOKWORM ===
+  # Servidor Debian minimalista para practicar en otra distro
+  debian-bare:
+    build:
+      context: .
+      dockerfile: from-scratch/debian-bare.Dockerfile
+    container_name: debian-bare
+    hostname: debian-bare
+    ports:
+      - "2202:22"
+      - "8002:80"
+    networks:
+      - lab-scratch
+    restart: unless-stopped
+
+  # === ROCKY LINUX 9 ===
+  # Para practicar el ecosistema RHEL (dnf, firewalld, SELinux)
+  rocky-bare:
+    build:
+      context: .
+      dockerfile: from-scratch/rocky-bare.Dockerfile
+    container_name: rocky-bare
+    hostname: rocky-bare
+    ports:
+      - "2203:22"
+      - "8003:80"
+    networks:
+      - lab-scratch
+    restart: unless-stopped
+
+  # === ALPINE LINUX ===
+  # Mínimo posible. Ideal para practicar aprovisionamiento ligero.
+  alpine-bare:
+    image: alpine:latest
+    container_name: alpine-bare
+    hostname: alpine-bare
+    command: >
+      sh -c "
+        echo 'http://dl-cdn.alpinelinux.org/alpine/v3.18/main' > /etc/apk/repositories &&
+        echo 'http://dl-cdn.alpinelinux.org/alpine/v3.18/community' >> /etc/apk/repositories &&
+        apk add --no-cache openssh-server &&
+        ssh-keygen -A &&
+        echo 'root:alpine123' | chpasswd &&
+        sed -i 's/#PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config &&
+        /usr/sbin/sshd -D
+      "
+    ports:
+      - "2204:22"
+    networks:
+      - lab-scratch
+
+  # === DOCKER-IN-DOCKER ===
+  # Para practicar Docker dentro de Docker (build images, compose, etc.)
+  # Tarea: instalar Docker, correr contenedores dentro
+  dind:
+    image: docker:dind
+    container_name: dind
+    hostname: dind
+    privileged: true
+    environment:
+      - DOCKER_TLS_CERTDIR=""
+    command:
+      - --storage-driver=overlay2
+    ports:
+      - "2375:2375"
+    networks:
+      - lab-scratch
+    restart: unless-stopped
+
+  # === SERVIDOR SIN SSH ===
+  # Contenedor sin SSH. Solo puedes acceder via docker exec.
+  # Simula un servidor donde perdiste acceso SSH y tienes que recuperarlo
+  no-ssh:
+    image: alpine:latest
+    container_name: no-ssh
+    hostname: no-ssh
+    command:
+      - sh
+      - -c
+      - |
+        echo "=== Servidor sin SSH ==="
+        echo "Acceso solo via: docker exec -it no-ssh sh"
+        echo "Tarea: instalar y configurar SSH para acceso remoto"
+        tail -f /dev/null
+    networks:
+      - lab-scratch
+
+networks:
+  lab-scratch:
+    driver: bridge

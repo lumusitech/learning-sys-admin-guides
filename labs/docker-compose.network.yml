@@ -1,0 +1,189 @@
+# Laboratorio: Escenarios de red — Latencia, pérdida, DNS, routing
+# Uso: docker compose -f docker-compose.network.yml up -d
+# Herramientas: ping, traceroute, mtr, tcpdump, dig, ip, ss
+
+services:
+
+  # === CLIENTE CON LATENCIA ===
+  # Usa tc (traffic control) para agregar 200ms de latencia
+  # Tarea: diagnosticar la latencia con ping, traceroute, mtr
+  latency-client:
+    image: alpine:latest
+    container_name: latency-client
+    hostname: latency-client
+    cap_add:
+      - NET_ADMIN
+    command: >
+      sh -c "
+        apk add --no-cache iproute2 mtr bind-tools &&
+        tc qdisc add dev eth0 root netem delay 200ms &&
+        echo '=== Latencia: 200ms a cualquier destino ===' &&
+        echo 'Prueba: ping -c 5 server-web' &&
+        tail -f /dev/null
+      "
+    networks:
+      - lab-net
+
+  # === CLIENTE CON PÉRDIDA DE PAQUETES ===
+  # 20% de pérdida de paquetes en la interfaz
+  packet-loss-client:
+    image: alpine:latest
+    container_name: packet-loss-client
+    hostname: packet-loss-client
+    cap_add:
+      - NET_ADMIN
+    command: >
+      sh -c "
+        apk add --no-cache iproute2 mtr &&
+        tc qdisc add dev eth0 root netem loss 20% &&
+        echo '=== Pérdida: 20% de paquetes perdidos ===' &&
+        echo 'Prueba: ping -c 10 server-web' &&
+        tail -f /dev/null
+      "
+    networks:
+      - lab-net
+
+  # === CLIENTE CON LATENCIA + PÉRDIDA ===
+  # Combinación de ambos problemas
+  choppy-client:
+    image: alpine:latest
+    container_name: choppy-client
+    hostname: choppy-client
+    cap_add:
+      - NET_ADMIN
+    command: >
+      sh -c "
+        apk add --no-cache iproute2 mtr bind-tools &&
+        tc qdisc add dev eth0 root netem delay 300ms loss 15% corrupt 1% &&
+        echo '=== Red inestable: 300ms + 15% pérdida + 1% corruptos ===' &&
+        echo 'Prueba: ping, mtr, o curl al server-web' &&
+        tail -f /dev/null
+      "
+    networks:
+      - lab-net
+
+  # === DNS ROTO ===
+  # Resolver DNS apunta a 192.0.2.1 (no existe)
+  dns-broken-client:
+    image: alpine:latest
+    container_name: dns-broken-client
+    hostname: dns-broken-client
+    command: >
+      sh -c "
+        apk add --no-cache bind-tools curl &&
+        echo 'nameserver 192.0.2.1' > /etc/resolv.conf &&
+        echo '=== DNS roto — no resuelve nombres ===' &&
+        echo 'Prueba: ping google.com, curl http://example.com' &&
+        echo 'Solucion: revisa /etc/resolv.conf, cambia a 1.1.1.1' &&
+        tail -f /dev/null
+      "
+    networks:
+      - lab-net
+
+  # === ROUTER CON DOS REDES ===
+  # Simula un router Linux entre dos subredes
+  router:
+    image: alpine:latest
+    container_name: router
+    hostname: router
+    cap_add:
+      - NET_ADMIN
+    sysctls:
+      - net.ipv4.ip_forward=1
+    command: >
+      sh -c "
+        apk add --no-cache iproute2 iptables &&
+        echo 1 > /proc/sys/net/ipv4/ip_forward &&
+        iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE &&
+        echo '=== Router Linux activo ===' &&
+        echo 'Reenvía tráfico entre redes internas' &&
+        echo 'Ejecuta: iptables -L -v -n, ip route show' &&
+        tail -f /dev/null
+      "
+    networks:
+      lab-net:
+        ipv4_address: 10.99.0.1
+
+  # === SERVIDOR EN RED INTERNA ===
+  # Solo accesible a través del router
+  internal-server:
+    image: nginx:alpine
+    container_name: internal-server
+    hostname: internal-server
+    networks:
+      lab-net:
+        ipv4_address: 10.99.0.2
+
+  # === PUERTO CERRADO ===
+  # Contenedor SIN servicios escuchando (todos los puertos cerrados)
+  # Tarea: detectar puertos cerrados con nmap/telnet desde otro contenedor
+  closed-ports:
+    image: alpine:latest
+    container_name: closed-ports
+    hostname: closed-ports
+    command: >
+      sh -c "
+        echo '=== Sin servicios — todos los puertos cerrados ===' &&
+        echo 'Escanea desde otro contenedor: nmap closed-ports' &&
+        tail -f /dev/null
+      "
+    networks:
+      - lab-net
+
+  # === SERVIDOR WEB DE REFERENCIA (sano) ===
+  server-web:
+    image: nginx:alpine
+    container_name: server-web
+    hostname: server-web
+    ports:
+      - "8082:80"
+    networks:
+      - lab-net
+
+  # === SERVIDOR DNS DE REFERENCIA ===
+  server-dns:
+    image: alpine:latest
+    container_name: server-dns
+    hostname: server-dns
+    command: >
+      sh -c "
+        apk add --no-cache bind &&
+        mkdir -p /etc/bind &&
+        cat > /etc/bind/named.conf << 'EOF'
+options {
+    directory '/var/bind';
+    listen-on { any; };
+    allow-query { any; };
+    recursion yes;
+};
+zone 'lab.test' {
+    type master;
+    file '/etc/bind/db.lab.test';
+};
+EOF
+        cat > /etc/bind/db.lab.test << 'EOF'
+\$TTL 86400
+@ IN SOA ns1.lab.test. admin.lab.test. (20240101 3600 1800 86400 3600)
+@ IN NS ns1.lab.test.
+ns1 IN A 10.99.0.5
+server-web IN A 10.99.0.3
+internal-server IN A 10.99.0.2
+router IN A 10.99.0.1
+EOF
+        named -c /etc/bind/named.conf -g &
+        echo '=== DNS interno funcionando ===' &&
+        echo 'Desde los clientes: dig @server-dns server-web.lab.test' &&
+        tail -f /dev/null
+      "
+    ports:
+      - "5353:53/udp"
+    networks:
+      lab-net:
+        ipv4_address: 10.99.0.5
+
+networks:
+  lab-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.99.0.0/24

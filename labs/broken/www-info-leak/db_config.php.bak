@@ -1,0 +1,9 @@
+# Backup de configuración de la base de datos
+# NO SUBIR A PRODUCCIÓN
+
+DB_HOST=10.0.40.11
+DB_USER=root
+DB_PASSWORD=SuperSecreta123
+DB_NAME=app_produccion
+
+API_KEY=sk-live-abc123def456ghi789jkl

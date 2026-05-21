@@ -41,6 +41,15 @@ labs/          → archivos de ejemplo para practicar
 | ------------------------------------------------ | ----------------------------------------------------------------------------------- |
 | [`systemd_journalctl.md`](systemd_journalctl.md) | Gestión de servicios (systemctl) y logs (journalctl). Análisis de arranque, filtros |
 
+### Infraestructura y producción
+
+| Guía                                                   | Descripción                                                                               |
+| ------------------------------------------------------ | ----------------------------------------------------------------------------------------- |
+| [`nginx.md`](nginx.md)                                 | Servidor web. Virtual hosts, proxy reverso, SSL, rate limiting, geo, load balancing, caché |
+| [`storage_backup.md`](storage_backup.md)               | NFS, Samba, rsync, rclone, restic, 3-2-1, rotación, monitoreo                             |
+| [`network_segmentation.md`](network_segmentation.md)   | VLANs, subnetting, router Linux, ACLs con iptables, DHCP por segmento, bridges            |
+| [`production_server.md`](production_server.md)         | Sysctl, ulimits, swap, logrotate, systemd resource control, Docker en producción, fail2ban |
+
 ## 🎯 Enfoque
 
 Cada guía está estructurada para servir como **referencia rápida** y como **material de estudio**:

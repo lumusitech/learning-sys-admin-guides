@@ -9,18 +9,28 @@ scenarios/
 ├── networking/       → Problemas de red, conectividad, tráfico
 ├── system/           → Administración del sistema, recursos, logs
 ├── security/         → Amenazas, auditoría, hardening
-└── web/              → Servidores web, rendimiento, errores
+├── web/              → Servidores web, rendimiento, errores
+└── infrastructure/   → Migración, infraestructura PYME, disaster recovery
 ```
 
 ## Laboratorio Docker
 
-Usa el [`labs/docker-compose.yml`](../labs/docker-compose.yml) para crear un entorno con múltiples servidores, bases de datos, y servicios donde practicar todos los escenarios sin riesgo.
+Usa los entornos Docker en [`labs/`](../labs/) para practicar. Hay **5 compose files** según el tipo de práctica:
+
+| Archivo | Para qué |
+|---------|----------|
+| `docker-compose.yml` | Servidores funcionando (SSH, web, DB, monitoreo) |
+| `docker-compose.broken.yml` | Servicios rotos que debes diagnosticar |
+| `docker-compose.from-scratch.yml` | Servidores desde cero (instalar todo) |
+| `docker-compose.network.yml` | Problemas de red (latencia, pérdida, DNS) |
+| `docker-compose.security.yml` | Servicios vulnerables para hardening |
 
 ```bash
-cd labs && docker compose up -d
+cd labs
+docker compose -f docker-compose.network.yml up -d   # Ej: escenarios de red
 ```
 
-Ver [`labs/README.md`](../labs/README.md) para instrucciones detalladas.
+Ver [`labs/README.md`](../labs/README.md) para instrucciones detalladas de cada uno.
 
 ## Networking
 
@@ -44,6 +54,14 @@ Ver [`labs/README.md`](../labs/README.md) para instrucciones detalladas.
 |-----------|-------------------|
 | [Detectar y bloquear IPs maliciosas](security/01-detect-and-block-malicious-ips.md) | `grep` `awk` `sort` `uniq` `comm` `iptables` |
 | [Auditar SUID y permisos](security/02-suid-audit-and-file-permissions.md) | `find` `xargs` `awk` `sort` `diff` |
+
+## Infrastructure
+
+| Escenario | Herramientas clave |
+|-----------|-------------------|
+| [Migrar a producción](infrastructure/01-migrate-to-production.md) | `ssh` `rsync` `nginx` `docker` `mysql` `curl` |
+| [Construir PYME desde cero](infrastructure/02-build-pyme-infrastructure.md) | `vlan` `iptables` `samba` `nfs` `dnsmasq` `nginx` `restic` |
+| [Disaster recovery](infrastructure/03-disaster-recovery.md) | `restic` `rsync` `nginx` `mysql` `rclone` `systemctl` |
 
 ## Web
 

@@ -1,6 +1,6 @@
-# 🧪 Laboratorio Docker
+# Laboratorio Docker — Prácticas de administración de servidores
 
-Entorno Docker para practicar los escenarios de administración sin riesgo.
+Múltiples entornos Docker para practicar **desde cero** la administración de servidores Linux y redes. Cada `docker-compose.*.yml` se enfoca en un tipo de práctica distinto.
 
 ## Requisitos
 
@@ -9,24 +9,31 @@ docker --version
 docker compose version  # o docker-compose
 ```
 
-## Inicio rápido
+---
+
+## Escenarios disponibles
+
+| Comando | Práctica |
+|---------|----------|
+| `docker compose up -d` | Servidores funcionando (SSH, web, DB, monitoreo) |
+| `docker compose -f docker-compose.broken.yml up -d` | Servicios rotos para diagnosticar |
+| `docker compose -f docker-compose.from-scratch.yml up -d` | Servidores desde cero (instalar todo) |
+| `docker compose -f docker-compose.network.yml up -d` | Problemas de red (latencia, pérdida, DNS) |
+| `docker compose -f docker-compose.security.yml up -d` | Servicios vulnerables para hardening |
+
+> **Importante**: Usa `-f` para elegir el archivo. Si no pones `-f`, usa el `docker-compose.yml` por defecto (el original).
+
+---
+
+## 1. Laboratorio base (`docker-compose.yml`)
+
+8 servicios pre-configurados para practicar conectividad, escaneo y ataques controlados.
 
 ```bash
-# Clonar el repo (si no lo has hecho)
-git clone git@github.com:lumusitech/learning-sys-admin-guides.git
-cd learning-sys-admin-guides/labs
-
-# Iniciar todos los servicios
 docker compose up -d
-
-# Ver estado
-docker compose ps
-
-# Ver logs
-docker compose logs -f
 ```
 
-## Servicios disponibles
+### Servicios
 
 | Servicio | Puerto | Credenciales |
 |----------|--------|--------------|
@@ -39,77 +46,404 @@ docker compose logs -f
 | `db-postgres` | 5432 | `admin` / `postgrespass` |
 | `monitoring` | — | `admin` + clave pública |
 
-## Conectarse al laboratorio
+### Conexión rápida
 
 ```bash
-# SSH seguro (con tu clave pública)
-ssh -p 2222 -o StrictHostKeyChecking=no admin@localhost
+# SSH
+ssh -p 2222 admin@localhost
 
-# SSH débil (contraseña)
-sshpass -p admin123 ssh -p 2223 -o StrictHostKeyChecking=no admin@localhost
-
-# Via bastion hacia servidor interno
-ssh -J admin@localhost:2222 -o StrictHostKeyChecking=no admin@ssh-internal
-
-# Probar servidores web
+# Web
 curl localhost:8080
-curl localhost:8081
 
-# Conectar a MySQL
+# MySQL
 mysql -h localhost -P 3306 -u admin -psecret
 
-# Conectar a PostgreSQL
-PGPASSWORD=postgrespass psql -h localhost -U admin -d app
-
-# Acceder al contenedor de monitoreo (tiene tcpdump, curl, etc.)
-ssh -p 2222 -o StrictHostKeyChecking=no admin@localhost \
-  "curl -s web-nginx:80 | head -5"
-```
-
-## Prácticas sugeridas
-
-### 1. Fuerza bruta SSH sobre ssh-weak
-
-```bash
-# Desde monitoring, atacar ssh-weak
+# Contenedor de monitoreo (tiene tcpdump, nmap, curl)
 docker exec -it monitoring bash
-apt install -y sshpass
-for i in $(seq 1 50); do
-  sshpass -p "wrong$i" ssh -o StrictHostKeyChecking=no admin@ssh-weak "exit" 2>/dev/null
-done
-
-# Ver logs en ssh-weak
-docker logs ssh-weak 2>&1 | grep "Failed password"
 ```
 
-### 2. Port scan desde monitoring
+### Prácticas con este lab
+
+| Práctica | Comando |
+|----------|---------|
+| Fuerza bruta SSH | `for i in $(seq 1 50); do sshpass -p "wrong$i" ssh admin@localhost -p 2223; done` |
+| Port scan | `docker exec monitoring nmap -sS 172.17.0.0/24` |
+| Capturar MySQL | `docker exec monitoring tcpdump -i any port 3306 -A` |
+| Túnel SSH | `ssh -p 2222 -L 3307:db-mysql:3306 admin@localhost` |
+
+---
+
+
+
+## 2. Servicios rotos (`docker-compose.broken.yml`)
+
+Cada contenedor tiene un **problema intencional** que debes diagnosticar y resolver. Ideal para aprender a leer logs, usar herramientas de diagnóstico y arreglar configuraciones.
 
 ```bash
-docker exec -it monitoring bash
-apt install -y nmap
-nmap -sS -T4 172.17.0.0/24  # Escanear red del laboratorio
+docker compose -f docker-compose.broken.yml up -d
 ```
 
-### 3. Capturar tráfico MySQL
+### Problemas incluidos
+
+| Servicio | Problema | Síntoma | Herramientas de diagnóstico |
+|----------|----------|---------|-----------------------------|
+| `nginx-broken` | Config con error de sintaxis | nginx no arranca | `docker logs`, `nginx -t` |
+| `ssh-bad-perms` | SSH permite root, sin límite de intentos | Inseguro pero funcional | `ssh -v`, revisar `/etc/ssh/` |
+| `mysql-bad-grants` | Usuarios sin permisos, root sin password | `Access denied` al conectar | `mysql -u root`, `SHOW GRANTS` |
+| `port-conflict-a/b` | Dos servicios en el mismo puerto host | `docker compose` falla al levantar | Mensaje de error de Docker |
+| `dns-broken` | DNS apunta a IP inexistente | No resuelve nombres | `cat /etc/resolv.conf`, `dig` |
+| `disk-full` | Disco ocupado con archivo basura | `No space left on device` | `df -h`, `du -sh /*` |
+| `zombie` | Proceso zombie | `ps aux` muestra proceso `Z` | `ps aux \| grep Z` |
+| `cpu-hog` | Bucle infinito consumiendo CPU | Servidor lento, CPU al 100% | `top`, `ps aux --sort=-%cpu` |
+| `loopback-down` | Interfaz loopback caída | `ping 127.0.0.1` falla | `ip link show lo`, `ip link set lo up` |
+| `cron-down` | crond no está ejecutándose | Tareas programadas no corren | `ps aux \| grep cron`, `crond -b` |
+
+### Ejemplo práctico
 
 ```bash
-docker exec -it monitoring tcpdump -i any port 3306 -A
-# En otro terminal: conectar a MySQL desde local
+# 1. Iniciar el lab de servicios rotos
+docker compose -f docker-compose.broken.yml up -d
+
+# 2. Verificar que servicios fallaron
+docker compose -f docker-compose.broken.yml ps
+
+# 3. Diagnosticar nginx
+docker logs nginx-broken
+# Deberías ver: "emerg" "invalid directive" o "syntax error"
+
+# 4. Arreglar (desde dentro del contenedor)
+docker exec -it nginx-broken sh
+# Editar /etc/nginx/conf.d/default.conf y corregir la sintaxis
+# Luego: nginx -s reload
+
+# 5. Cuando arregles todo, resetear
+docker compose -f docker-compose.broken.yml down -v
 ```
 
-### 4. Prueba de túneles SSH
+### Comandos de diagnóstico útiles
 
 ```bash
-# Túnel MySQL remoto → local
-ssh -p 2222 -L 3307:db-mysql:3306 -o StrictHostKeyChecking=no admin@localhost
+# Ver logs de un contenedor
+docker logs <container>
 
-# En otro terminal
-mysql -h localhost -P 3307 -u admin -psecret
+# Ver qué procesos están corriendo
+docker top <container>
+
+# Entrar al contenedor
+docker exec -it <container> sh
+
+# Ver detalles (IP, mounts, etc.)
+docker inspect <container>
+
+# Ver uso de recursos
+docker stats --no-stream
 ```
 
-## Detener el laboratorio
+---
+
+## 3. From scratch (`docker-compose.from-scratch.yml`)
+
+Contenedores **mínimos** que simulan servidores recién instalados. Solo tienen SSH. Tú instalas todo lo demás.
 
 ```bash
-docker compose down          # Detener (conserva volúmenes)
-docker compose down -v       # Detener y eliminar volúmenes
+docker compose -f docker-compose.from-scratch.yml up -d --build
+```
+
+### Servidores disponibles
+
+| Servidor | Distro | Puerto SSH | Puerto HTTP |
+|----------|--------|------------|-------------|
+| `ubuntu-bare` | Ubuntu 22.04 | 2201 | 8001 |
+| `debian-bare` | Debian Bookworm | 2202 | 8002 |
+| `rocky-bare` | Rocky Linux 9 | 2203 | 8003 |
+| `alpine-bare` | Alpine Linux | 2204 | — |
+| `dind` | Docker-in-Docker | — (API 2375) | — |
+| `no-ssh` | Alpine (sin SSH) | — (solo `docker exec`) | — |
+
+### Ejemplo: aprovisionar servidor web desde cero
+
+```bash
+# 1. Conectar al servidor Ubuntu
+ssh practica@localhost -p 2201
+# Password: practica123
+
+# 2. Instalar nginx (como si fuera un server recién comprado)
+sudo apt update
+sudo apt install -y nginx
+sudo systemctl start nginx  # En Docker no funciona systemctl
+# Alternativa:
+sudo nginx
+
+# 3. Crear página
+echo "<h1>Mi primer servidor</h1>" | sudo tee /var/www/html/index.html
+
+# 4. Probar (desde tu máquina)
+curl localhost:8001
+
+# 5. Configurar firewall
+sudo ufw allow 22/tcp
+sudo ufw allow 80/tcp
+sudo ufw --force enable
+sudo ufw status verbose
+```
+
+### Ejemplo: practicar Docker-in-Docker
+
+```bash
+# Conectar al cliente Docker remoto
+docker -H localhost:2375 info
+
+# O desde dentro del contenedor
+docker exec -it dind sh
+docker run -d nginx:alpine
+docker ps
+```
+
+### Ejemplo: recuperar servidor sin SSH
+
+```bash
+# El contenedor no-ssh no tiene SSH corriendo
+# Solo puedes acceder así:
+docker exec -it no-ssh sh
+
+# Tu tarea: instalar y configurar SSH para acceso remoto
+apk add openssh-server
+ssh-keygen -A
+echo "root:admin123" | chpasswd
+/usr/sbin/sshd
+# Ahora deberías poder hacer ssh root@localhost -p ??? (mapear puerto)
+```
+
+---
+
+## 4. Escenarios de red (`docker-compose.network.yml`)
+
+Simulación de problemas de red: latencia, pérdida de paquetes, DNS roto, routing.
+
+```bash
+docker compose -f docker-compose.network.yml up -d
+```
+
+### Escenarios
+
+| Servicio | Problema simulado | Síntoma |
+|----------|-------------------|---------|
+| `latency-client` | 200ms de latencia | `ping server-web` muestra RTT alto |
+| `packet-loss-client` | 20% pérdida de paquetes | `ping` muestra pérdida, conexiones lentas |
+| `choppy-client` | 300ms + 15% pérdida + 1% corruptos | Conexión casi inusable |
+| `dns-broken-client` | DNS apunta a 192.0.2.1 | `ping google.com` falla por resolución |
+| `router` | Router Linux entre subredes | NAT y forwarding |
+| `internal-server` | Servidor en red interna | Solo accesible vía router |
+| `closed-ports` | Sin servicios escuchando | Todos los puertos cerrados |
+| `server-web` | Servidor web normal (referencia) | Responde en puerto 80 |
+| `server-dns` | DNS interno autoritativo | Resuelve `*.lab.test` |
+
+### Ejemplo: diagnosticar latencia
+
+```bash
+# 1. Entrar al cliente con latencia
+docker exec -it latency-client sh
+
+# 2. Hacer ping al servidor web
+ping -c 10 server-web
+# Deberías ver RTT de ~200ms
+
+# 3. Usar mtr para ver el path
+mtr server-web
+
+# 4. Ver la regla tc que causa la latencia
+tc qdisc show dev eth0
+
+# 5. Eliminar la latencia (solucionar)
+tc qdisc del dev eth0 root
+```
+
+### Ejemplo: resolver DNS roto
+
+```bash
+# 1. Entrar al cliente con DNS roto
+docker exec -it dns-broken-client sh
+
+# 2. Verificar que no resuelve
+ping google.com  # Debería fallar
+
+# 3. Ver config DNS
+cat /etc/resolv.conf  # Muestra 192.0.2.1
+
+# 4. Arreglar
+echo "nameserver 1.1.1.1" > /etc/resolv.conf
+
+# 5. Verificar
+ping google.com  # Ahora funciona
+```
+
+### Probar el DNS interno
+
+```bash
+# Desde cualquier contenedor del lab
+docker exec -it <container> sh
+apk add --no-cache bind-tools  # si no tiene dig
+
+# Consultar el DNS interno
+dig @server-dns server-web.lab.test
+dig @server-dns internal-server.lab.test
+```
+
+---
+
+## 5. Seguridad (`docker-compose.security.yml`)
+
+Servicios intencionalmente vulnerables para practicar hardening y detectar ataques.
+
+> **ATENCIÓN**: NO expongas estos puertos a internet. Son solo para learning en localhost.
+
+```bash
+docker compose -f docker-compose.security.yml up -d
+```
+
+### Servicios vulnerables
+
+| Servicio | Vulnerabilidad | Puerto |
+|----------|---------------|--------|
+| `sec-ssh-weak` | Password débil, root login | 2225 |
+| `sec-ssh-weak-keys` | Algoritmos SSH débiles | 2226 |
+| `sec-web-outdated` | Apache 2.2 EOL (sin parches) | 8083 |
+| `sec-web-info-leak` | Directory listing, backups expuestos | 8084 |
+| `sec-mysql-no-auth` | MySQL sin password | 3308 |
+| `sec-ftp-anonymous` | FTP anónimo con escritura | 21 |
+| `sec-snmp-public` | SNMP community "public" | 161 |
+| `sec-telnet` | Telnet (tráfico sin cifrar) | 2323 |
+| `sec-attacker` | Contenedor con herramientas de ataque | — |
+
+### Ejemplo: detectar y explotar
+
+```bash
+# 1. Escanear servicios vulnerables desde el contenedor attacker
+docker exec -it sec-attacker sh
+
+# 2. Escanear puertos
+nmap -sV sec-ssh-weak sec-web-outdated sec-mysql-no-auth
+
+# 3. Fuerza bruta SSH
+apk add --no-cache hydra
+hydra -l root -P /tmp/wordlist.txt ssh://sec-ssh-weak
+
+# 4. Conectar a MySQL sin password
+mysql -h sec-mysql-no-auth -u root
+
+# 5. Ver información expuesta en web-info-leak
+curl sec-web-info-leak/
+curl sec-web-info-leak/db_config.php.bak
+curl sec-web-info-leak/backup.sql
+```
+
+### Ejemplo: capturar tráfico Telnet (sin cifrar)
+
+```bash
+# 1. En un terminal, capturar tráfico
+docker exec -it sec-attacker sh
+tcpdump -i any port 23 -X
+
+# 2. En otro terminal, conectar al telnet
+telnet localhost 2323
+# Login: root
+# Password: telnet123
+
+# 3. Ver en tcpdump que usuario y password viajan en texto plano
+```
+
+### Prácticas de hardening con este lab
+
+| Objetivo | Qué hacer |
+|----------|-----------|
+| Hardening SSH | Configurar `PermitRootLogin no`, `PasswordAuthentication no`, cambiar puerto |
+| Hardening web | Deshabilitar `server_tokens`, `autoindex`, proteger backups |
+| Hardening MySQL | Poner password a root, eliminar usuarios anónimos |
+| Hardening FTP | Deshabilitar anónimo, restringir a usuarios locales |
+| Hardening SNMP | Cambiar community string, restringir acceso |
+| Detectar ataques | Configurar fail2ban, monitorear logs |
+
+---
+
+## Comandos transversales
+
+### Iniciar terminal interactiva en un contenedor
+
+```bash
+# Si el contenedor tiene shell (sh, bash)
+docker exec -it <container> sh
+docker exec -it <container> bash
+
+# Si el contenedor usa distro diferente (ubuntu, debian)
+docker exec -it <container> bash    # Ubuntu/Debian/Rocky
+docker exec -it <container> sh      # Alpine
+```
+
+### Ver logs de un servicio
+
+```bash
+docker logs <container>
+docker logs -f <container>  # Follow (en tiempo real)
+docker logs --tail 50 <container>  # Últimas 50 líneas
+```
+
+### Ver IPs de los contenedores
+
+```bash
+docker inspect <container> | grep IPAddress
+# O más directo:
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' <container>
+```
+
+### Detener y limpiar todo
+
+```bash
+# Detener un lab específico
+docker compose -f docker-compose.broken.yml down
+
+# Detener y borrar volúmenes (reset completo)
+docker compose -f docker-compose.broken.yml down -v
+
+# Detener todo (todos los labs)
+docker compose down
+docker compose -f docker-compose.broken.yml down -v
+docker compose -f docker-compose.from-scratch.yml down -v
+docker compose -f docker-compose.network.yml down -v
+docker compose -f docker-compose.security.yml down -v
+```
+
+### Ver todos los contenedores activos
+
+```bash
+docker ps
+docker stats  # Recursos en vivo
+```
+
+---
+
+## Estructura de archivos
+
+```
+labs/
+├── docker-compose.yml               # Lab base (8 servicios pre-configurados)
+├── docker-compose.broken.yml        # Servicios rotos para diagnosticar
+├── docker-compose.from-scratch.yml  # Servidores desde cero
+├── docker-compose.network.yml       # Problemas de red
+├── docker-compose.security.yml      # Servicios vulnerables
+├── README.md                        # Este archivo
+├── www/                             # Archivos web de ejemplo
+├── from-scratch/                    # Dockerfiles para builds custom
+│   ├── ubuntu-bare.Dockerfile
+│   ├── debian-bare.Dockerfile
+│   └── rocky-bare.Dockerfile
+└── broken/                          # Configuraciones rotas
+    ├── nginx-bad.conf
+    ├── nginx-info-leak.conf
+    ├── ssh-permissive-config
+    ├── mysql-bad-grants.sql
+    ├── network-broken.sh
+    └── www-info-leak/               # Archivos con información expuesta
+        ├── index.html
+        ├── db_config.php.bak
+        └── backup.sql
 ```

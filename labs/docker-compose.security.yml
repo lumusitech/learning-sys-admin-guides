@@ -1,0 +1,179 @@
+# Laboratorio: Seguridad — Servicios vulnerables para practicar hardening
+# Uso: docker compose -f docker-compose.security.yml up -d
+# ATENCIÓN: estos servicios son INTENCIONALMENTE INSEGUROS
+# NO los expongas a internet ni los uses en producción
+
+services:
+
+  # === SSH DÉBIL (fuerza bruta) ===
+  # Problema: password débil, root login permitido
+  # Tarea: detectar intentos de fuerza bruta, bloquear IPs, hardening
+  ssh-weak:
+    image: linuxserver/openssh-server:latest
+    container_name: sec-ssh-weak
+    hostname: sec-ssh-weak
+    environment:
+      - USER_NAME=root
+      - PASSWORD_ACCESS=true
+      - USER_PASSWORD=12345
+      - SUDO_ACCESS=true
+    ports:
+      - "2225:22"
+    networks:
+      - lab-sec
+    restart: unless-stopped
+
+  # === SSH CON CLAVÉS DÉBILES (RSA 1024 — simulada) ===
+  # Servidor SSH que usa algoritmos débiles (modo compatibilidad)
+  ssh-weak-keys:
+    image: linuxserver/openssh-server:latest
+    container_name: sec-ssh-weak-keys
+    hostname: sec-ssh-weak-keys
+    environment:
+      - USER_NAME=admin
+      - PASSWORD_ACCESS=true
+      - USER_PASSWORD=admin123
+      - SUDO_ACCESS=true
+      - DOCKER_MODS=linuxserver/mods:openssh-server-ssh-rsa-host-key
+    ports:
+      - "2226:22"
+    networks:
+      - lab-sec
+    restart: unless-stopped
+
+  # === SERVIDOR WEB SIN ACTUALIZAR ===
+  # Apache con versión antigua (simulada)
+  web-outdated:
+    image: httpd:2.2-alpine  # Versión EOL desde 2017
+    container_name: sec-web-outdated
+    hostname: sec-web-outdated
+    ports:
+      - "8083:80"
+    volumes:
+      - ./www:/usr/local/apache2/htdocs:ro
+    networks:
+      - lab-sec
+    restart: unless-stopped
+
+  # === SERVIDOR WEB INFORMACIÓN SENSIBLE ===
+  # nginx expone versión, directory listing, backups .bak
+  web-info-leak:
+    image: nginx:alpine
+    container_name: sec-web-info-leak
+    hostname: sec-web-info-leak
+    ports:
+      - "8084:80"
+    volumes:
+      - type: bind
+        source: ./broken/nginx-info-leak.conf
+        target: /etc/nginx/conf.d/default.conf
+      - type: bind
+        source: ./broken/www-info-leak
+        target: /usr/share/nginx/html
+    networks:
+      - lab-sec
+    restart: unless-stopped
+
+  # === MYSQL SIN PASSWORD ===
+  # Root sin contraseña, accesible desde cualquier host
+  mysql-no-auth:
+    image: mariadb:latest
+    container_name: sec-mysql-no-auth
+    hostname: sec-mysql-no-auth
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_ROOT_HOST=%
+    ports:
+      - "3308:3306"
+    networks:
+      - lab-sec
+    restart: unless-stopped
+
+  # === FTP ANÓNIMO ===
+  # Servidor FTP con acceso anónimo y escritura
+  ftp-anonymous:
+    image: stilliard/pure-ftpd:latest
+    container_name: sec-ftp-anonymous
+    hostname: sec-ftp-anonymous
+    environment:
+      - PUBLICHOST=localhost
+      - FTP_USER_NAME=anonymous
+      - FTP_USER_PASS=
+      - FTP_USER_HOME=/home/ftp
+    ports:
+      - "21:21"
+      - "30000-30009:30000-30009"
+    networks:
+      - lab-sec
+    restart: unless-stopped
+
+  # === SNMP CON COMMUNITY PÚBLICA ===
+  # SNMP con community string "public" (permite leer todo)
+  snmp-public:
+    image: alpine:latest
+    container_name: sec-snmp-public
+    hostname: sec-snmp-public
+    command: >
+      sh -c "
+        apk add --no-cache net-snmp &&
+        cat > /etc/snmp/snmpd.conf << 'EOF'
+rocommunity public 0.0.0.0/0
+syslocation Lab
+syscontact admin@lab.test
+EOF
+        snmpd -Lf /var/log/snmpd.log &&
+        echo '=== SNMP con community public ===' &&
+        echo 'Prueba: snmpwalk -v 2c -c public sec-snmp-public' &&
+        tail -f /dev/null
+      "
+    ports:
+      - "161:161/udp"
+    networks:
+      - lab-sec
+
+  # === TELNET (SIN CIFRAR) ===
+  # Telnet envía todo en texto plano (usuario, password, datos)
+  telnet-server:
+    image: alpine:latest
+    container_name: sec-telnet
+    hostname: sec-telnet
+    command: >
+      sh -c "
+        apk add --no-cache busybox-inetd &&
+        echo 'root:telnet123' | chpasswd &&
+        cat > /etc/inetd.conf << 'EOF'
+23 stream tcp nowait root /usr/sbin/telnetd telnetd
+EOF
+        inetd &&
+        echo '=== Telnet activo (sin cifrar) ===' &&
+        echo 'Conecta: telnet sec-telnet (usar password telnet123)' &&
+        echo 'Captura el tráfico: tcpdump -X port 23' &&
+        tail -f /dev/null
+      "
+    ports:
+      - "2323:23"
+    networks:
+      - lab-sec
+
+  # === MONITOR (con herramientas de ataque) ===
+  # Contenedor con nmap, hydra, tcpdump, curl, etc.
+  # Para practicar detección y respuestas
+  attacker:
+    image: alpine:latest
+    container_name: sec-attacker
+    hostname: sec-attacker
+    command: >
+      sh -c "
+        apk add --no-cache nmap hydra tcpdump curl openssh-client iproute2 bind-tools &&
+        echo '=== Contenedor de ataque ===' &&
+        echo 'Herramientas: nmap, hydra, tcpdump, curl, ssh' &&
+        echo 'Ejemplo: nmap -sS sec-ssh-weak' &&
+        echo 'Ejemplo: hydra -l root -P /usr/share/wordlists/rockyou.txt ssh://sec-ssh-weak' &&
+        tail -f /dev/null
+      "
+    networks:
+      - lab-sec
+
+networks:
+  lab-sec:
+    driver: bridge
