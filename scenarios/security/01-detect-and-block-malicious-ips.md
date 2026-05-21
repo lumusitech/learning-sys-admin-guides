@@ -5,7 +5,7 @@
 **Herramientas:** `grep`, `awk`, `sort`, `uniq`, `comm`, `iptables`, `xargs`
 **Archivos:** `labs/auth.log`, `labs/nginx_access.log`, `labs/firewall.log`
 
-**Quick command (portable):** `awk '/Failed password/ { for(i=1;i<=NF;i++) if($i=="from") { print $(i+1); break } }' labs/auth.log | sort -u > /tmp/ssh_ips.txt; awk '{print $1}' labs/nginx_access.log | sort -u > /tmp/web_ips.txt; comm -12 /tmp/ssh_ips.txt /tmp/web_ips.txt | head`
+**Quick command (portable):** `(awk '/Failed password/{for(i=1;i<=NF;i++)if($i=="from")print $(i+1)}' labs/auth.log | sort -u; awk '{print $1}' labs/nginx_access.log | sort -u) | sort | uniq -d`
 
 **Quick command (original):** `comm -12 <(grep "Failed password" labs/auth.log | grep -oP 'from \K[0-9.]+' | sort -u) <(awk '{print $1}' labs/nginx_access.log | sort -u)`
 
