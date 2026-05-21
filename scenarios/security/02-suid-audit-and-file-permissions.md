@@ -5,7 +5,7 @@
 **Herramientas:** `find`, `xargs`, `awk`, `sort`, `diff`, `ls`
 **Archivos:** Sistema de archivos en vivo (`/`)
 
-**Quick command (portable):** `find / -type f -perm -4000 2>/dev/null | head -50`
+**Quick command (SRE):** `find / -type f -perm -4000 2>/dev/null | head -50`
 
 **Quick command (original):** `find / -type f -perm -4000 2>/dev/null | xargs -I {} ls -la {} | awk '{print $1, $3, $4, $NF}' | sort -k4`
 

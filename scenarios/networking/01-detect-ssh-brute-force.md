@@ -5,7 +5,7 @@
 **Herramientas:** `grep`, `awk`, `sort`, `uniq`, `head` (+ opcional `iptables`)
 **Datos:** Producción `/var/log/auth.log` | Práctica `labs/auth.log`
 
-**Quick command (portable):** `awk '/Failed password/ { for(i=1;i<=NF;i++) if($i=="from") { print $(i+1); break } }' labs/auth.log | sort | uniq -c | sort -rn | head`
+**Quick command (SRE):** `awk '/Failed password/ {for(i=1;i<=NF;i++) if($i=="from"){c[$(i+1)]++; break}} END{for(ip in c) print c[ip], ip}' labs/auth.log | sort -rn | head -10`
 
 **Quick command (original):** `awk '/Failed password/{for(i=1;i<=NF;i++)if($i=="from")print $(i+1)}' labs/auth.log | sort | uniq -c | sort -rn | head`
 

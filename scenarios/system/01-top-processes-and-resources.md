@@ -5,7 +5,7 @@
 **Herramientas:** `ps`, `sort`, `awk`, `grep`, `watch`, `column`
 **Datos:** Sistema en vivo (`ps aux`), logs (`labs/syslog.log`)
 
-**Quick command (portable):** `ps aux | sort -k3 -rn | head -10`
+**Quick command (SRE):** `ps aux | sort -k3 -rn | head -11`
 
 **Quick command (original):** `ps aux | sort -k3 -rn | head -11 | awk 'NR==1{printf "%-8s %-5s %-5s %s\n","USUARIO","CPU%","MEM%","COMANDO"} NR>1{printf "%-8s %-5s %-5s %s\n",$1,$3,$4,$11}'`
 

@@ -1,6 +1,6 @@
 # Escenario: Recuperación ante desastres (disaster recovery)
 
-**Quick command (portable):** `ssh backup@nas "ls -la /mnt/nas-backups/restic/" && restic snapshots --repo /mnt/nas-backups/restic`
+**Quick command (SRE):** `ssh -o BatchMode=yes -o ConnectTimeout=5 backup@NAS 'ls -la /srv/nas/backups | head -5; restic snapshots --repo /srv/nas/backups/restic 2>/dev/null | head -10 || echo "restic/no-access"'`
 
 **Quick command (original):** `restic restore latest --repo /mnt/nas-backups/restic --target /tmp/restore --verbose`
 

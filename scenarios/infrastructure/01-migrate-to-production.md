@@ -1,6 +1,6 @@
 # Escenario: Migrar aplicación a servidor de producción
 
-**Quick command (portable):** `ssh deploy@prod "systemctl is-active nginx && systemctl is-active docker && df -h /"`
+**Quick command (SRE):** `ssh -o BatchMode=yes -o ConnectTimeout=5 ADMIN@PROD 'systemctl is-active nginx 2>/dev/null || true; ss -tuln | awk "NR==1 || /:80|:443|:3306|:5432/"'`
 
 **Quick command (original):** `rsync -avz --delete -e "ssh -p 2222" /var/www/miapp/ deploy@prod:/home/deploy/miapp/`
 

@@ -5,7 +5,7 @@
 **Herramientas:** `ssh`, `ufw`/`iptables`, `systemctl`, `sed`, `fail2ban`, `timedatectl`
 **Archivos:** Servidor remoto (VPS/cloud)
 
-**Quick command (portable):** `ssh root@IP "hostname && uptime && df -h / && free -h"`
+**Quick command (SRE):** `ssh -o BatchMode=yes -o ConnectTimeout=5 ADMIN@HOST 'hostname; uptime; sudo systemctl --no-pager --failed || true; sudo ss -tuln | head -20'`
 
 **Quick command (original):** `ssh root@IP && apt update && apt upgrade -y && useradd -m -s /bin/bash admin && usermod -aG sudo admin`
 

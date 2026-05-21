@@ -5,7 +5,7 @@
 **Herramientas:** `awk`, `grep`, `sort`, `uniq`, `bc`, `sed`
 **Archivos:** `labs/nginx_access.log`
 
-**Quick command (portable):** `awk '{print $NF, $7}' labs/nginx_access.log | sort -rn | head -10`
+**Quick command (SRE):** `awk '{t++; if($9 ~ /^[45]/) e++} END{printf "total=%d errores_4xx5xx=%d tasa=%.2f%%\n", t, e, (t? (e*100)/t : 0)}' labs/nginx_access.log`
 
 **Quick command (original):** `awk '{print $NF, $7}' labs/nginx_access.log | sort -rn | head -10 | awk '{printf "%6.3fs %s\n", $1, $2}'`
 

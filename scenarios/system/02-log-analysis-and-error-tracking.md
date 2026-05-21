@@ -5,7 +5,7 @@
 **Herramientas:** `grep`, `awk`, `sort`, `uniq`, `sed`, `journalctl`, `tail`
 **Archivos:** `labs/syslog.log`
 
-**Quick command (portable):** `grep -iE "error|fail|critical" labs/syslog.log | awk '{print $5}' | sort | uniq -c | sort -rn | head`
+**Quick command (SRE):** `grep -iE 'error|fail|critical' labs/syslog.log | awk '{c[$5]++} END{for(s in c) print c[s], s}' | sort -rn | head -10`
 
 **Quick command (original):** `grep -i "error\|fail\|critical" labs/syslog.log | awk '{print $5}' | sort | uniq -c | sort -rn | head`
 
