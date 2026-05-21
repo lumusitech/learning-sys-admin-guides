@@ -4,6 +4,8 @@
 **Archivos de práctica:** `labs/firewall.log`
 **Ver escenarios relacionados:** [`networking/03-port-scan`](../scenarios/networking/03-port-scan-detection.md), [`infrastructure/02-build-pyme`](../scenarios/infrastructure/02-build-pyme-infrastructure.md)
 
+**Quick command:** `iptables -L -n`
+
 ## ⚡ Quick run
 
 ```bash

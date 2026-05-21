@@ -4,6 +4,8 @@
 **Archivos de práctica:** `labs/ping.txt`, `labs/traceroute.txt`
 **Ver escenarios relacionados:** [`networking`](../scenarios/networking/), [`concepts/how-to-think-like-sysadmin`](../concepts/how-to-think-like-sysadmin.md)
 
+**Quick command:** `ping -c 4 google.com`
+
 ## ⚡ Quick run
 
 ```bash

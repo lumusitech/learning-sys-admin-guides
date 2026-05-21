@@ -5,6 +5,15 @@
 **Herramientas:** `grep`, `awk`, `sort`, `uniq`, `comm`, `iptables`, `xargs`
 **Archivos:** `labs/auth.log`, `labs/nginx_access.log`, `labs/firewall.log`
 
+**Quick command:** `comm -12 <(grep "Failed password" labs/auth.log | grep -oP 'from \K[0-9.]+' | sort -u) <(awk '{print $1}' labs/nginx_access.log | sort -u)`
+
+**Cuándo usar este escenario:**
+- IPs sospechosas aparecen en múltiples logs
+- Correlacionar actividad SSH, web y firewall
+- Calcular score de amenaza y decidir bloqueo
+
+**Archivo de práctica:** `labs/auth.log`, `labs/nginx_access.log`, `labs/firewall.log`
+
 ---
 
 ## 🎯 Objetivo

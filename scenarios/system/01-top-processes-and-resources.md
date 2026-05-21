@@ -5,6 +5,15 @@
 **Herramientas:** `ps`, `sort`, `awk`, `grep`, `watch`, `column`
 **Datos:** Sistema en vivo (`ps aux`), logs (`labs/syslog.log`)
 
+**Quick command:** `ps aux | sort -k3 -rn | head -11 | awk 'NR==1{printf "%-8s %-5s %-5s %s\n","USUARIO","CPU%","MEM%","COMANDO"} NR>1{printf "%-8s %-5s %-5s %s\n",$1,$3,$4,$11}'`
+
+**Cuándo usar este escenario:**
+- Servidor lento o con alta carga
+- Un proceso está consumiendo muchos recursos
+- Detectar memory leaks o procesos zombie
+
+**Archivo de práctica:** Sistema en vivo
+
 ---
 
 ## 🎯 Objetivo

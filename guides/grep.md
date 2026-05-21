@@ -4,6 +4,8 @@
 **Archivos de práctica:** `labs/auth.log`, `labs/nginx_access.log`
 **Ver escenarios relacionados:** [`networking/01-detect-ssh-brute-force`](../scenarios/networking/01-detect-ssh-brute-force.md), [`networking/03-port-scan`](../scenarios/networking/03-port-scan-detection.md)
 
+**Quick command:** `grep "Failed password" labs/auth.log`
+
 ## ⚡ Quick run
 
 ```bash

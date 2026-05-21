@@ -4,6 +4,8 @@
 **Archivos de práctica:** `labs/docker-compose.network.yml`
 **Ver escenarios relacionados:** [`infrastructure/02-build-pyme`](../scenarios/infrastructure/02-build-pyme-infrastructure.md)
 
+**Quick command:** `ip link add link eth0 name eth0.10 type vlan id 10`
+
 ## ⚡ Quick run
 
 ```bash

@@ -4,6 +4,8 @@
 **Archivos de práctica:** `labs/datos.txt`
 **Ver escenarios relacionados:** [`system/02-log-analysis`](../scenarios/system/02-log-analysis-and-error-tracking.md)
 
+**Quick command:** `sed 's/error/ERROR/g' labs/syslog.log`
+
 ## ⚡ Quick run
 
 ```bash

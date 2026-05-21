@@ -5,6 +5,15 @@
 **Herramientas:** `ssh`, `ufw`/`iptables`, `systemctl`, `sed`, `fail2ban`, `timedatectl`
 **Archivos:** Servidor remoto (VPS/cloud)
 
+**Quick command:** `ssh root@IP && apt update && apt upgrade -y && useradd -m -s /bin/bash admin && usermod -aG sudo admin`
+
+**Cuándo usar este escenario:**
+- Acabas de recibir un servidor nuevo (VPS, cloud)
+- Necesitas asegurarlo antes de ponerlo en producción
+- Quieres automatizar el hardening inicial
+
+**Archivo de práctica:** Servidor remoto o contenedor `ubuntu-bare`
+
 ---
 
 ## 🎯 Objetivo

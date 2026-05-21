@@ -4,6 +4,8 @@
 **Archivos de práctica:** `labs/datos.txt`
 **Ver escenarios relacionados:** [`networking/01-detect-ssh-brute-force`](../scenarios/networking/01-detect-ssh-brute-force.md)
 
+**Quick command:** `sort -k3 -rn labs/datos.txt | head`
+
 ## ⚡ Quick run
 
 ```bash

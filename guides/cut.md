@@ -4,6 +4,8 @@
 **Archivos de práctica:** `labs/datos.txt`
 **Ver escenarios relacionados:** [`networking/02-web-traffic`](../scenarios/networking/02-analyze-web-traffic-patterns.md)
 
+**Quick command:** `cut -d: -f1,3 /etc/passwd`
+
 ## ⚡ Quick run
 
 ```bash

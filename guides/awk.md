@@ -4,6 +4,8 @@
 **Archivos de práctica:** `labs/datos.txt`, `labs/employees_data.txt`
 **Ver escenarios relacionados:** [`networking/01-detect-ssh-brute-force`](../scenarios/networking/01-detect-ssh-brute-force.md), [`web/01-performance`](../scenarios/web/01-performance-and-error-analysis.md)
 
+**Quick command:** `awk '{print $1}' labs/datos.txt`
+
 ## ⚡ Quick run
 
 ```bash

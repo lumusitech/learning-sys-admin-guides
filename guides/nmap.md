@@ -4,6 +4,8 @@
 **Archivos de práctica:** Red local o contenedores Docker
 **Ver escenarios relacionados:** [`networking/03-port-scan`](../scenarios/networking/03-port-scan-detection.md)
 
+**Quick command:** `nmap -sT localhost`
+
 ## ⚡ Quick run
 
 ```bash

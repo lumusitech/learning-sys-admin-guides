@@ -1,5 +1,16 @@
 # Escenario: Recuperación ante desastres (disaster recovery)
 
+**Quick command:** `restic restore latest --repo /mnt/nas-backups/restic --target /tmp/restore --verbose`
+
+**Cuándo usar este escenario:**
+- El servidor de producción falló (disco, hardware)
+- Necesitas restaurar desde backups locales o en la nube
+- Probar que los backups funcionan (simulacro DR)
+
+**Archivo de práctica:** Docker compose + simulación
+
+---
+
 ## Problema
 
 El servidor de producción ha sufrido un fallo de disco. Tienes backups almacenados en un NAS local y en la nube (Backblaze B2). Necesitas restaurar todo el stack en un servidor nuevo: sistema operativo, configuraciones, archivos web, base de datos, y verificar que la aplicación funciona correctamente. El tiempo de recuperación objetivo (RTO) es de 4 horas.

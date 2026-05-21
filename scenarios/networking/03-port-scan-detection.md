@@ -5,6 +5,15 @@
 **Herramientas:** `grep`, `awk`, `sort`, `uniq`, `head`, `iptables`
 **Archivos:** `labs/firewall.log`
 
+**Quick command:** `grep -oP 'SRC=\K[0-9.]+' labs/firewall.log | sort | uniq -c | sort -rn | head`
+
+**Cuándo usar este escenario:**
+- Logs de firewall con muchas conexiones desde una IP
+- Sospecha de escaneo de puertos
+- IPs desconocidas probando múltiples puertos
+
+**Archivo de práctica:** `labs/firewall.log`
+
 ---
 
 ## 🎯 Objetivo

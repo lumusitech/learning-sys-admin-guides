@@ -4,6 +4,8 @@
 **Archivos de práctica:** Contenedores Docker (`ssh-hardened`, `ssh-weak`)
 **Ver escenarios relacionados:** [`networking/01-detect-ssh-brute-force`](../scenarios/networking/01-detect-ssh-brute-force.md), [`system/03-provisioning`](../scenarios/system/03-new-server-provisioning.md)
 
+**Quick command:** `ssh user@host`
+
 ## ⚡ Quick run
 
 ```bash

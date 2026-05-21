@@ -1,5 +1,16 @@
 # Escenario: Construir infraestructura PYME desde cero
 
+**Quick command:** `ip link add link eth1 name eth1.10 type vlan id 10 && ip addr add 10.0.10.1/24 dev eth1.10 && ip link set dev eth1.10 up`
+
+**Cuándo usar este escenario:**
+- Diseñar la red de una PYME desde cero
+- Segmentar por departamentos con VLANs y firewall
+- Montar NAS (Samba+NFS), DHCP, DNS y web server
+
+**Archivo de práctica:** Docker compose (`docker-compose.network.yml`)
+
+---
+
 ## Problema
 
 Eres el primer administrador de sistemas de una PYME en crecimiento (~50 empleados). Te piden construir la infraestructura desde cero: segmentar la red por departamentos, montar un NAS para backups y archivos compartidos, servir páginas web con nginx, configurar DHCP/DNS interno, y aislar la red de invitados. Todo debe hacerse en un solo servidor Linux que oficia de router, NAS, web server y DNS/DHCP.

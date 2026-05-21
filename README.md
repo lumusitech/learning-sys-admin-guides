@@ -19,9 +19,17 @@ cd learning-sys-admin-guides
 
 | Modo | Ruta |
 |------|------|
-| 📚 **Aprendizaje clásico** | `guides/` → `labs/` → `scenarios/` |
-| 🧪 **Modo producción** | `scenarios/` → `labs/` → `guides/` |
-| ⚡ **Referencia rápida** | Abrir guía y copiar comando |
+| 📚 **Aprendizaje** | `guides/` → `labs/` → `scenarios/` |
+| 🧪 **Producción** | `scenarios/` → `labs/` → `guides/` |
+| ⚡ **Referencia** | Abrir guía y copiar comando |
+
+### Ruta rápida
+
+Si no sabés por dónde empezar:
+
+1. Elegí un **escenario** en `scenarios/`
+2. Probalo con **logs** en `labs/`
+3. Revisá **guides** solo si necesitás entender el comando
 
 ---
 
@@ -29,63 +37,19 @@ cd learning-sys-admin-guides
 
 ### `guides/` — guías por herramienta
 
-Incluye herramientas de texto/datos (`awk` `sed` `grep` `find` `xargs`…), redes (`ip` `ss` `tcpdump` `nmap` `iptables`…), sistema (`systemd` `journalctl`) e infraestructura (nginx, backups, segmentación de red, servidor de producción).
-
-[Ver índice →](guides/README.md)
+Incluye herramientas de texto/datos, redes, sistema e infraestructura.
 
 ### `labs/` — archivos de práctica + laboratorio Docker
 
-Logs de ejemplo (`auth.log`, `nginx_access.log`, `firewall.log`…) y **5 compose files** para practicar sin riesgo: servicios funcionando, rotos, desde cero, escenarios de red y servicios vulnerables.
-
-[Ver laboratorio →](labs/README.md)
+Logs de ejemplo y 5 compose files para practicar sin riesgo.
 
 ### `scenarios/` — problemas reales que combinan herramientas
 
-Incidentes agrupados por dominio: **networking**, **system**, **security**, **web**, **infrastructure**. Cada uno resuelve un problema con pipes y se integra con el lab.
-
-[Ver escenarios →](scenarios/README.md)
+Incidentes por dominio: **networking**, **system**, **security**, **web**, **infrastructure**.
 
 ### `concepts/` — patrones de pensamiento de sysadmin
 
-Guías conceptuales sobre cómo pensar como administrador de sistemas: patrones normales vs anómalos, lectura de logs, latencia vs pérdida, errores comunes.
-
-[Ver conceptos →](concepts/)
-
----
-
-## 🧠 Filosofía
-
-- **No solo comandos:** interpretación de outputs (columnas, flags, estados, errores)
-- **No solo teoría:** datos reales (logs) y laboratorio reproducible (Docker)
-- **No solo "seguridad":** también fallas reales, performance y recuperación
-- **Pensamiento real de sysadmin:** pipes y troubleshooting
-
----
-
-## 🧪 Cómo aprender
-
-### Ruta A — herramienta por herramienta
-
-1. Leer guía en `guides/`
-2. Probar con logs en `labs/`
-3. Aplicar en `scenarios/`
-
-### Ruta B — modo incidente
-
-1. Elegir escenario en `scenarios/`
-2. Usar logs del `labs/`
-3. Volver a `guides/` para entender las herramientas
-
----
-
-## 💡 Diferencial
-
-| Este repo NO es | Este repo ES |
-|----------------|--------------|
-| Solo cheat sheet | Handbook de sysadmin |
-| Solo teoría | Laboratorio reproducible |
-| Herramientas aisladas | Simulador de incidentes reales |
-| Comandos sin contexto | Cada salida interpretada |
+Cómo pensar como administrador de sistemas.
 
 ---
 

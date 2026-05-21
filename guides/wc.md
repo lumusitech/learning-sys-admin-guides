@@ -4,6 +4,8 @@
 **Archivos de práctica:** `labs/auth.log`
 **Ver escenarios relacionados:** [`web/01-performance`](../scenarios/web/01-performance-and-error-analysis.md)
 
+**Quick command:** `wc -l labs/auth.log`
+
 ## ⚡ Quick run
 
 ```bash
