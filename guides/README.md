@@ -13,6 +13,7 @@ labs/          → archivos de ejemplo para practicar
 
 | Guía                   | Descripción                                                                               |
 | ---------------------- | ----------------------------------------------------------------------------------------- |
+| [`ssh.md`](ssh.md)     | Administración remota, hardening, claves, túneles, ProxyJump, automatización, WSL2, Docker lab |
 | [`awk.md`](awk.md)     | Lenguaje de procesamiento por campos. Patrones, arrays, funciones, getline, combinaciones |
 | [`sed.md`](sed.md)     | Editor de flujo. Sustituciones, rangos, hold space, branching, edición in-place           |
 | [`grep.md`](grep.md)   | Búsqueda con expresiones regulares. PCRE, contexto, recursividad, escenarios de seguridad |

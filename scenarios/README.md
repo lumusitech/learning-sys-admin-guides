@@ -12,6 +12,16 @@ scenarios/
 └── web/              → Servidores web, rendimiento, errores
 ```
 
+## Laboratorio Docker
+
+Usa el [`labs/docker-compose.yml`](../labs/docker-compose.yml) para crear un entorno con múltiples servidores, bases de datos, y servicios donde practicar todos los escenarios sin riesgo.
+
+```bash
+cd labs && docker compose up -d
+```
+
+Ver [`labs/README.md`](../labs/README.md) para instrucciones detalladas.
+
 ## Networking
 
 | Escenario | Herramientas clave |
@@ -26,6 +36,7 @@ scenarios/
 |-----------|-------------------|
 | [Procesos y recursos](system/01-top-processes-and-resources.md) | `ps` `sort` `awk` `grep` |
 | [Logs y errores](system/02-log-analysis-and-error-tracking.md) | `grep` `awk` `sort` `uniq` `sed` |
+| [Provisionamiento inicial](system/03-new-server-provisioning.md) | `ssh` `ufw` `iptables` `fail2ban` `systemctl` |
 
 ## Security
 
