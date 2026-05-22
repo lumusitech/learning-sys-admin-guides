@@ -9,16 +9,24 @@
 
 ## ⚡ Quick command (SRE)
 
-**Quick command (SRE):** `ssh -o BatchMode=yes -o ConnectTimeout=5 ADMIN@HOST 'hostname; uptime; sudo systemctl --no-pager --failed || true; sudo ss -tuln | head -20'`
+`ssh -o BatchMode=yes -o ConnectTimeout=5 ADMIN@HOST 'hostname; uptime; sudo systemctl --no-pager --failed || true; sudo ss -tuln | head -20'`
 
-**Quick command (original):** `ssh root@IP && apt update && apt upgrade -y && useradd -m -s /bin/bash admin && usermod -aG sudo admin`
+## 🔍 Análisis paso a paso
 
-**Cuándo usar este escenario:**
-- Acabas de recibir un servidor nuevo (VPS, cloud)
-- Necesitas asegurarlo antes de ponerlo en producción
-- Quieres automatizar el hardening inicial
+1. ssh → ejecuta comandos remotos en el servidor objetivo
+2. hostname → muestra el nombre del servidor para confirmar identidad
+3. uptime → indica tiempo activo y carga del sistema
+4. systemctl --failed → lista servicios fallidos (si hay errores)
+5. || true → evita que errores corten la ejecución del comando
+6. ss -tuln → muestra puertos abiertos y servicios en escucha
+7. head -20 → limita la salida para lectura rápida
 
-**Archivo(s) de práctica:** no aplica (producción)
+## ✅ Resultado
+
+- verificás estado general del servidor en segundos
+- identificás servicios fallidos
+- confirmás qué puertos están abiertos
+- detectás problemas básicos de salud del sistema
 
 ---
 

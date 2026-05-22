@@ -4,16 +4,22 @@
 
 ## ⚡ Quick command (SRE)
 
-**Quick command (SRE):** `ssh -o BatchMode=yes -o ConnectTimeout=5 ADMIN@PROD 'systemctl is-active nginx 2>/dev/null || true; ss -tuln | awk "NR==1 || /:80|:443|:3306|:5432/"'`
+`ssh -o BatchMode=yes -o ConnectTimeout=5 ADMIN@PROD 'systemctl is-active nginx 2>/dev/null || true; ss -tuln | awk "NR==1 || /:80|:443|:3306|:5432/"'`
 
-**Quick command (original):** `rsync -avz --delete -e "ssh -p 2222" /var/www/miapp/ deploy@prod:/home/deploy/miapp/`
+## 🔍 Análisis paso a paso
 
-**Cuándo usar este escenario:**
-- Migrar una app desde desarrollo a producción
-- Provisionar un servidor nuevo con hardening + Docker + nginx
-- Backup y migración de base de datos MySQL
+1. ssh → ejecuta comandos remotos en el servidor de producción
+2. systemctl is-active nginx → verifica si nginx está corriendo correctamente
+3. 2>/dev/null → oculta errores si el servicio no existe
+4. ss -tuln → lista puertos abiertos y servicios escuchando
+5. awk "NR==1 || /:80|:443|:3306|:5432/" → filtra puertos clave (HTTP, HTTPS, bases de datos)
 
-**Archivo(s) de práctica:** Docker compose (`from-scratch/ubuntu-bare`)
+
+## ✅ Resultado
+
+- verificás rápidamente si los servicios críticos están activos
+- confirmás que los puertos necesarios están expuestos
+- detectás problemas básicos post‑deploy
 
 ---
 

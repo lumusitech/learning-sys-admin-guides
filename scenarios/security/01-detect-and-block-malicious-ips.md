@@ -9,16 +9,23 @@
 
 ## ⚡ Quick command (SRE)
 
-**Quick command (SRE):** `awk 'FNR==NR{if($0~/Failed password/){for(i=1;i<=NF;i++) if($i=="from"){a[$(i+1)]=1; break}}; next} {ip=$1; if(ip in a) b[ip]++} END{for(ip in b) print b[ip], ip}' labs/auth.log labs/nginx_access.log | sort -rn | head -10`
+`awk 'FNR==NR{if($0~/Failed password/){for(i=1;i<=NF;i++) if($i=="from"){a[$(i+1)]=1; break}}; next} {ip=$1; if(ip in a) b[ip]++} END{for(ip in b) print b[ip], ip}' labs/auth.log labs/nginx_access.log | sort -rn | head -10`
 
-**Quick command (original):** `awk 'FNR==NR{if($0~/Failed password/){for(i=1;i<=NF;i++)if($i=="from"){a[$(i+1)]=1;break}};next} $1 in a{print $1}' labs/auth.log labs/nginx_access.log | sort -u`
+## 🔍 Análisis paso a paso
 
-**Cuándo usar este escenario:**
-- IPs sospechosas aparecen en múltiples logs
-- Correlacionar actividad SSH, web y firewall
-- Calcular score de amenaza y decidir bloqueo
+1. awk 'FNR==NR{...}' → procesa primero auth.log para identificar IPs con intentos fallidos de SSH
+2. a[$(i+1)]=1 → guarda en un array las IPs atacantes detectadas
+3. next → evita procesar la segunda parte en el primer archivo
+4. {ip=$1; if(ip in a) b[ip]++} → cruza con nginx_access.log contando actividad web de esas mismas IPs
+5. END{for(ip in b) print b[ip], ip} → imprime cantidad de accesos web por IP sospechosa
+6. sort -rn → ordena de mayor a menor actividad
+7. head -10 → muestra las 10 IPs más relevantes
 
-**Archivo(s) de práctica:** `labs/auth.log`, `labs/nginx_access.log`, `labs/firewall.log`
+## ✅ Resultado
+
+- correlacionás actividad entre SSH y web
+- identificás IPs con comportamiento malicioso consistente
+- priorizás bloqueos basados en múltiples fuentes
 
 ---
 

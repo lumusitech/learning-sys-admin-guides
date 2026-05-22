@@ -9,16 +9,21 @@
 
 ## ⚡ Quick command (SRE)
 
-**Quick command (SRE):** `awk '{print $7}' labs/nginx_access.log | sort | uniq -c | sort -rn | head -10`
+`awk '{print $7}' labs/nginx_access.log | sort | uniq -c | sort -rn | head -10`
 
-**Quick command (original):** `awk '{print $7}' labs/nginx_access.log | sort | uniq -c | sort -rn | head`
+## 🔍 Análisis paso a paso
 
-**Cuándo usar este escenario:**
-- Servidor web lento o con errores
-- Detectar qué rutas son las más solicitadas
-- Identificar crawlers o escaneos
+1. awk '{print $7}' → extrae la ruta solicitada (endpoint) de cada request HTTP
+2. sort → ordena las rutas para agrupar duplicados
+3. uniq -c → cuenta cuántas veces aparece cada ruta
+4. sort -rn → ordena por frecuencia de mayor a menor
+5. head -10 → muestra las 10 rutas más solicitadas
 
-**Archivo(s) de práctica:** `labs/nginx_access.log`
+## ✅ Resultado
+
+- identificás los endpoints más accedidos del servidor
+- detectás patrones de uso (tráfico normal vs anómalo)
+- encontrás rutas sospechosas o escaneos
 
 ---
 

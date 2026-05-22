@@ -9,16 +9,22 @@
 
 ## ⚡ Quick command (SRE)
 
-**Quick command (SRE):** `awk '/Failed password/ {for(i=1;i<=NF;i++) if($i=="from"){c[$(i+1)]++; break}} END{for(ip in c) print c[ip], ip}' labs/auth.log | sort -rn | head -10`
+`awk '/Failed password/ {for(i=1;i<=NF;i++) if($i=="from"){c[$(i+1)]++; break}} END{for(ip in c) print c[ip], ip}' labs/auth.log | sort -rn | head -10`
 
-**Quick command (original):** `awk '/Failed password/{for(i=1;i<=NF;i++)if($i=="from")print $(i+1)}' labs/auth.log | sort | uniq -c | sort -rn | head`
+## 🔍 Análisis paso a paso
 
-**Cuándo usar este escenario:**
-- Servidor lento, CPU alta con muchos procesos sshd
-- Logs de autenticación creciendo rápido
-- Sospecha de ataque de fuerza bruta
+1. awk '/Failed password/' → filtra solo líneas con intentos fallidos de SSH
+2. for(i=1;i<=NF;i++) if($i=="from"){...} → recorre campos para encontrar la palabra "from"
+3. c[$(i+1)]++ → cuenta ocurrencias por IP (campo siguiente a "from")
+4. END{for(ip in c) print c[ip], ip} → imprime cantidad de intentos por IP
+5. sort -rn → ordena de mayor a menor cantidad
+6. head -10 → muestra las 10 IPs más frecuentes
 
-**Archivo(s) de práctica:** `labs/auth.log`
+## ✅ Resultado
+
+- obtenés las IPs con más intentos fallidos de login
+- identificás posibles ataques de fuerza bruta
+- priorizás IPs para bloqueo o análisis
 
 ---
 
