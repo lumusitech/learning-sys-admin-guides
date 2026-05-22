@@ -9,16 +9,21 @@
 
 ## ⚡ Quick command (SRE)
 
-**Quick command (SRE):** `grep -iE 'error|fail|critical' labs/syslog.log | awk '{c[$5]++} END{for(s in c) print c[s], s}' | sort -rn | head -10`
+`grep -iE 'error|fail|critical' labs/syslog.log | awk '{c[$5]++} END{for(s in c) print c[s], s}' | sort -rn | head -10`
 
-**Quick command (original):** `grep -i "error\|fail\|critical" labs/syslog.log | awk '{print $5}' | sort | uniq -c | sort -rn | head`
+## 🔍 Análisis paso a paso
 
-**Cuándo usar este escenario:**
-- Servidor inestable o con fallos intermitentes
-- Buscar qué servicio genera más errores
-- Detectar OOM, disco lleno, segfaults
+1. grep -iE 'error|fail|critical' → filtra líneas con errores (case‑insensitive)
+2. awk '{c[$5]++} ...' → cuenta ocurrencias agrupadas por servicio (columna 5 del log)
+3. END{for(s in c) print c[s], s} → imprime cantidad de errores por servicio
+4. sort -rn → ordena de mayor a menor frecuencia
+5. head -10 → muestra los 10 servicios con más errores
 
-**Archivo(s) de práctica:** `labs/syslog.log`
+## ✅ Resultado
+
+- identificás qué servicios generan más errores
+- detectás focos de falla recurrentes
+- priorizás debugging y mitigación por impacto
 
 ---
 

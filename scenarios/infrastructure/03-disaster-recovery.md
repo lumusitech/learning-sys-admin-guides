@@ -4,16 +4,22 @@
 
 ## ⚡ Quick command (SRE)
 
-**Quick command (SRE):** `ssh -o BatchMode=yes -o ConnectTimeout=5 backup@NAS 'ls -la /srv/nas/backups | head -5; restic snapshots --repo /srv/nas/backups/restic 2>/dev/null | head -10 || echo "restic/no-access"'`
+`ssh -o BatchMode=yes -o ConnectTimeout=5 backup@NAS 'ls -la /srv/nas/backups | head -5; restic snapshots --repo /srv/nas/backups/restic 2>/dev/null | head -10 || echo "restic/no-access"'`
 
-**Quick command (original):** `restic restore latest --repo /mnt/nas-backups/restic --target /tmp/restore --verbose`
+## 🔍 Análisis paso a paso
 
-**Cuándo usar este escenario:**
-- El servidor de producción falló (disco, hardware)
-- Necesitas restaurar desde backups locales o en la nube
-- Probar que los backups funcionan (simulacro DR)
+1. ssh → ejecuta comandos remotos en el servidor de backups (NAS)
+2. ls -la /srv/nas/backups | head -5 → muestra archivos recientes de backups para ver si existen y tienen tamaño válido
+3. restic snapshots --repo /srv/nas/backups/restic → lista snapshots disponibles en el repositorio de backups
+4. 2>/dev/null → oculta errores si restic no está configurado o no tiene acceso
+5. head -10 → limita salida para lectura rápida
+6. || echo "restic/no-access" → muestra mensaje claro si el comando falla
 
-**Archivo(s) de práctica:** Docker compose + simulación
+## ✅ Resultado
+
+- verificás si existen backups recientes en el NAS
+- confirmás snapshots disponibles en restic
+- detectás problemas de acceso o configuración de backups
 
 ---
 

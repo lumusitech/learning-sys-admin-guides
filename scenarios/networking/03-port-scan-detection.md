@@ -9,16 +9,22 @@
 
 ## ⚡ Quick command (SRE)
 
-**Quick command (SRE):** `awk '{for(i=1;i<=NF;i++) if($i ~ /^SRC=/){ip=$i; sub(/^SRC=/,"",ip); c[ip]++}} END{for(ip in c) print c[ip], ip}' labs/firewall.log | sort -rn | head -10`
+`awk '{for(i=1;i<=NF;i++) if($i ~ /^SRC=/){ip=$i; sub(/^SRC=/,"",ip); c[ip]++}} END{for(ip in c) print c[ip], ip}' labs/firewall.log | sort -rn | head -10`
 
-**Quick command (original):** `awk '{for(i=1;i<=NF;i++) if($i ~ /^SRC=/) c[substr($i,5)]++} END{for(ip in c) print c[ip], ip}' labs/firewall.log | sort -rn | head`
+## 🔍 Análisis paso a paso
 
-**Cuándo usar este escenario:**
-- Logs de firewall con muchas conexiones desde una IP
-- Sospecha de escaneo de puertos
-- IPs desconocidas probando múltiples puertos
+1. awk '{for(i=1;i<=NF;i++) if($i ~ /^SRC=/){...}}' → recorre cada campo de la línea buscando el campo SRC= (IP origen)
+2. sub(/^SRC=/,"",ip) → elimina el prefijo "SRC=" dejando solo la IP
+3. c[ip]++ → cuenta cuántas veces aparece cada IP en los logs
+4. END{for(ip in c) print c[ip], ip} → imprime cantidad de eventos por IP
+5. sort -rn → ordena por mayor cantidad de eventos
+6. head -10 → muestra las 10 IPs más activas
 
-**Archivo(s) de práctica:** `labs/firewall.log`
+✅ Resultado
+
+- identificás IPs que generan más eventos en firewall
+- detectás posibles escaneos de puertos o actividad maliciosa
+- priorizás IPs para bloqueo o análisis
 
 ---
 

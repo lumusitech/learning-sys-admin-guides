@@ -9,16 +9,19 @@
 
 ## ⚡ Quick command (SRE)
 
-**Quick command (SRE):** `ps aux | sort -k3 -rn | head -11`
+`ps aux | sort -k3 -rn | head -11`
 
-**Quick command (original):** `ps aux | sort -k3 -rn | head -11 | awk 'NR==1{printf "%-8s %-5s %-5s %s\n","USUARIO","CPU%","MEM%","COMANDO"} NR>1{printf "%-8s %-5s %-5s %s\n",$1,$3,$4,$11}'`
+## 🔍 Análisis paso a paso
 
-**Cuándo usar este escenario:**
-- Servidor lento o con alta carga
-- Un proceso está consumiendo muchos recursos
-- Detectar memory leaks o procesos zombie
+1. ps aux → lista todos los procesos en ejecución con uso de CPU, memoria y usuario
+2. sort -k3 -rn → ordena los procesos por uso de CPU (columna 3), de mayor a menor
+3. head -11 → muestra los 10 procesos que más CPU consumen (más la cabecera)
 
-**Archivo(s) de práctica:** no aplica (producción), `labs/syslog.log`
+## ✅ Resultado
+
+- identificás procesos que consumen más CPU
+- detectás anomalías o procesos fuera de lo normal
+- priorizás acciones de mitigación sobre los recursos críticos
 
 ---
 

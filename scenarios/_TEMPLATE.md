@@ -7,12 +7,12 @@
 
 ---
 
-## 🎯 Objetivo
+## 🎯 Problema
 
-Qué se aprende o logra al completar el escenario (2–3 ítems).
+Qué problema real se resuelve en este escenario (2–3 ítems).
 
-- Identificar IPs atacantes a partir de logs
-- Generar un reporte accionable con mitigación
+Identificar IPs atacantes a partir de logs
+Generar un reporte accionable con mitigación
 
 ---
 

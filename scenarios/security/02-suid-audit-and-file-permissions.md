@@ -9,16 +9,21 @@
 
 ## ⚡ Quick command (SRE)
 
-**Quick command (SRE):** `find / -type f -perm -4000 2>/dev/null | head -50`
+`find / -type f -perm -4000 2>/dev/null | head -50`
 
-**Quick command (original):** `find / -type f -perm -4000 2>/dev/null | xargs -I {} ls -la {} | awk '{print $1, $3, $4, $NF}' | sort -k4`
+## 🔍 Análisis paso a paso
 
-**Cuándo usar este escenario:**
-- Auditoría de seguridad periódica
-- Detectar binarios con SUID que no deberían tenerlo
-- Buscar cambios en permisos entre snapshots
+1. find / -type f -perm -4000 → busca archivos con permiso SUID en todo el sistema
+2. -type f → limita la búsqueda a archivos (no directorios)
+3. -perm -4000 → filtra archivos con bit SUID activo
+4. 2>/dev/null → oculta errores de permisos en directorios protegidos
+5. head -50 → muestra solo los primeros 50 resultados para revisión rápida
 
-**Archivo(s) de práctica:** no aplica (producción)
+## ✅ Resultado
+
+- listás archivos con SUID potencialmente peligrosos
+- identificás binarios que pueden permitir escalada de privilegios
+- detectás configuraciones inseguras en el sistema
 
 ---
 

@@ -9,16 +9,22 @@
 
 ## ⚡ Quick command (SRE)
 
-**Quick command (SRE):** `awk '{t++; if($9 ~ /^[45]/) e++} END{printf "total=%d errores_4xx5xx=%d tasa=%.2f%%\n", t, e, (t? (e*100)/t : 0)}' labs/nginx_access.log`
+`awk '{t++; if($9 ~ /^[45]/) e++} END{printf "total=%d errores_4xx5xx=%d tasa=%.2f%%\n", t, e, (t? (e*100)/t : 0)}' labs/nginx_access.log`
 
-**Quick command (original):** `awk '{print $NF, $7}' labs/nginx_access.log | sort -rn | head -10 | awk '{printf "%6.3fs %s\n", $1, $2}'`
+## 🔍 Análisis paso a paso
 
-**Cuándo usar este escenario:**
-- Sitio web lento o con errores 5xx
-- Detectar rutas lentas y picos de tráfico
-- Identificar crawlers abusivos o escaneos
+1. awk '{t++; if($9 ~ /^[45]/) e++}' → recorre cada línea contando total de requests (t) y errores (códigos 4xx y 5xx en columna 9)
+2. $9 ~ /^[45]/ → identifica respuestas HTTP de error (cliente y servidor)
+3. END{...} → ejecuta al final para calcular métricas globales
+4. printf → formatea salida mostrando total, errores y tasa de error en porcentaje
+5. (t? (e*100)/t : 0) → evita división por cero si no hay registros
 
-**Archivo(s) de práctica:** `labs/nginx_access.log`
+## ✅ Resultado
+
+- obtenés total de requests procesados
+- calculás cantidad de errores HTTP
+- obtenés tasa de error (%) del servicio
+- detectás rápidamente degradación o incidentes
 
 ---
 

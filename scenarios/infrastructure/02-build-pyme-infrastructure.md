@@ -4,16 +4,20 @@
 
 ## ⚡ Quick command (SRE)
 
-**Quick command (SRE):** `ip -br a; ip r; ss -tuln | head -30`
+`ip -br a; ip r; ss -tuln | head -30`
 
-**Quick command (original):** `ip link add link eth1 name eth1.10 type vlan id 10 && ip addr add 10.0.10.1/24 dev eth1.10 && ip link set dev eth1.10 up`
+## 🔍 Análisis paso a paso
 
-**Cuándo usar este escenario:**
-- Diseñar la red de una PYME desde cero
-- Segmentar por departamentos con VLANs y firewall
-- Montar NAS (Samba+NFS), DHCP, DNS y web server
+1. ip -br a → muestra interfaces de red activas y sus direcciones IP
+2. ip r → muestra la tabla de rutas para verificar conectividad entre redes
+3. ss -tuln → lista puertos en escucha y servicios activos
+4. head -30 → limita la salida para facilitar lectura rápida
 
-**Archivo(s) de práctica:** Docker compose (`docker-compose.network.yml`)
+## ✅ Resultado
+
+- verificás que las interfaces estén correctamente configuradas
+- confirmás rutas de red y gateway
+- detectás qué servicios están expuestos y en qué puertos
 
 ---
 
