@@ -4,7 +4,9 @@
 **Archivos de práctica:** `labs/tcpdump.txt`
 **Ver escenarios relacionados:** [`networking/03-port-scan`](../scenarios/networking/03-port-scan-detection.md)
 
-**Quick command:** `tcpdump -c 10 -i any`
+## ⚡ Quick command
+
+`tcpdump -c 10 -i any
 
 ## ⚡ Quick run
 

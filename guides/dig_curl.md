@@ -4,7 +4,9 @@
 **Archivos de práctica:** `labs/dig_output.txt`
 **Ver escenarios relacionados:** [`networking/02-web-traffic`](../scenarios/networking/02-analyze-web-traffic-patterns.md)
 
-**Quick command:** `dig +short google.com`
+## ⚡ Quick command
+
+`dig +short google.com`
 
 ## ⚡ Quick run
 

@@ -4,7 +4,9 @@
 **Archivos de práctica:** Sistema de archivos (`/`)
 **Ver escenarios relacionados:** [`security/02-suid-audit`](../scenarios/security/02-suid-audit-and-file-permissions.md)
 
-**Quick command:** `xargs -I {} echo "Item: {}" < labs/datos.txt`
+## ⚡ Quick command
+
+`xargs -I {} echo "Item: {}" < labs/datos.txt`
 
 ## ⚡ Quick run
 

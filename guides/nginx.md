@@ -4,7 +4,9 @@
 **Archivos de práctica:** `labs/nginx_access.log`
 **Ver escenarios relacionados:** [`web/01-performance`](../scenarios/web/01-performance-and-error-analysis.md), [`infrastructure/01-migrate`](../scenarios/infrastructure/01-migrate-to-production.md)
 
-**Quick command:** `nginx -t`
+## ⚡ Quick command
+
+`nginx -t`
 
 ## ⚡ Quick run
 
