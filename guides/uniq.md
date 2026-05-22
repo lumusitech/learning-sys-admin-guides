@@ -4,7 +4,9 @@
 **Archivos de práctica:** `labs/auth.log`
 **Ver escenarios relacionados:** [`networking/01-detect-ssh-brute-force`](../scenarios/networking/01-detect-ssh-brute-force.md)
 
-**Quick command:** `uniq -c labs/auth.log | sort -rn | head`
+## ⚡ Quick command
+
+`uniq -c labs/auth.log`
 
 ## ⚡ Quick run
 

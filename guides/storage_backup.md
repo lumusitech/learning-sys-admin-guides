@@ -4,7 +4,9 @@
 **Archivos de práctica:** `labs/docker-compose.yml` (volúmenes)
 **Ver escenarios relacionados:** [`infrastructure/02-build-pyme`](../scenarios/infrastructure/02-build-pyme-infrastructure.md), [`infrastructure/03-disaster-recovery`](../scenarios/infrastructure/03-disaster-recovery.md)
 
-**Quick command:** `rsync -av /src/ /dst/`
+## ⚡ Quick command
+
+`rsync -av /src/ /dst/`
 
 ## ⚡ Quick run
 

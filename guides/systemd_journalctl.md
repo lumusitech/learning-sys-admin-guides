@@ -4,7 +4,9 @@
 **Archivos de práctica:** Sistema en vivo
 **Ver escenarios relacionados:** [`system/01-top-processes`](../scenarios/system/01-top-processes-and-resources.md), [`system/02-log-analysis`](../scenarios/system/02-log-analysis-and-error-tracking.md)
 
-**Quick command:** `systemctl status sshd`
+## ⚡ Quick command
+
+`systemctl status sshd`
 
 ## ⚡ Quick run
 

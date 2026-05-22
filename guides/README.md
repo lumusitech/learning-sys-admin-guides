@@ -49,6 +49,7 @@ concepts → guides → labs → scenarios
 
 | Guía                                       | Nivel      | Descripción                                                                         |
 | ------------------------------------------ | ---------- | ----------------------------------------------------------------------------------- |
+| [`curl.md`](curl.md) | 🟡 Intermedio | Cliente HTTP. Requests, headers, autenticación, APIs, debugging |
 | [`ip_ss.md`](ip_ss.md)                     | 🟢 Básico   | Configuración de red (ip) y sockets (ss). Interfaces, rutas, ARP, estados TCP       |
 | [`tcpdump.md`](tcpdump.md)                 | 🔴 Avanzado | Captura de paquetes. Filtros BPF, análisis de ataques, resolución de problemas      |
 | [`ping_traceroute.md`](ping_traceroute.md) | 🟢 Básico   | Diagnóstico ICMP. ping, traceroute, mtr, interpretación de TTL y latencia           |

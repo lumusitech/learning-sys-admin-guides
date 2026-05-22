@@ -1,6 +1,8 @@
 # curl — Guía completa
 
-**Quick command:** `curl -sI https://example.com`
+## ⚡ Quick command
+
+`curl -sI https://example.com`
 
 ## Índice
 1. [¿Qué es curl?](#qué-es-curl)

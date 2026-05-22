@@ -4,7 +4,9 @@
 **Archivos de práctica:** `labs/docker-compose.from-scratch.yml`
 **Ver escenarios relacionados:** [`system/03-provisioning`](../scenarios/system/03-new-server-provisioning.md), [`infrastructure/01-migrate`](../scenarios/infrastructure/01-migrate-to-production.md)
 
-**Quick command:** `sysctl net.ipv4.tcp_syncookies=1`
+## ⚡ Quick command
+
+`sysctl net.ipv4.tcp_syncookies=1`
 
 ## ⚡ Quick run
 
