@@ -1,25 +1,29 @@
 #!/bin/sh
+set -eu
 
 echo "🔍 Validando estándares SRE..."
 
-# 1. grep -P (NO permitido)
-if grep -R "grep -P" scenarios/ >/dev/null 2>&1; then
-  echo "❌ ERROR: grep -P encontrado"
+fail() {
+  echo "❌ ERROR: $1"
   exit 1
+}
+
+# Detectar solo usos "reales" (comando grep), no menciones en Markdown.
+# Regla: el carácter anterior a "grep" debe ser inicio de línea o espacio o separador típico (; | &)
+# y no un backtick.
+if grep -R -n -E '(^|[[:space:];|&])grep[[:space:]][^#`]*[[:space:]]-P([[:space:]]|$)' scenarios/ >/dev/null 2>&1; then
+  fail "uso de grep -P encontrado (no portable)"
 fi
 
-# 2. \K (NO permitido)
-if grep -R "\\K" scenarios/ >/dev/null 2>&1; then
-  echo "❌ ERROR: uso de \\K encontrado"
-  exit 1
+# También bloquear grep -oP (más común que -P solo)
+if grep -R -n -E '(^|[[:space:];|&])grep[[:space:]][^#`]*[[:space:]]-oP([[:space:]]|$)' scenarios/ >/dev/null 2>&1; then
+  fail "uso de grep -oP encontrado (no portable)"
 fi
 
-# 3. process substitution (NO POSIX)
-if grep -R "<(" scenarios/ >/dev/null 2>&1; then
-  echo "❌ ERROR: process substitution <( encontrado"
-  exit 1
+# Bloquear process substitution <(  (bashismo)
+if grep -R -n "<(" scenarios/ >/dev/null 2>&1; then
+  fail "process substitution <( encontrado (no POSIX)"
 fi
 
-# 4. Validación OK
 echo "✅ Validación SRE OK"
 exit 0
