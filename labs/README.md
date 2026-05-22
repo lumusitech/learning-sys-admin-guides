@@ -1,6 +1,35 @@
+⬅️ [Volver al README principal](../README.md)
+
+---
+
+## 🧭 Navegación
+
+- 🧠 [concepts/](../concepts/) — pensar como sysadmin
+- 🛠️ [guides/](../guides/) — herramientas
+- 🚨 [scenarios/](../scenarios/) — casos reales
+
+---
+
 # Laboratorio Docker — Prácticas de administración de servidores
 
 Múltiples entornos Docker para practicar **desde cero** la administración de servidores Linux y redes. Cada `docker-compose.*.yml` se enfoca en un tipo de práctica distinto.
+
+---
+
+## 🎯 Cuándo usar esta sección
+Usá labs/ cuando:
+
+- necesitás datos reales para probar comandos
+- querés practicar sin romper un sistema real
+- necesitás validar un pipeline antes de usarlo en producción
+
+👉 Esto es tu entorno seguro de práctica
+
+## 🔄 Flujo recomendado
+concepts → guides → labs → scenarios
+👉 pensar → aprender → practicar → aplicar
+
+---
 
 ## Requisitos
 
@@ -447,3 +476,5 @@ labs/
         ├── db_config.php.bak
         └── backup.sql
 ```
+
+⬅️ [Volver al README principal](../README.md)

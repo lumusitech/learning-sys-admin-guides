@@ -20,45 +20,82 @@ Guías de referencia + laboratorio Docker + escenarios prácticos para **adminis
 - ✅ Sin bashismos (<(), arrays, etc.)
 - ✅ Pipelines reproducibles en entornos mínimos
 
-## 🚀 Empezar rápido
+
+---
+
+## 🧭 ¿Por dónde empezar?
+
+Este repo puede usarse de 3 formas:
+
+### 🧑‍🎓 Aprendizaje progresivo (RECOMENDADO)
+1. 👉 [concepts/](concepts/) — cómo pensar como sysadmin  
+2. 👉 [guides/](guides/) — aprender cada herramienta  
+3. 👉 [labs/](labs/) — practicar con datos reales  
+4. 👉 [scenarios/](scenarios/) — resolver problemas reales  
+
+---
+
+### ⚡ Resolución rápida (modo producción)
+1. 👉 [scenarios/](scenarios/) — encontrar problema  
+2. ejecutar **Quick command (SRE)**  
+3. validar con 👉 [labs/](labs/)  
+4. profundizar en 👉 [guides/](guides/)  
+
+---
+
+### 📚 Referencia rápida
+- abrir 👉 [guides/](guides/)  
+- copiar comandos  
+- adaptar al caso  
+
+---
+
+## 🧱 Estructura (navegación directa)
+
+### 🧠 [concepts/](concepts/) — mindset de sysadmin
+Patrones de pensamiento:
+- cómo analizar logs
+- cómo diagnosticar problemas
+- cómo pensar como SRE
+
+---
+
+### 🛠️ [guides/](guides/) — herramientas
+Aprender cada comando:
+- grep, awk, sort, uniq, etc.
+- redes (ip, ss, tcpdump)
+- sistema (systemctl, journalctl)
+
+---
+
+### 🧪 [labs/](labs/) — práctica real
+- logs de ejemplo
+- entorno Docker
+- datos reproducibles
+
+---
+
+### 🚨 [scenarios/](scenarios/) — problemas reales
+Casos como:
+- brute force SSH
+- port scan
+- errores web
+- performance issues
+
+👉 Cada uno incluye:
+- problema real
+- quick command (SRE)
+- pipeline completo
+- interpretación
+
+---
+
+## 🔄 Flujo de trabajo (muy importante)
+
 
 ```bash
-git clone https://github.com/lumusitech/learning-sys-admin-guides.git
-cd learning-sys-admin-guides
+problema → scenarios → quick command → labs → guides
 ```
-
-Modos de uso:
-- aprendizaje → guides → labs → scenarios
-- producción → scenarios → labs → guides
-- referencia → abrir guía y copiar comando
-
-Ruta rápida:
-1. problema → scenarios
-2. correr quick command
-3. validar con labs
-4. volver a guides si hace falta
-
----
-
-## 🧱 Estructura
-
-### `guides/` — guías por herramienta
-
-Incluye herramientas de texto/datos, redes, sistema e infraestructura.
-
-### `labs/` — archivos de práctica + laboratorio Docker
-
-Logs de ejemplo y 5 compose files para practicar sin riesgo.
-
-### `scenarios/` — problemas reales que combinan herramientas
-
-Incidentes por dominio: **networking**, **system**, **security**, **web**, **infrastructure**.
-
-### `concepts/` — patrones de pensamiento de sysadmin
-
-Cómo pensar como administrador de sistemas.
-
----
 
 ## ✅ Licencia
 
