@@ -1,6 +1,32 @@
+⬅️ [Volver al README principal](../README.md)
+
+---
+
+## 🧭 Navegación
+
+- 🧠 [concepts/](../concepts/) — pensar como sysadmin
+- 🛠️ [guides/](../guides/) — herramientas
+- 🧪 [labs/](../labs/) — práctica
+
+---
+
 # 🧪 Escenarios prácticos
 
 Escenarios reales que combinan herramientas de las guías mediante pipes para resolver problemas concretos de administración de servidores Linux y redes.
+
+## 🎯 Cuándo usar esta sección
+Usá scenarios/ cuando:
+
+tenés un problema real para resolver
+necesitás un resultado rápido (modo SRE)
+querés practicar troubleshooting con casos reales
+querés ver cómo se combinan herramientas en contexto
+
+👉 Esto es el mundo real, donde aplicás todo lo aprendido
+
+## 🔄 Flujo recomendado
+concepts → guides → labs → scenarios
+👉 entender → aprender → practicar → aplicar
 
 ## Estructura
 
@@ -86,3 +112,5 @@ Cada escenario incluye:
 cd ../labs
 bash ../scenarios/networking/01-detect-ssh-brute-force.md  # (o copiar los comandos)
 ```
+
+⬅️ [Volver al README principal](../README.md)
