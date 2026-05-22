@@ -1,4 +1,8 @@
+⬅️ [Volver a scenarios](../README.md)
+
 # Escenario: Construir infraestructura PYME desde cero
+
+## ⚡ Quick command (SRE)
 
 **Quick command (SRE):** `ip -br a; ip r; ss -tuln | head -30`
 
@@ -13,7 +17,7 @@
 
 ---
 
-## Problema
+## 🎯 Problema
 
 Eres el primer administrador de sistemas de una PYME en crecimiento (~50 empleados). Te piden construir la infraestructura desde cero: segmentar la red por departamentos, montar un NAS para backups y archivos compartidos, servir páginas web con nginx, configurar DHCP/DNS interno, y aislar la red de invitados. Todo debe hacerse en un solo servidor Linux que oficia de router, NAS, web server y DNS/DHCP.
 

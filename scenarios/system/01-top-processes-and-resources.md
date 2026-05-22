@@ -1,9 +1,13 @@
+⬅️ [Volver a scenarios](../README.md)
+
 # 🧩 Escenario: Identificar procesos que consumen más recursos
 
 **Dominio:** system
 **Nivel:** 🟢 Básico
 **Herramientas:** `ps`, `sort`, `awk`, `grep`, `watch`, `column`
 **Datos:** Sistema en vivo (`ps aux`), logs (`labs/syslog.log`)
+
+## ⚡ Quick command (SRE)
 
 **Quick command (SRE):** `ps aux | sort -k3 -rn | head -11`
 
@@ -18,11 +22,13 @@
 
 ---
 
-## 🎯 Objetivo
+## 🎯 Problema
 
-1. Identificar procesos que más CPU, memoria y disco consumen.
-2. Detectar anomalías: procesos zombie, memory leaks, threads excesivos.
-3. Proponer acciones de mitigación (matar procesos, reiniciar servicios, escalar).
+El sistema presenta alto consumo de recursos o degradación de rendimiento, lo que puede afectar la disponibilidad de servicios. Es necesario analizar los procesos en ejecución para:
+
+- identificar procesos que más CPU, memoria y disco consumen
+- detectar anomalías: procesos zombie, memory leaks, threads excesivos
+- proponer acciones de mitigación (matar procesos, reiniciar servicios, escalar)
 
 ---
 

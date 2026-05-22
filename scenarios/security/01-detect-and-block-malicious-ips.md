@@ -1,9 +1,13 @@
+⬅️ [Volver a scenarios](../README.md)
+
 # 🧩 Escenario: Detectar y bloquear IPs maliciosas
 
 **Dominio:** security
 **Nivel:** 🟡 Intermedio
 **Herramientas:** `grep`, `awk`, `sort`, `uniq`, `comm`, `iptables`, `xargs`
 **Archivos:** `labs/auth.log`, `labs/nginx_access.log`, `labs/firewall.log`
+
+## ⚡ Quick command (SRE)
 
 **Quick command (SRE):** `awk 'FNR==NR{if($0~/Failed password/){for(i=1;i<=NF;i++) if($i=="from"){a[$(i+1)]=1; break}}; next} {ip=$1; if(ip in a) b[ip]++} END{for(ip in b) print b[ip], ip}' labs/auth.log labs/nginx_access.log | sort -rn | head -10`
 
@@ -18,11 +22,13 @@
 
 ---
 
-## 🎯 Objetivo
+## 🎯 Problema
 
-1. Correlacionar logs de múltiples fuentes (SSH, web, firewall) para identificar atacantes.
-2. Calcular un score de amenaza por IP basado en su actividad.
-3. Generar reglas de bloqueo automatizadas.
+Se detecta actividad sospechosa en múltiples servicios del sistema, lo que puede indicar ataques coordinados desde ciertas IPs. Es necesario correlacionar eventos entre diferentes logs para:
+
+- correlacionar logs de múltiples fuentes (SSH, web, firewall) para identificar atacantes
+- calcular un score de amenaza por IP basado en su actividad
+- generar reglas de bloqueo automatizadas
 
 ---
 

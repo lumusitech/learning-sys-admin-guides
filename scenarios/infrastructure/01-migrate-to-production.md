@@ -1,4 +1,8 @@
+⬅️ [Volver a scenarios](../README.md)
+
 # Escenario: Migrar aplicación a servidor de producción
+
+## ⚡ Quick command (SRE)
 
 **Quick command (SRE):** `ssh -o BatchMode=yes -o ConnectTimeout=5 ADMIN@PROD 'systemctl is-active nginx 2>/dev/null || true; ss -tuln | awk "NR==1 || /:80|:443|:3306|:5432/"'`
 
@@ -13,7 +17,7 @@
 
 ---
 
-## Problema
+## 🎯 Problema
 
 Tienes una aplicación web funcionando en un servidor de desarrollo y necesitas migrarla a un servidor de producción recién aprovisionado. El servidor de producción debe estar hardening, con Docker, nginx como proxy reverso, SSL, límites de recursos, y monitoreo básico. El proceso incluye sincronizar archivos, configurar el stack, y verificar que todo funciona correctamente.
 

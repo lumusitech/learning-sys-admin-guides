@@ -1,9 +1,13 @@
+⬅️ [Volver a scenarios](../README.md)
+
 # 🧩 Escenario: Provisionamiento inicial de servidor
 
 **Dominio:** system / infrastructure
 **Nivel:** 🟡 Intermedio
 **Herramientas:** `ssh`, `ufw`/`iptables`, `systemctl`, `sed`, `fail2ban`, `timedatectl`
 **Archivos:** Servidor remoto (VPS/cloud)
+
+## ⚡ Quick command (SRE)
 
 **Quick command (SRE):** `ssh -o BatchMode=yes -o ConnectTimeout=5 ADMIN@HOST 'hostname; uptime; sudo systemctl --no-pager --failed || true; sudo ss -tuln | head -20'`
 
@@ -18,11 +22,13 @@
 
 ---
 
-## 🎯 Objetivo
+## 🎯 Problema
 
-1. Asegurar un servidor nuevo desde el primer acceso root por contraseña.
-2. Configurar SSH hardening, firewall, fail2ban y actualizaciones automáticas.
-3. Dejar el servidor listo para producción en producción.
+Se dispone de un servidor nuevo sin configuraciones de seguridad ni servicios básicos, lo que representa un riesgo si se expone directamente a internet. Es necesario asegurar y preparar el sistema desde el primer acceso para:
+
+- asegurar un servidor nuevo desde el primer acceso root por contraseña
+- configurar SSH hardening, firewall, fail2ban y actualizaciones automáticas
+- dejar el servidor listo para producción en producción
 
 ---
 

@@ -1,4 +1,8 @@
+⬅️ [Volver a scenarios](../README.md)
+
 # Escenario: Recuperación ante desastres (disaster recovery)
+
+## ⚡ Quick command (SRE)
 
 **Quick command (SRE):** `ssh -o BatchMode=yes -o ConnectTimeout=5 backup@NAS 'ls -la /srv/nas/backups | head -5; restic snapshots --repo /srv/nas/backups/restic 2>/dev/null | head -10 || echo "restic/no-access"'`
 
@@ -13,7 +17,7 @@
 
 ---
 
-## Problema
+## 🎯 Problema
 
 El servidor de producción ha sufrido un fallo de disco. Tienes backups almacenados en un NAS local y en la nube (Backblaze B2). Necesitas restaurar todo el stack en un servidor nuevo: sistema operativo, configuraciones, archivos web, base de datos, y verificar que la aplicación funciona correctamente. El tiempo de recuperación objetivo (RTO) es de 4 horas.
 

@@ -1,9 +1,13 @@
+⬅️ [Volver a scenarios](../README.md)
+
 # 🧩 Escenario: Análisis de rendimiento y errores web
 
 **Dominio:** web
 **Nivel:** 🟡 Intermedio
 **Herramientas:** `awk`, `grep`, `sort`, `uniq`, `bc`, `sed`
 **Archivos:** `labs/nginx_access.log`
+
+## ⚡ Quick command (SRE)
 
 **Quick command (SRE):** `awk '{t++; if($9 ~ /^[45]/) e++} END{printf "total=%d errores_4xx5xx=%d tasa=%.2f%%\n", t, e, (t? (e*100)/t : 0)}' labs/nginx_access.log`
 
@@ -18,11 +22,13 @@
 
 ---
 
-## 🎯 Objetivo
+## 🎯 Problema
 
-1. Identificar rutas lentas, picos de tráfico y códigos de error HTTP.
-2. Detectar crawlers abusivos, escaneo de rutas y hotlinking.
-3. Generar reportes de rendimiento para tomar acciones correctivas.
+Se detectan problemas de rendimiento y errores HTTP en el servidor web que afectan la experiencia de los usuarios. Es necesario analizar los accesos para:
+
+- identificar rutas lentas, picos de tráfico y códigos de error HTTP
+- detectar crawlers abusivos, escaneo de rutas y hotlinking
+- generar reportes de rendimiento para tomar acciones correctivas
 
 ---
 
