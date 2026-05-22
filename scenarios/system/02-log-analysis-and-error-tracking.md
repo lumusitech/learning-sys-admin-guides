@@ -1,9 +1,13 @@
+⬅️ [Volver a scenarios](../README.md)
+
 # 🧩 Escenario: Análisis de logs del sistema y tracking de errores
 
 **Dominio:** system
 **Nivel:** 🟢 Básico
 **Herramientas:** `grep`, `awk`, `sort`, `uniq`, `sed`, `journalctl`, `tail`
 **Archivos:** `labs/syslog.log`
+
+## ⚡ Quick command (SRE)
 
 **Quick command (SRE):** `grep -iE 'error|fail|critical' labs/syslog.log | awk '{c[$5]++} END{for(s in c) print c[s], s}' | sort -rn | head -10`
 
@@ -18,11 +22,13 @@
 
 ---
 
-## 🎯 Objetivo
+## 🎯 Problema
 
-1. Identificar los servicios que más errores generan.
-2. Detectar patrones de error cíclicos y problemas de recursos (OOM, disco).
-3. Generar reportes de errores por hora y por servicio.
+El sistema genera errores en distintos servicios que pueden afectar la estabilidad o disponibilidad. Es necesario analizar los logs para:
+
+- identificar los servicios que más errores generan
+- detectar patrones de error cíclicos y problemas de recursos (OOM, disco)
+- generar reportes de errores por hora y por servicio
 
 ---
 

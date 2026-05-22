@@ -1,9 +1,13 @@
+⬅️ [Volver a scenarios](../README.md)
+
 # 🧩 Escenario: Detectar ataque de fuerza bruta SSH
 
 **Dominio:** networking / security
 **Nivel:** 🟡 Intermedio
 **Herramientas:** `grep`, `awk`, `sort`, `uniq`, `head` (+ opcional `iptables`)
 **Datos:** Producción `/var/log/auth.log` | Práctica `labs/auth.log`
+
+## ⚡ Quick command (SRE)
 
 **Quick command (SRE):** `awk '/Failed password/ {for(i=1;i<=NF;i++) if($i=="from"){c[$(i+1)]++; break}} END{for(ip in c) print c[ip], ip}' labs/auth.log | sort -rn | head -10`
 
@@ -18,11 +22,13 @@
 
 ---
 
-## 🎯 Objetivo
+## 🎯 Problema
 
-1. Identificar **IPs atacantes** y su frecuencia.
-2. Generar un **reporte accionable** (top IPs, usuarios atacados, severidad).
-3. Proponer **mitigación segura** sin bloquearte a vos mismo.
+Se detectan múltiples intentos fallidos de autenticación SSH en los logs del sistema. Es necesario analizar estos eventos para:
+
+- identificar IPs atacantes y su frecuencia
+- generar un reporte accionable (top IPs, usuarios atacados, severidad)
+- proponer mitigación segura sin bloquear acceso legítimo
 
 ---
 

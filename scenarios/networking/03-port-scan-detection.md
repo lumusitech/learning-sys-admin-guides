@@ -1,9 +1,13 @@
+⬅️ [Volver a scenarios](../README.md)
+
 # 🧩 Escenario: Detectar escaneo de puertos en logs de firewall
 
 **Dominio:** networking / security
 **Nivel:** 🟡 Intermedio
 **Herramientas:** `grep`, `awk`, `sort`, `uniq`, `head`, `iptables`
 **Archivos:** `labs/firewall.log`
+
+## ⚡ Quick command (SRE)
 
 **Quick command (SRE):** `awk '{for(i=1;i<=NF;i++) if($i ~ /^SRC=/){ip=$i; sub(/^SRC=/,"",ip); c[ip]++}} END{for(ip in c) print c[ip], ip}' labs/firewall.log | sort -rn | head -10`
 
@@ -18,11 +22,13 @@
 
 ---
 
-## 🎯 Objetivo
+## 🎯 Problema
 
-1. Identificar IPs que están escaneando puertos del servidor.
-2. Detectar el tipo de escaneo (SYN, horizontal, evasión).
-3. Generar reglas de bloqueo específicas.
+Se sospecha que el servidor está siendo escaneado para detectar puertos abiertos, lo que puede indicar actividad maliciosa o reconocimiento previo a un ataque. Es necesario analizar los logs para:
+
+- identificar IPs que están escaneando puertos del servidor
+- detectar el tipo de escaneo (SYN, horizontal, evasión)
+- generar reglas de bloqueo específicas
 
 ---
 

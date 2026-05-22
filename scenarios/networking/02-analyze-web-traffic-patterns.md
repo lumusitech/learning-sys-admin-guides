@@ -1,9 +1,13 @@
+⬅️ [Volver a scenarios](../README.md)
+
 # 🧩 Escenario: Analizar patrones de tráfico web
 
 **Dominio:** networking
 **Nivel:** 🟢 Básico
 **Herramientas:** `awk`, `grep`, `sort`, `uniq`, `head`, `cut`
 **Archivos:** `labs/nginx_access.log`
+
+## ⚡ Quick command (SRE)
 
 **Quick command (SRE):** `awk '{print $7}' labs/nginx_access.log | sort | uniq -c | sort -rn | head -10`
 
@@ -18,11 +22,13 @@
 
 ---
 
-## 🎯 Objetivo
+## 🎯 Problema
 
-1. Extraer las rutas más solicitadas y los códigos de estado HTTP.
-2. Detectar crawlers, escaneo de rutas y fuentes de tráfico anómalo.
-3. Reportar IPs con comportamiento sospechoso.
+Se observa tráfico web irregular en los logs del servidor HTTP, lo que puede indicar comportamiento anómalo o potenciales ataques. Es necesario analizar estos registros para:
+
+- extraer las rutas más solicitadas y los códigos de estado HTTP
+- detectar crawlers, escaneo de rutas y fuentes de tráfico anómalo
+- reportar IPs con comportamiento sospechoso
 
 ---
 

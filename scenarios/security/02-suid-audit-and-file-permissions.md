@@ -1,9 +1,13 @@
+⬅️ [Volver a scenarios](../README.md)
+
 # 🧩 Escenario: Auditoría de archivos SUID y permisos inseguros
 
 **Dominio:** security
 **Nivel:** 🟡 Intermedio
 **Herramientas:** `find`, `xargs`, `awk`, `sort`, `diff`, `ls`
 **Archivos:** Sistema de archivos en vivo (`/`)
+
+## ⚡ Quick command (SRE)
 
 **Quick command (SRE):** `find / -type f -perm -4000 2>/dev/null | head -50`
 
@@ -18,11 +22,13 @@
 
 ---
 
-## 🎯 Objetivo
+## 🎯 Problema
 
-1. Encontrar archivos con permisos SUID/SGID que permitan escalada de privilegios.
-2. Detectar cambios en la lista de SUID entre snapshots.
-3. Identificar directorios world-writable, archivos sin dueño y enlaces rotos.
+Es necesario auditar el sistema para detectar configuraciones inseguras de permisos que puedan permitir escalada de privilegios o comprometer la integridad del sistema. Para ello, se requiere:
+
+- encontrar archivos con permisos SUID/SGID que permitan escalada de privilegios
+- detectar cambios en la lista de SUID entre snapshots
+- identificar directorios world-writable, archivos sin dueño y enlaces rotos
 
 ---
 
