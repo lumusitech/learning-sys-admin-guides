@@ -1,12 +1,24 @@
 # 🐧 sys-admin-guides
 
+[![SRE Validation](https://github.com/lumusitech/learning-sys-admin-guides/actions/workflows/sre-validate.yml/badge.svg?branch=main)](https://github.com/lumusitech/learning-sys-admin-guides/actions/workflows/sre-validate.yml)
+
 Guías de referencia + laboratorio Docker + escenarios prácticos para **administración de servidores Linux y redes**.
 
 **Enfoque:** cada opción explicada, cada salida interpretada, uso real en troubleshooting, fallas y seguridad.
 
+**Quality Gates (CI):** [SRE Validation](.github/workflows/sre-validate.yml) — bloquea regresiones de portabilidad (`grep -P`, `\K`, `<(`).
+
 > ✅ *"Aprendo herramienta por herramienta, pero practico cómo se usan en conjunto."*
 
 ---
+
+## ✅ Garantías de portabilidad
+
+- ✅ Compatible con POSIX (sh)
+- ✅ Funciona en BusyBox / Alpine Linux
+- ✅ No usa flags GNU-only (grep -P, etc.)
+- ✅ Sin bashismos (<(), arrays, etc.)
+- ✅ Pipelines reproducibles en entornos mínimos
 
 ## 🚀 Empezar rápido
 
