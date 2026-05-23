@@ -7,25 +7,6 @@
 **Herramientas:** `awk`, `grep`, `sort`, `uniq`, `bc`, `sed`
 **Archivos:** `labs/nginx_access.log`
 
-## ⚡ Quick command (SRE)
-
-`awk '{t++; if($9 ~ /^[45]/) e++} END{printf "total=%d errores_4xx5xx=%d tasa=%.2f%%\n", t, e, (t? (e*100)/t : 0)}' labs/nginx_access.log`
-
-## 🔍 Análisis paso a paso
-
-1. awk '{t++; if($9 ~ /^[45]/) e++}' → recorre cada línea contando total de requests (t) y errores (códigos 4xx y 5xx en columna 9)
-2. $9 ~ /^[45]/ → identifica respuestas HTTP de error (cliente y servidor)
-3. END{...} → ejecuta al final para calcular métricas globales
-4. printf → formatea salida mostrando total, errores y tasa de error en porcentaje
-5. (t? (e*100)/t : 0) → evita división por cero si no hay registros
-
-## ✅ Resultado
-
-- obtenés total de requests procesados
-- calculás cantidad de errores HTTP
-- obtenés tasa de error (%) del servicio
-- detectás rápidamente degradación o incidentes
-
 ---
 
 ## 🎯 Problema
@@ -35,6 +16,12 @@ Se detectan problemas de rendimiento y errores HTTP en el servidor web que afect
 - identificar rutas lentas, picos de tráfico y códigos de error HTTP
 - detectar crawlers abusivos, escaneo de rutas y hotlinking
 - generar reportes de rendimiento para tomar acciones correctivas
+
+---
+
+## ⚡ Quick command (SRE)
+
+`awk '{t++; if($9 ~ /^[45]/) e++} END{printf "total=%d errores_4xx5xx=%d tasa=%.2f%%\n", t, e, (t? (e*100)/t : 0)}' labs/nginx_access.log`
 
 ---
 
@@ -76,12 +63,30 @@ awk '{ print $NF, $7 }' labs/nginx_access.log | sort -rn | head -10 | awk '{ pri
  0.892s /index.html
 ```
 
-- Si una ruta aparece con >2s sostenido → revisar backend/DB
-- Si NO hay rutas >1s → el rendimiento general es bueno
+Interpretación:
+
+- tasas altas de 4xx → errores de cliente (rutas inválidas o bots)
+- aumento de 5xx → fallo del backend o dependencia
+- endpoints con alta latencia → cuello de botella en aplicación o DB
 
 ---
 
-## 📌 Pipelines de diagnóstico
+## 🧠 Diagnóstico
+
+El rendimiento web debe evaluarse combinando errores y tiempos de respuesta.
+
+Patrones relevantes:
+
+- tasa de errores >1–2% → posible problema de servicio o backend
+- tiempos de respuesta altos en endpoints específicos → cuello de botella (DB o lógica)
+- picos de tráfico → posible sobrecarga o ataque
+- aumento de 5xx → fallo del backend o dependencia
+
+👉 No todos los errores indican fallo crítico: el patrón, frecuencia y concentración definen el impacto.
+
+---
+
+## 🛠️ Validación extendida
 
 ### Peticiones por minuto (tráfico)
 
@@ -132,25 +137,32 @@ labs/nginx_access.log | sort -rn | head -10
 
 ---
 
+
 ## 🧯 Mitigación
 
-| Problema | Acción |
-|----------|--------|
-| Ruta >3s | Revisar consultas DB, agregar cache, escalar backend |
-| 502/503 creciendo | Verificar upstream, reiniciar servicio |
-| 429 desde misma IP | Aplicar rate limiting en nginx |
-| Crawler abusivo | Bloquear User-Agent en nginx |
-| Hotlinking | Configurar `valid_referers` |
-
-⚠️ Siempre verificá antes de bloquear: `curl -I <url>` desde tu máquina.
-
-### Rollback
+Ejemplo: high latency en endpoint
 
 ```bash
-# Si aplicaste rate limiting y rompió algo:
-# Comentar el bloque y recargar nginx
-nginx -s reload
+systemctl restart <servicio>
 ```
+
+Verificar:
+
+```bash
+curl -I <url>
+```
+
+Rollback:
+
+```bash
+systemctl restart <servicio_anterior>
+```
+
+Casos comunes:
+
+- rutas lentas → optimizar backend o cache
+- errores 5xx → revisar upstream o reiniciar servicio
+- rate limiting → bloquear IP o ajustar nginx
 
 ---
 

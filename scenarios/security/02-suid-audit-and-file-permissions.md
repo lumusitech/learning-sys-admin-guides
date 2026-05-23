@@ -7,24 +7,6 @@
 **Herramientas:** `find`, `xargs`, `awk`, `sort`, `diff`, `ls`
 **Archivos:** Sistema de archivos en vivo (`/`)
 
-## ⚡ Quick command (SRE)
-
-`find / -type f -perm -4000 2>/dev/null | head -50`
-
-## 🔍 Análisis paso a paso
-
-1. find / -type f -perm -4000 → busca archivos con permiso SUID en todo el sistema
-2. -type f → limita la búsqueda a archivos (no directorios)
-3. -perm -4000 → filtra archivos con bit SUID activo
-4. 2>/dev/null → oculta errores de permisos en directorios protegidos
-5. head -50 → muestra solo los primeros 50 resultados para revisión rápida
-
-## ✅ Resultado
-
-- listás archivos con SUID potencialmente peligrosos
-- identificás binarios que pueden permitir escalada de privilegios
-- detectás configuraciones inseguras en el sistema
-
 ---
 
 ## 🎯 Problema
@@ -37,34 +19,9 @@ Es necesario auditar el sistema para detectar configuraciones inseguras de permi
 
 ---
 
-## 🧠 Contexto
+## ⚡ Quick command (SRE)
 
-Los archivos con SUID (setuid) se ejecutan con los permisos del dueño del archivo. Si un atacante logra ejecutar un binario SUID que no debería tener ese permiso, puede escalar a root. Es necesario auditar periódicamente.
-
----
-
-## ✅ Datos de entrada
-
-- **Producción:** Sistema de archivos en vivo (`find / ...`)
-- **Práctica:** Cualquier sistema Linux (o contenedor Docker)
-
----
-
-## ⚡ Quick run (todos los SUID)
-
-```bash
-find / -type f -perm -4000 2>/dev/null | xargs -I {} ls -la {} | awk '{ print $1, $3, $4, $NF }' | sort -k4
-```
-
----
-
-## 🔍 Paso a paso
-
-1. `find / -type f -perm -4000` → busca archivos con bit SUID
-2. `2>/dev/null` → descarta errores de permisos
-3. `xargs -I {} ls -la {}` → lista detalles de cada archivo
-4. `awk '{ print $1, $3, $4, $NF }'` → permisos, owner, grupo, nombre
-5. `sort -k4` → ordena por nombre
+`find / -type f -perm -4000 2>/dev/null | head -50`
 
 ---
 
@@ -76,13 +33,26 @@ find / -type f -perm -4000 2>/dev/null | xargs -I {} ls -la {} | awk '{ print $1
 -rwsr-xr-x root root /usr/bin/sudo
 ```
 
-- Binarios conocidos (passwd, su, sudo, mount) → normal
-- Binarios como `nmap`, `vim`, `python`, `bash` con SUID → **PELIGROSO**
-- Scripts `.sh` o `.py` con SUID → **CRÍTICO**
+Interpretación:
+
+- binarios conocidos con SUID → comportamiento esperado
+- binarios no estándar con SUID → posible riesgo de escalada
+- scripts con SUID → crítico (ejecución como root)
+- cambios recientes → posible compromiso
 
 ---
 
-## 📌 Pipelines de diagnóstico
+## 🧠 Diagnóstico
+
+Los archivos con SUID permiten ejecutar un binario con los permisos del dueño (generalmente root).
+
+Esto introduce riesgo de escalada de privilegios si el binario no es confiable o está mal configurado.
+
+👉 Un SUID inesperado debe considerarse sospechoso hasta ser validado.
+
+---
+
+## 🛠️ Validación extendida
 
 ### Archivos SGID
 
@@ -125,38 +95,29 @@ find / -type f -perm 777 2>/dev/null | head -30 | xargs -I {} ls -la {} | awk '{
 find / -type l ! -exec test -e {} \; 2>/dev/null -print | head -20 | while read l; do echo "ROTO: $l -> $(readlink "$l")"; done
 ```
 
-### Auditoría completa
-
-```bash
-echo "=== AUDITORÍA DE PERMISOS ==="
-echo "SUID: $(find / -type f -perm -4000 2>/dev/null | wc -l)"
-echo "SGID: $(find / -type f -perm -2000 2>/dev/null | wc -l)"
-echo "World-writable: $(find / -type d -perm -o+w 2>/dev/null | grep -v "^/proc\|^/sys\|^/dev" | wc -l)"
-echo "Archivos sin dueño: $(find / -type f -nouser 2>/dev/null | wc -l)"
-echo "Archivos 777: $(find / -type f -perm 777 2>/dev/null | wc -l)"
-echo "--- SUID PELIGROSO ---"
-find / -type f -perm -4000 2>/dev/null | xargs -I {} ls -la {} | awk '/nmap|find|vim|less|more|bash|sh|python|perl/{print "PELIGROSO:", $NF}'
-```
-
 ---
 
 ## 🧯 Mitigación
 
-| Hallazgo | Acción |
-|----------|--------|
-| SUID en binario no estándar | `chmod u-s <archivo>` |
-| SUID en script (bash/python) | `chmod u-s <archivo>` y revisar por qué tiene SUID |
-| World-writable en /etc | `chmod o-w <directorio>` |
-| Archivo sin dueño | `chown root:root <archivo>` |
-
-⚠️ No quites SUID de binarios del sistema (`passwd`, `sudo`) sin entender su función.
-
-### Rollback
+Eliminar SUID en archivo sospechoso:
 
 ```bash
-# Si rompiste algo, restaurar SUID original
-chmod u+s /usr/bin/passwd
+chmod u-s <archivo>
 ```
+
+Verificar:
+
+```bash
+ls -l <archivo>
+```
+
+Rollback (si es necesario restaurar):
+
+```bash
+chmod u+s <archivo>
+```
+
+👉 Validá siempre antes de modificar permisos en binarios del sistema.
 
 ---
 

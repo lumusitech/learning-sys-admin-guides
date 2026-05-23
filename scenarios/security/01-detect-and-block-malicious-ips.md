@@ -7,65 +7,23 @@
 **Herramientas:** `grep`, `awk`, `sort`, `uniq`, `comm`, `iptables`, `xargs`
 **Archivos:** `labs/auth.log`, `labs/nginx_access.log`, `labs/firewall.log`
 
-## ⚡ Quick command (SRE)
-
-`awk 'FNR==NR{if($0~/Failed password/){for(i=1;i<=NF;i++) if($i=="from"){a[$(i+1)]=1; break}}; next} {ip=$1; if(ip in a) b[ip]++} END{for(ip in b) print b[ip], ip}' labs/auth.log labs/nginx_access.log | sort -rn | head -10`
-
-## 🔍 Análisis paso a paso
-
-1. awk 'FNR==NR{...}' → procesa primero auth.log para identificar IPs con intentos fallidos de SSH
-2. a[$(i+1)]=1 → guarda en un array las IPs atacantes detectadas
-3. next → evita procesar la segunda parte en el primer archivo
-4. {ip=$1; if(ip in a) b[ip]++} → cruza con nginx_access.log contando actividad web de esas mismas IPs
-5. END{for(ip in b) print b[ip], ip} → imprime cantidad de accesos web por IP sospechosa
-6. sort -rn → ordena de mayor a menor actividad
-7. head -10 → muestra las 10 IPs más relevantes
-
-## ✅ Resultado
-
-- correlacionás actividad entre SSH y web
-- identificás IPs con comportamiento malicioso consistente
-- priorizás bloqueos basados en múltiples fuentes
-
 ---
 
 ## 🎯 Problema
 
-Se detecta actividad sospechosa en múltiples servicios del sistema, lo que puede indicar ataques coordinados desde ciertas IPs. Es necesario correlacionar eventos entre diferentes logs para:
+Se detecta actividad sospechosa en múltiples servicios del sistema, lo que puede indicar ataques coordinados desde ciertas IPs.
 
-- correlacionar logs de múltiples fuentes (SSH, web, firewall) para identificar atacantes
-- calcular un score de amenaza por IP basado en su actividad
-- generar reglas de bloqueo automatizadas
+Es necesario:
 
----
-
-## 🧠 Contexto
-
-El servidor recibe tráfico malicioso de múltiples IPs desde distintas fuentes. Una IP que aparece en logs SSH, web y de firewall simultáneamente tiene alta probabilidad de ser maliciosa.
+- correlacionar logs de múltiples fuentes
+- identificar IPs con comportamiento consistente
+- tomar decisiones de bloqueo
 
 ---
 
-## ✅ Datos de entrada
+## ⚡ Quick command (SRE)
 
-- **Producción:** `/var/log/auth.log`, `/var/log/nginx/access.log`, `/var/log/kern.log`
-- **Práctica:** `labs/auth.log`, `labs/nginx_access.log`, `labs/firewall.log`
-
----
-
-## ⚡ Quick run (IPs comunes entre SSH fallido y web)
-
-```bash
-awk 'FNR==NR{if($0~/Failed password/){for(i=1;i<=NF;i++)if($i=="from"){a[$(i+1)]=1;break}};next} $1 in a{print $1}' labs/auth.log labs/nginx_access.log | sort -u
-```
-
----
-
-## 🔍 Paso a paso
-
-1. Primer subcomando: extrae IPs con SSH fallido
-2. Segundo subcomando: extrae IPs de peticiones web
-3. `comm -12` → solo IPs que aparecen en ambas listas
-4. IPs comunes → alta probabilidad de ataque coordinado
+`awk 'FNR==NR{if($0~/Failed password/){for(i=1;i<=NF;i++) if($i=="from"){a[$(i+1)]=1; break}}; next} {ip=$1; if(ip in a) b[ip]++} END{for(ip in b) print b[ip], ip}' labs/auth.log labs/nginx_access.log | sort -rn | head -10`
 
 ---
 
@@ -76,14 +34,30 @@ awk 'FNR==NR{if($0~/Failed password/){for(i=1;i<=NF;i++)if($i=="from"){a[$(i+1)]
 192.168.1.200
 ```
 
-- Si ves IPs aquí, están atacando SSH y web simultáneamente → bloquear.
-- Si no ves nada, las fuentes de ataque no se superponen.
+Interpretación:
+
+- IPs presentes → actividad coordinada (SSH + web) → alto riesgo
+- sin resultados → no hay correlación entre fuentes
 
 ---
 
-## 📌 Pipelines de diagnóstico
+## 🧠 Diagnóstico
 
-### Score de amenaza por IP
+Una IP que aparece en múltiples fuentes indica mayor probabilidad de comportamiento malicioso.
+
+Patrones relevantes:
+
+- IP en SSH + web → actividad coordinada (intentos de acceso + exploración web)
+- IP en múltiples servicios → objetivo persistente o automatizado
+- IP con alta frecuencia en todos los logs → posible atacante activo
+
+👉 Más fuentes coincidentes = mayor prioridad de bloqueo.
+
+---
+
+## 🛠️ Validación extendida
+
+### Correlación y score de amenaza
 
 ```bash
 echo "=== SCORE DE AMENAZA ==="
@@ -94,6 +68,17 @@ grep " 404 " labs/nginx_access.log | awk '{ print $1 }' | sort | uniq -c | awk '
 echo "---"
 grep "DPT=" labs/firewall.log 2>/dev/null | awk '{for(i=1;i<=NF;i++) if($i ~ /^SRC=/) print substr($i,5)}' | sort | uniq -c | awk '$1>5{print $2,$1*3}'  # Escaneo: 3 pts c/u
 ```
+
+### Bloquear IPs con más de N intentos
+
+```bash
+awk '/Failed password/{for(i=1;i<=NF;i++) if($i=="from") print $(i+1)}' labs/auth.log | sort | uniq -c | sort -rn \
+| awk '$1>10{print "iptables -A INPUT -s", $2, "-j DROP"}' | head -10
+```
+
+---
+
+## 📊 Reporte y automatización
 
 ### Reporte consolidado de seguridad
 
@@ -116,22 +101,25 @@ echo "→ Puertos escaneados:"
 awk '{for(i=1;i<=NF;i++) if($i ~ /^DPT=/) print substr($i,5)}' labs/firewall.log 2>/dev/null | sort | uniq -c | sort -rn | head -15
 ```
 
-### Bloquear IPs con más de N intentos
-
-```bash
-awk '/Failed password/{for(i=1;i<=NF;i++) if($i=="from") print $(i+1)}' labs/auth.log | sort | uniq -c | sort -rn \
-| awk '$1>10{print "iptables -A INPUT -s", $2, "-j DROP"}' | head -10
-```
-
 ---
 
 ## 🧯 Mitigación
 
-```bash
-# Bloquear IP de alto score
-iptables -A INPUT -s 10.0.0.5 -j DROP
+Bloquear IP de alto score:
 
-# Si te equivocaste (rollback)
+```bash
+iptables -A INPUT -s 10.0.0.5 -j DROP
+```
+
+Verificar:
+
+```bash
+iptables -L INPUT -v -n | grep 10.0.0.5
+```
+
+Rollback:
+
+```bash
 iptables -D INPUT -s 10.0.0.5 -j DROP
 ```
 

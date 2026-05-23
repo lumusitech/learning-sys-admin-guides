@@ -7,25 +7,6 @@
 **Herramientas:** `grep`, `awk`, `sort`, `uniq`, `head` (+ opcional `iptables`)
 **Datos:** Producción `/var/log/auth.log` | Práctica `labs/auth.log`
 
-## ⚡ Quick command (SRE)
-
-`awk '/Failed password/ {for(i=1;i<=NF;i++) if($i=="from"){c[$(i+1)]++; break}} END{for(ip in c) print c[ip], ip}' labs/auth.log | sort -rn | head -10`
-
-## 🔍 Análisis paso a paso
-
-1. awk '/Failed password/' → filtra solo líneas con intentos fallidos de SSH
-2. for(i=1;i<=NF;i++) if($i=="from"){...} → recorre campos para encontrar la palabra "from"
-3. c[$(i+1)]++ → cuenta ocurrencias por IP (campo siguiente a "from")
-4. END{for(ip in c) print c[ip], ip} → imprime cantidad de intentos por IP
-5. sort -rn → ordena de mayor a menor cantidad
-6. head -10 → muestra las 10 IPs más frecuentes
-
-## ✅ Resultado
-
-- obtenés las IPs con más intentos fallidos de login
-- identificás posibles ataques de fuerza bruta
-- priorizás IPs para bloqueo o análisis
-
 ---
 
 ## 🎯 Problema
@@ -38,28 +19,13 @@ Se detectan múltiples intentos fallidos de autenticación SSH en los logs del s
 
 ---
 
-## 🧠 Contexto (problema real)
+## ⚡ Quick command (SRE)
 
-El servidor presenta:
-
-- múltiples intentos SSH fallidos (posible brute force)
-- carga alta o muchos logs creciendo rápido
-- riesgo de compromiso si hay contraseñas débiles o usuarios expuestos
+`awk '/Failed password/ {for(i=1;i<=NF;i++) if($i=="from"){c[$(i+1)]++; break}} END{for(ip in c) print c[ip], ip}' labs/auth.log | sort -rn | head -10`
 
 ---
 
-## ✅ Datos de entrada
-
-- **Producción**:
-  - `/var/log/auth.log` (Debian/Ubuntu)
-  - o `journalctl -u ssh -S today` (si tu distro loguea via systemd)
-- **Práctica**: `labs/auth.log` del repo
-
----
-
-## ⚡ Quick run (top IPs atacantes) — recomendado para empezar
-
-> Variante portable (sin `grep -P`), funciona en ambientes mínimos.
+## 🛠️ Validación extendida
 
 ```bash
 awk '
@@ -70,24 +36,6 @@ awk '
 ' labs/auth.log \
 | sort | uniq -c | sort -rn | head -10
 ```
-
-### ¿Qué hace?
-
-- `awk` detecta líneas de "Failed password" y extrae el campo después de `from`.
-- `sort | uniq -c` agrupa y cuenta por IP.
-- `sort -rn` ordena por más intentos.
-- `head` te deja un top útil.
-
----
-
-## 🔍 Paso a paso (explicación del pipeline)
-
-1. `awk /Failed password/` → filtra solo intentos fallidos.
-2. `if ($i=="from") print $(i+1)` → extrae la IP sin regex frágiles.
-3. `sort` → necesario para que `uniq -c` cuente correctamente.
-4. `uniq -c` → cuenta ocurrencias por IP.
-5. `sort -rn` → orden descendente (más atacantes primero).
-6. `head -10` → top 10.
 
 ---
 
@@ -101,18 +49,12 @@ awk '
   1 10.0.0.1
 ```
 
-### Interpretación por severidad (regla simple)
+Interpretación:
 
-Usá el conteo como heurística inicial:
-
-| Intentos | Interpretación |
-|----------|----------------|
-| 1–3 | Error humano / bots muy leves |
-| 5–20 | Automatización suave / escaneo |
-| 20–100+ | Brute force activo |
-| Muchas IPs distintas | Ataque distribuido (botnet) |
-
-💡 Esto no reemplaza correlación por tiempo; te da **triage** rápido.
+- pocos intentos (1–3) → error humano o bots leves
+- intentos moderados (5–20) → escaneo o automatización
+- muchos intentos (20–100+) → brute force activo
+- muchas IPs distintas → ataque distribuido (botnet)
 
 ---
 

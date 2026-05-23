@@ -1,31 +1,49 @@
 ⬅️ [Volver a scenarios](../README.md)
 
-# Escenario: Recuperación ante desastres (disaster recovery)
-
-## ⚡ Quick command (SRE)
-
-`ssh -o BatchMode=yes -o ConnectTimeout=5 backup@NAS 'ls -la /srv/nas/backups | head -5; restic snapshots --repo /srv/nas/backups/restic 2>/dev/null | head -10 || echo "restic/no-access"'`
-
-## 🔍 Análisis paso a paso
-
-1. ssh → ejecuta comandos remotos en el servidor de backups (NAS)
-2. ls -la /srv/nas/backups | head -5 → muestra archivos recientes de backups para ver si existen y tienen tamaño válido
-3. restic snapshots --repo /srv/nas/backups/restic → lista snapshots disponibles en el repositorio de backups
-4. 2>/dev/null → oculta errores si restic no está configurado o no tiene acceso
-5. head -10 → limita salida para lectura rápida
-6. || echo "restic/no-access" → muestra mensaje claro si el comando falla
-
-## ✅ Resultado
-
-- verificás si existen backups recientes en el NAS
-- confirmás snapshots disponibles en restic
-- detectás problemas de acceso o configuración de backups
+# 🧩 Escenario: Recuperación ante desastres (disaster recovery)
 
 ---
 
 ## 🎯 Problema
 
 El servidor de producción ha sufrido un fallo de disco. Tienes backups almacenados en un NAS local y en la nube (Backblaze B2). Necesitas restaurar todo el stack en un servidor nuevo: sistema operativo, configuraciones, archivos web, base de datos, y verificar que la aplicación funciona correctamente. El tiempo de recuperación objetivo (RTO) es de 4 horas.
+
+---
+
+## ⚡ Quick command (SRE)
+
+`ssh -o BatchMode=yes -o ConnectTimeout=5 backup@NAS 'ls -la /srv/nas/backups | head -5; restic snapshots --repo /srv/nas/backups/restic 2>/dev/null | head -10 || echo "restic/no-access"'`
+
+---
+
+## ✅ Salida esperada
+
+- listado de backups recientes disponible en el NAS
+- snapshots de restic visibles
+- sin errores de acceso a repositorio
+
+Interpretación inicial:
+
+- backups visibles → hay datos para recuperar
+- snapshots disponibles → restauración posible
+- errores de acceso → problema crítico en DR (backup inutilizable)
+
+---
+
+## 🧠 Diagnóstico
+
+La recuperación ante desastres depende de la disponibilidad y consistencia de los backups.
+
+Patrones clave:
+
+- backups inexistentes o incompletos → recuperación imposible
+- snapshots corruptos → restauración fallida
+- acceso limitado al repositorio → bloqueo del proceso de recuperación
+- dependencia de un solo backup → punto único de fallo
+
+👉 Un backup no probado no es un backup confiable.
+
+---
 
 ## Datos de entrada
 
@@ -35,7 +53,11 @@ El servidor de producción ha sufrido un fallo de disco. Tienes backups almacena
 - Repositorio restic: `/srv/nas/backups/restic`
 - Último snapshot conocido: `abc123def`
 
-## Pipeline 1: Preparar servidor de recuperación
+---
+
+## 🛠️ Procedimiento (runbook)
+
+### 1. Preparar servidor de recuperación
 
 ```bash
 # Hardening rápido
@@ -66,13 +88,7 @@ ls -la /mnt/nas-backups/
 restic snapshots --repo /mnt/nas-backups/restic 2>/dev/null || echo "ERROR: Backup no accesible"
 ```
 
-### Explicación paso a paso
-
-1. **Preparación mínima** — Usuario, SSH, firewall
-2. **Montar NAS** — El backup local debe estar accesible primero
-3. **Verificar** — Si el backup no está accesible, pasar al backup externo
-
-## Pipeline 2: Restaurar configuración del sistema
+### 2. Restaurar configuración
 
 ```bash
 # Restaurar /etc desde backup rsync
@@ -94,14 +110,7 @@ diff -r /etc/ssh/sshd_config /mnt/nas-backups/servidor1/$FECHA_BACKUP/etc/ssh/ss
   echo "OK: SSH config íntegra" || echo "ERROR: SSH config corrupta"
 ```
 
-### Explicación paso a paso
-
-1. **rsync inverso** — Restaura desde el NAS al nuevo servidor
-2. **sysctl** — Aplica parámetros de kernel del backup
-3. **iptables-restore** — Recupera las reglas de firewall exactas
-4. **diff** — Verifica que la restauración fue correcta
-
-## Pipeline 3: Restaurar aplicación web con restic
+### 3. Restaurar aplicación
 
 ```bash
 # Listar snapshots disponibles
@@ -127,13 +136,7 @@ restic restore latest \
   --verbose
 ```
 
-### Explicación paso a paso
-
-1. **restic snapshots** — Identifica el snapshot a restaurar
-2. **restic restore** — Restaura archivos completos con permisos
-3. **Fallback a nube** — Si el backup local falla, se descarga de B2
-
-## Pipeline 4: Restaurar base de datos
+### 4. Restaurar base de datos
 
 ```bash
 # Buscar backup de MySQL en el backup restaurado
@@ -157,13 +160,7 @@ mysql -u root -e "SHOW DATABASES;" 2>/dev/null
 mysql -u root -e "SELECT COUNT(*) FROM information_schema.tables;" 2>/dev/null
 ```
 
-### Explicación paso a paso
-
-1. **Dump SQL** — Si existe mysqldump, es la opción más segura
-2. **Copia directa** — Si no hay dump, restaurar `/var/lib/mysql` directamente
-3. **Verificación** — Comprueba que la BD se restauró correctamente
-
-## Pipeline 5: Restaurar nginx y sitio web
+### 5. Restaurar nginx
 
 ```bash
 # Restaurar configuración de nginx
@@ -185,14 +182,7 @@ curl -s -o /dev/null -w "%{http_code} %{content_type}" http://localhost
 curl -s http://localhost | head -5
 ```
 
-### Explicación paso a paso
-
-1. **Configuración** — Se restaura completa incluyendo SSL
-2. **`nginx -t`** — Verifica que la sintaxis sea correcta
-3. **Contenido web** — Archivos estáticos y aplicaciones
-4. **Curl test** — Verifica que nginx responde
-
-## Pipeline 6: Verificación post-recuperación
+### 6. Verificación
 
 ```bash
 # 1. Verificar servicios críticos
@@ -227,14 +217,7 @@ df -h / | tail -1
 free -h | grep Mem
 ```
 
-### Explicación paso a paso
-
-1. **Servicios** — Verifica que los servicios críticos están activos
-2. **Integridad** — Checksums de archivos restaurados
-3. **Conectividad** — Ping a NAS, DB interna y DNS externo
-4. **Logs** — Busca errores en el nuevo arranque
-
-## Pipeline 7: Documentar lecciones aprendidas
+### 7. Lecciones aprendidas
 
 ```bash
 # Generar reporte de lo que faltó en el backup
@@ -261,11 +244,39 @@ echo "- Documentar RPO (pérdida máxima aceptable)" | tee -a /tmp/recomendacion
 echo "- Probar restauración completa cada 3 meses" | tee -a /tmp/recomendaciones.txt
 ```
 
-### Explicación paso a paso
+---
 
-1. **diff** — Identifica configuraciones que no estaban en backup
-2. **Cálculo RTO** — Mide el tiempo real de recuperación
-3. **Recomendaciones** — Documenta mejoras para el próximo DR
+## 🧯 Mitigación
+
+Si la recuperación falla:
+
+Verificar:
+
+```bash
+restic snapshots --repo /mnt/nas-backups/restic
+ls -la /mnt/nas-backups/
+```
+
+Acción:
+
+```bash
+rclone sync b2:my-bucket/prod-backups/restic/ /mnt/nas-backups/restic/
+```
+
+Rollback:
+
+```bash
+# reintentar restauración desde snapshot anterior
+restic restore <snapshot_id> --target /tmp/restore-alt
+```
+
+Casos comunes:
+
+- backup local corrupto → usar backup cloud
+- snapshot inexistente → error en estrategia de backup
+- restauración incompleta → revisar permisos y rutas
+
+---
 
 ## Variantes
 
@@ -305,19 +316,19 @@ echo "Último backup de BD: $(ls -lt /mnt/nas-backups/mysql/*.sql.gz | head -1 |
 echo "=== SIMULACRO COMPLETADO ==="
 ```
 
-## Interpretación
+---
 
-| Indicador | Significado |
-|-----------|-------------|
-| `nginx -t` OK | Configuración de nginx restaurada correctamente |
-| `mysql SHOW DATABASES` con datos | Base de datos íntegra |
-| `curl` devuelve 200 | Aplicación funcionando |
-| `restic check` OK | Backup no corrupto |
-| `diff` sin diferencias en /etc | Restauración completa de configs |
-| Tiempo total < 4 horas | RTO cumplido |
-| Datos perdidos > RPO esperado | Ajustar frecuencia de backups |
+## ✅ Interpretación
 
-## Comandos relacionados
+- `nginx -t` OK → configuración restaurada correctamente
+- bases de datos visibles → restauración exitosa
+- `curl` devuelve 200 → aplicación funcional
+- `restic check` OK → backup íntegro
+- RTO cumplido → recuperación dentro de lo esperado
+
+---
+
+## 🔗 Referencias
 
 - [storage_backup.md](../../guides/storage_backup.md)
 - [production_server.md](../../guides/production_server.md)
