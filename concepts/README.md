@@ -24,9 +24,27 @@ Usá `concepts/` cuando:
 
 👉 Esto va ANTES de usar herramientas
 
+---
+
+👉 Esta sección es conceptual:
+- NO incluye comandos
+- NO incluye pasos
+- SOLO explica cómo entender y razonar
+
+Para ejecutar acciones, ver `guides/`
+
+---
+
+## 📚 Conceptos disponibles
+
 | Concepto | Nivel | Descripción |
 |----------|-------|-------------|
-| [Cómo pensar como un sysadmin](how-to-think-like-sysadmin.md) | 🟢 Básico | Patrones normales vs anómalos, lectura de logs, latencia vs pérdida, checklist mental |
+| [Cómo pensar como un sysadmin](how-to-think-like-sysadmin.md) | 🟢 Básico | Patrones normales vs anómalos, lectura de logs, latencia vs pérdida, modelo mental de diagnóstico |
+
+---
+
+📌 Ver también:
+- [`troubleshooting-patterns.md`](../reference/troubleshooting-patterns.md — mapa rápido de diagnóstico)
 
 ---
 

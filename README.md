@@ -2,7 +2,9 @@
 
 [![SRE Validation](https://github.com/lumusitech/learning-sys-admin-guides/actions/workflows/sre-validate.yml/badge.svg?branch=main)](https://github.com/lumusitech/learning-sys-admin-guides/actions/workflows/sre-validate.yml)
 
-Guías de referencia + laboratorio Docker + escenarios prácticos para **administración de servidores Linux y redes**.
+Sistema de aprendizaje para **administración de servidores Linux y redes**:
+guías de referencia, laboratorio Docker y escenarios prácticos.
+
 
 **Enfoque:** cada opción explicada, cada salida interpretada, uso real en troubleshooting, fallas y seguridad.
 
@@ -20,7 +22,6 @@ Guías de referencia + laboratorio Docker + escenarios prácticos para **adminis
 - ✅ Sin bashismos (<(), arrays, etc.)
 - ✅ Pipelines reproducibles en entornos mínimos
 
-
 ---
 
 ## 🧭 ¿Por dónde empezar?
@@ -28,10 +29,11 @@ Guías de referencia + laboratorio Docker + escenarios prácticos para **adminis
 Este repo puede usarse de 3 formas:
 
 ### 🧑‍🎓 Aprendizaje progresivo (RECOMENDADO)
-1. 👉 [concepts/](concepts/) — cómo pensar como sysadmin  
-2. 👉 [guides/](guides/) — aprender cada herramienta  
-3. 👉 [labs/](labs/) — practicar con datos reales  
-4. 👉 [scenarios/](scenarios/) — resolver problemas reales  
+1. 👉 concepts/ — cómo pensar como sysadmin  
+2. 👉 reference/ — orientarse rápidamente  
+3. 👉 guides/ — aprender cada herramienta  
+4. 👉 labs/ — practicar con datos reales  
+5. 👉 scenarios/ — resolver problemas reales
 
 ---
 
@@ -39,7 +41,8 @@ Este repo puede usarse de 3 formas:
 1. 👉 [scenarios/](scenarios/) — encontrar problema  
 2. ejecutar **Quick command (SRE)**  
 3. validar con 👉 [labs/](labs/)  
-4. profundizar en 👉 [guides/](guides/)  
+4. orientar con 👉 [reference/](reference/)  
+5. profundizar en 👉 [guides/](guides/)  
 
 ---
 
@@ -57,6 +60,16 @@ Patrones de pensamiento:
 - cómo analizar logs
 - cómo diagnosticar problemas
 - cómo pensar como SRE
+
+---
+
+### 📚 [reference/](reference/) — mapas rápidos
+Apoyo durante troubleshooting:
+- cheatsheets
+- mapa problema → herramienta
+- orientación rápida
+
+👉 Útil cuando ya sabés qué pasa pero necesitás dirección rápida
 
 ---
 
@@ -92,9 +105,8 @@ Casos como:
 
 ## 🔄 Flujo de trabajo (muy importante)
 
-
 ```bash
-problema → scenarios → quick command → labs → guides
+problema → scenarios → quick command → labs → reference → guides
 ```
 
 ## ✅ Licencia
