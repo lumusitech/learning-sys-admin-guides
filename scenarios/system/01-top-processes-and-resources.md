@@ -7,22 +7,6 @@
 **Herramientas:** `ps`, `sort`, `awk`, `grep`, `watch`, `column`
 **Datos:** Sistema en vivo (`ps aux`), logs (`labs/syslog.log`)
 
-## ⚡ Quick command (SRE)
-
-`ps aux | sort -k3 -rn | head -11`
-
-## 🔍 Análisis paso a paso
-
-1. ps aux → lista todos los procesos en ejecución con uso de CPU, memoria y usuario
-2. sort -k3 -rn → ordena los procesos por uso de CPU (columna 3), de mayor a menor
-3. head -11 → muestra los 10 procesos que más CPU consumen (más la cabecera)
-
-## ✅ Resultado
-
-- identificás procesos que consumen más CPU
-- detectás anomalías o procesos fuera de lo normal
-- priorizás acciones de mitigación sobre los recursos críticos
-
 ---
 
 ## 🎯 Problema
@@ -35,49 +19,9 @@ El sistema presenta alto consumo de recursos o degradación de rendimiento, lo q
 
 ---
 
-## 🧠 Contexto (problema real)
+## ⚡ Quick command (SRE)
 
-El servidor está lento. Los usuarios reportan timeouts, la aplicación responde tarde o el comando `ssh` tarda en conectar. Posibles causas:
-
-- Un proceso en bucle infinito acapara la CPU
-- Una aplicación tiene memory leak y consume toda la RAM
-- Hay procesos zombie acumulados
-- El disco está saturado y los procesos quedan en estado `D` (uninterruptible sleep)
-
----
-
-## ✅ Datos de entrada
-
-- **Producción**: sistema en vivo (`ps aux`, `/proc/`)
-- **Práctica**: cualquier servidor Linux activo. También podés usar el contenedor `cpu-hog` del lab de servicios rotos.
-
----
-
-## ⚡ Quick run (top 10 por CPU)
-
-```bash
-ps aux \
-  | sort -k3 -rn \
-  | head -11 \
-  | awk 'NR==1{printf "%-8s %-5s %-5s %s\n","USUARIO","CPU%","MEM%","COMANDO"}
-         NR>1{printf "%-8s %-5s %-5s %s\n",$1,$3,$4,$11}'
-```
-
-### ¿Qué hace?
-
-- `ps aux` lista todos los procesos con %CPU (columna 3) y %MEM (columna 4)
-- `sort -k3 -rn` ordena descendente por CPU
-- `head -11` toma cabecera + top 10
-- `awk` formatea en columnas alineadas
-
----
-
-## 🔍 Paso a paso (explicación del pipeline)
-
-1. `ps aux` → lista completa de procesos con uso de recursos
-2. `sort -k3 -rn` → ordena por columna 3 (CPU) numérica descendente
-3. `head -11` → top 10 (más la cabecera)
-4. `awk 'NR==1 ... NR>1 ...'` → primera línea como cabecera, las demás como datos
+`ps aux | sort -k3 -rn | head -11`
 
 ---
 
@@ -91,18 +35,31 @@ admin     2.0   0.1  nginx: worker process
 ...
 ```
 
-### Interpretación
+Interpretación:
 
-| %CPU sostenido | Significado |
-|----------------|-------------|
-| >80% en un solo proceso | Posible bucle infinito o cómputo intensivo |
-| >80% pero varía | Carga legítima (compilación, encoding) |
-| 10-50% varios procesos | Carga normal en servidor ocupado |
-| <5% | Reposo / servidor sin carga |
+- \>80% sostenido en un proceso → posible bucle infinito o proceso intensivo
+- uso alto pero variable → carga legítima
+- varios procesos 10–50% → carga normal
+- <5% → sistema en reposo
 
 ---
 
-## 📌 Pipelines de diagnóstico
+## 🧠 Diagnóstico
+
+El uso de CPU y memoria debe interpretarse en contexto, no como valores absolutos.
+
+Patrones relevantes:
+
+- CPU alta sostenida en un proceso → posible bucle infinito o problema en aplicación
+- CPU alta pero variable → carga legítima
+- procesos en estado `D` → cuello de botella en disco
+- procesos zombie acumulados → problema en manejo de procesos
+
+👉 No toda CPU alta es un problema: lo importante es el patrón y la persistencia.
+
+---
+
+## 🛠️ Validación extendida
 
 ### Top por uso de memoria
 

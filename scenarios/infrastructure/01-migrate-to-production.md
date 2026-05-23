@@ -1,25 +1,6 @@
 ⬅️ [Volver a scenarios](../README.md)
 
-# Escenario: Migrar aplicación a servidor de producción
-
-## ⚡ Quick command (SRE)
-
-`ssh -o BatchMode=yes -o ConnectTimeout=5 ADMIN@PROD 'systemctl is-active nginx 2>/dev/null || true; ss -tuln | awk "NR==1 || /:80|:443|:3306|:5432/"'`
-
-## 🔍 Análisis paso a paso
-
-1. ssh → ejecuta comandos remotos en el servidor de producción
-2. systemctl is-active nginx → verifica si nginx está corriendo correctamente
-3. 2>/dev/null → oculta errores si el servicio no existe
-4. ss -tuln → lista puertos abiertos y servicios escuchando
-5. awk "NR==1 || /:80|:443|:3306|:5432/" → filtra puertos clave (HTTP, HTTPS, bases de datos)
-
-
-## ✅ Resultado
-
-- verificás rápidamente si los servicios críticos están activos
-- confirmás que los puertos necesarios están expuestos
-- detectás problemas básicos post‑deploy
+# 🧩 Escenario: Migrar aplicación a servidor de producción
 
 ---
 
@@ -27,14 +8,47 @@
 
 Tienes una aplicación web funcionando en un servidor de desarrollo y necesitas migrarla a un servidor de producción recién aprovisionado. El servidor de producción debe estar hardening, con Docker, nginx como proxy reverso, SSL, límites de recursos, y monitoreo básico. El proceso incluye sincronizar archivos, configurar el stack, y verificar que todo funciona correctamente.
 
-## Datos de entrada
+---
 
-- Servidor origen: `dev.empresa.local` (192.168.1.10)
-- Servidor destino: `prod.empresa.local` (10.0.40.10)
-- Aplicación en `/var/www/miapp/`
-- Base de datos MySQL en servidor origen
+## ⚡ Quick command (SRE)
 
-## Pipeline 1: Hardening inicial del servidor de producción
+`ssh -o BatchMode=yes -o ConnectTimeout=5 ADMIN@PROD 'systemctl is-active nginx 2>/dev/null || true; ss -tuln | awk "NR==1 || /:80|:443|:3306|:5432/"'`
+
+---
+
+## ✅ Salida esperada
+
+- servicios críticos activos (nginx / app)
+- puertos necesarios abiertos (80, 443, DB internos)
+- sin servicios fallidos en systemctl
+- acceso remoto funcional
+
+Interpretación:
+
+- servicios activos → sistema listo para recibir tráfico
+- puertos correctos → exposición controlada
+- sin errores en systemctl → provisión correcta
+
+---
+
+## 🧠 Diagnóstico
+
+Una migración a producción implica riesgo alto si el servidor no está correctamente configurado.
+
+Patrones clave:
+
+- servicios no activos → despliegue incompleto
+- puertos incorrectos → exposición o fallo de acceso
+- errores en logs → problemas de arranque o configuración
+- falta de hardening → riesgo de seguridad inmediato
+
+👉 Un deploy exitoso no es solo copiar archivos: es validar estado, exposición y estabilidad.
+
+---
+
+## 🛠️ Procedimiento (runbook)
+
+### Hardening inicial
 
 ```bash
 ssh admin@prod.empresa.local 'bash -s' <<'REMOTE'
@@ -71,17 +85,7 @@ echo "=== Listo ==="
 REMOTE
 ```
 
-### Explicación paso a paso
-
-1. **`ssh admin@prod bash -s`** — Ejecuta comandos remotos sin copiar script
-2. **`apt update && apt upgrade`** — Actualiza todo el sistema
-3. **`sed`** en sshd_config — Desactiva root login y auth por password
-4. **`ufw`** — Firewall solo con SSH, HTTP, HTTPS
-5. **`fallocate + mkswap + swapon`** — Swap de 2 GB
-6. **`sysctl`** — Parámetros de red y memoria optimizados
-7. **`fail2ban`** — Protección contra fuerza bruta
-
-## Pipeline 2: Instalar Docker y nginx
+### Instalación de stack
 
 ```bash
 ssh deploy@prod.empresa.local -p 2222 'bash -s' <<'REMOTE'
@@ -116,14 +120,7 @@ sudo nginx -t && sudo systemctl reload nginx
 REMOTE
 ```
 
-### Explicación paso a paso
-
-1. **`curl get.docker.com`** — Instala Docker Engine
-2. **`/etc/docker/daemon.json`** — Logs rotados, live-restore para reinicios sin downtime
-3. **Configuración nginx** — Proxy reverso a la app en puerto 3000
-4. **`nginx -t`** — Verifica sintaxis antes de recargar
-
-## Pipeline 3: Migrar archivos y base de datos
+### Migración de datos
 
 ```bash
 # Sincronizar archivos de la aplicación
@@ -146,13 +143,7 @@ find /var/www/miapp -type f -exec md5sum {} \; \
   "cat > /tmp/checksums.txt && cd /home/deploy/miapp && md5sum -c /tmp/checksums.txt | grep -v 'OK$'"
 ```
 
-### Explicación paso a paso
-
-1. **`rsync`** — Sincroniza archivos (excluye temporales, logs, node_modules)
-2. **`mysqldump | gzip | ssh | gunzip | mysql`** — Tubería completa de migración de BD
-3. **`find ... md5sum`** — Verifica que los archivos se copiaron sin corrupción
-
-## Pipeline 4: Desplegar con Docker Compose
+### Deploy
 
 ```bash
 # docker-compose.yml en servidor de producción
@@ -200,13 +191,7 @@ docker compose up -d
 REMOTE
 ```
 
-### Explicación paso a paso
-
-1. **Compose file** — Define app con límites de CPU/memoria
-2. **MySQL 8** — Base de datos con volumen persistente
-3. **`docker compose up -d`** — Despliega en background
-
-## Pipeline 5: Verificar la migración
+### Verificación
 
 ```bash
 # 1. Probar que nginx responde
@@ -228,13 +213,35 @@ ssh deploy@prod.empresa.local -p 2222 \
   "docker stats --no-stream && echo '---' && free -h && echo '---' && df -h /"
 ```
 
-### Explicación paso a paso
+---
 
-1. **`curl -o /dev/null -w "%{http_code}"`** — Verifica código de respuesta HTTP
-2. **`curl /health | jq`** — Endpoint de health check
-3. **Logs de nginx** — Verifica que no hay errores
-4. **`docker logs`** — Verifica que la app no tiene errores de inicio
-5. **`docker stats + free + df`** — Verifica recursos del servidor
+## 🧯 Mitigación
+
+Si la migración falla:
+
+```bash
+docker compose down
+```
+
+Verificar:
+
+```bash
+docker logs <contenedor>
+```
+
+Rollback:
+
+```bash
+docker compose -f docker-compose.old.yml up -d
+```
+
+Casos comunes:
+
+- app no responde → verificar logs y puertos
+- 502/503 → revisar nginx y upstream
+- base de datos inaccesible → validar credenciales y conexión
+
+---
 
 ## Variantes
 
@@ -261,18 +268,19 @@ ssh deploy@prod.empresa.local -p 2222 \
    nginx -s reload"
 ```
 
-## Interpretación
+---
 
-| Indicador | Significado |
-|-----------|-------------|
-| `curl` devuelve 200 | App funcionando correctamente |
-| `curl` devuelve 502/503 | nginx no puede contactar la app |
-| `docker logs` con errores de conexión | Base de datos no accesible |
-| `df -h` > 80% | Disco lleno, verificar logs y backups |
-| `free -h` sin swap libre | Memoria justa, considerar aumentar RAM |
-| `nginx error.log` con "connection refused" | App no escucha en el puerto esperado |
+## ✅ Interpretación
 
-## Comandos relacionados
+- `curl` devuelve 200 → aplicación funcionando correctamente
+- `curl` devuelve 502/503 → nginx no puede contactar backend
+- errores en `docker logs` → problema en aplicación o dependencias
+- disco >80% → riesgo de saturación
+- falta de memoria → posible degradación
+
+---
+
+## 🔗 Referencias
 
 - [nginx.md](../../guides/nginx.md)
 - [production_server.md](../../guides/production_server.md)

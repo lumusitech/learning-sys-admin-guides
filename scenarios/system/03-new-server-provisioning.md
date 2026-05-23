@@ -7,27 +7,6 @@
 **Herramientas:** `ssh`, `ufw`/`iptables`, `systemctl`, `sed`, `fail2ban`, `timedatectl`
 **Archivos:** Servidor remoto (VPS/cloud)
 
-## ⚡ Quick command (SRE)
-
-`ssh -o BatchMode=yes -o ConnectTimeout=5 ADMIN@HOST 'hostname; uptime; sudo systemctl --no-pager --failed || true; sudo ss -tuln | head -20'`
-
-## 🔍 Análisis paso a paso
-
-1. ssh → ejecuta comandos remotos en el servidor objetivo
-2. hostname → muestra el nombre del servidor para confirmar identidad
-3. uptime → indica tiempo activo y carga del sistema
-4. systemctl --failed → lista servicios fallidos (si hay errores)
-5. || true → evita que errores corten la ejecución del comando
-6. ss -tuln → muestra puertos abiertos y servicios en escucha
-7. head -20 → limita la salida para lectura rápida
-
-## ✅ Resultado
-
-- verificás estado general del servidor en segundos
-- identificás servicios fallidos
-- confirmás qué puertos están abiertos
-- detectás problemas básicos de salud del sistema
-
 ---
 
 ## 🎯 Problema
@@ -40,29 +19,32 @@ Se dispone de un servidor nuevo sin configuraciones de seguridad ni servicios b�
 
 ---
 
-## 🧠 Contexto
+## ⚡ Quick command (SRE)
 
-Acabas de recibir un servidor nuevo (VPS, dedicado o instancia cloud) con acceso root por contraseña. Está en su estado más vulnerable. Hay que asegurarlo antes de desplegar cualquier aplicación.
-
----
-
-## ✅ Datos de entrada
-
-- **Producción:** Servidor remoto con IP pública y acceso root por SSH
-- **Práctica:** Docker container `from-scratch/ubuntu-bare` (simula servidor nuevo)
+`ssh -o BatchMode=yes -o ConnectTimeout=5 ADMIN@HOST 'hostname; uptime; sudo systemctl --no-pager --failed || true; sudo ss -tuln | head -20'`
 
 ---
 
-## ⚡ Quick run (hardening automatizado)
+## 🧠 Diagnóstico
 
-```bash
-# Descargar y ejecutar script de provisionamiento
-curl -sL https://raw.githubusercontent.com/lumusitech/learning-sys-admin-guides/main/scenarios/system/provision.sh | bash
-```
+Un servidor recién provisionado es un sistema en estado inseguro por defecto.
+
+Riesgos principales:
+
+- acceso root por contraseña → vector directo de ataque
+- servicios abiertos por defecto → superficie de exposición innecesaria
+- falta de autenticación por clave → susceptible a brute force
+- ausencia de firewall → acceso libre desde internet
+
+👉 Todo servidor nuevo debe considerarse comprometible hasta ser endurecido (hardened).
 
 ---
 
-## 🔍 Paso a paso (Workflow completo)
+## 🛠️ Procedimiento (runbook)
+
+### Objetivo
+
+Asegurar y endurecer el servidor antes de exponerlo a producción.
 
 ### 1. Primer acceso
 
@@ -155,14 +137,20 @@ echo "=== FAIL2BAN ===" && fail2ban-client status sshd
 
 ## ✅ Salida esperada (servidor listo)
 
-```
-- Sin acceso root por SSH
-- Solo claves públicas
-- Firewall bloqueando todo excepto SSH (desde tu IP) + web
-- Fail2ban activo
-- Hora sincronizada
-- Actualizaciones de seguridad automáticas
-```
+- acceso root por SSH deshabilitado
+- autenticación por clave SSH activa
+- firewall activo con puertos mínimos abiertos
+- fail2ban funcionando
+- servicios básicos sin errores
+
+Interpretación:
+
+- acceso root deshabilitado → superficie de ataque reducida
+- autenticación por clave → protección contra brute force
+- firewall activo → control de exposición de servicios
+- fail2ban activo → mitigación automática de intentos fallidos
+
+👉 No aplicar mitigaciones sin validar primero el patrón de error.
 
 ---
 

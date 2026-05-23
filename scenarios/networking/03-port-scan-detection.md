@@ -1,204 +1,146 @@
-⬅️ [Volver a scenarios](../README.md)
+⬅️ ../README.md
 
 # 🧩 Escenario: Detectar escaneo de puertos en logs de firewall
 
-**Dominio:** networking / security
-**Nivel:** 🟡 Intermedio
-**Herramientas:** `grep`, `awk`, `sort`, `uniq`, `head`, `iptables`
-**Archivos:** `labs/firewall.log`
-
-## ⚡ Quick command (SRE)
-
-`awk '{for(i=1;i<=NF;i++) if($i ~ /^SRC=/){ip=$i; sub(/^SRC=/,"",ip); c[ip]++}} END{for(ip in c) print c[ip], ip}' labs/firewall.log | sort -rn | head -10`
-
-## 🔍 Análisis paso a paso
-
-1. awk '{for(i=1;i<=NF;i++) if($i ~ /^SRC=/){...}}' → recorre cada campo de la línea buscando el campo SRC= (IP origen)
-2. sub(/^SRC=/,"",ip) → elimina el prefijo "SRC=" dejando solo la IP
-3. c[ip]++ → cuenta cuántas veces aparece cada IP en los logs
-4. END{for(ip in c) print c[ip], ip} → imprime cantidad de eventos por IP
-5. sort -rn → ordena por mayor cantidad de eventos
-6. head -10 → muestra las 10 IPs más activas
-
-✅ Resultado
-
-- identificás IPs que generan más eventos en firewall
-- detectás posibles escaneos de puertos o actividad maliciosa
-- priorizás IPs para bloqueo o análisis
+**Dominio:** networking / security  
+**Nivel:** 🟡 Intermedio  
+**Herramientas:** `awk`, `sort`, `uniq`, `iptables`  
+**Archivos:** labs/firewall.log
 
 ---
 
 ## 🎯 Problema
 
-Se sospecha que el servidor está siendo escaneado para detectar puertos abiertos, lo que puede indicar actividad maliciosa o reconocimiento previo a un ataque. Es necesario analizar los logs para:
+Se sospecha que el servidor está siendo escaneado para detectar puertos abiertos.
 
-- identificar IPs que están escaneando puertos del servidor
-- detectar el tipo de escaneo (SYN, horizontal, evasión)
-- generar reglas de bloqueo específicas
+Es necesario:
 
----
-
-## 🧠 Contexto
-
-Los logs del firewall (iptables) muestran conexiones entrantes a múltiples puertos desde una misma IP en poco tiempo. Un atacante está probando qué servicios están abiertos para planear un ataque.
+- identificar IPs sospechosas
+- detectar patrones de escaneo
+- determinar si la actividad es maliciosa
 
 ---
 
-## ✅ Datos de entrada
+## ⚡ Quick command (SRE)
 
-- **Producción:** `/var/log/kern.log` (logs de iptables con `LOG`)
-- **Práctica:** `labs/firewall.log`
+`awk '{for(i=1;i<=NF;i++) if($i ~ /^SRC=/){ip=$i; sub(/^SRC=/,"",ip); c[ip]++}} END{for(ip in c) print c[ip], ip}' labs/firewall.log | sort -rn | head -10`
 
 ---
 
-## ⚡ Quick run (IPs que más conexiones hacen)
+## 🔍 Señales clave
 
+Al ejecutar el comando:
+
+- IPs con gran cantidad de eventos → sospechoso
+- una IP dominante → posible atacante
+- muchas IPs con pocos eventos → escaneo distribuido
+
+---
+
+## 🧠 Diagnóstico
+
+Un escaneo de puertos suele presentar:
+
+- acceso a múltiples puertos en poco tiempo
+- repeticiones rápidas desde la misma IP
+- paquetes SYN sin completar handshake
+
+👉 Esto indica fase de reconocimiento (recon) previa a un ataque real
+
+---
+
+## 🛠️ Validación extendida
+
+### Ver puertos escaneados por IP sospechosa
 ```bash
-awk '{for(i=1;i<=NF;i++) if($i ~ /^SRC=/) print substr($i,5)}' labs/firewall.log | sort | uniq -c | sort -rn | head -10
+IP_SOSPE="10.0.0.5"
+grep "SRC=$IP_SOSPE" labs/firewall.log \
+| awk '{for(i=1;i<=NF;i++) if($i ~ /^DPT=/) print substr($i,5)}' \
+| sort -n | uniq
 ```
 
----
+### Detectar SYN scan (SYN sin ACK)
+```bash
+grep "SYN" labs/firewall.log | grep -v "ACK" \
+| awk '{for(i=1;i<=NF;i++) if($i ~ /^SRC=/) print substr($i,5)}' \
+| sort | uniq -c | sort -rn
+```
 
-## 🔍 Paso a paso
-
-1. `awk '{for(i=1;i<=NF;i++) if($i ~ /^SRC=/) print substr($i,5)}'` → extrae IP origen después de `SRC=`
-2. `sort` → ordena para uniq
-3. `uniq -c` → cuenta conexiones por IP
-4. `sort -rn` → ordena por frecuencia
-5. `head -10` → top 10
+### Puertos más escaneados
+```bash
+awk '{for(i=1;i<=NF;i++) if($i ~ /^DPT=/) print substr($i,5)}' \
+labs/firewall.log | sort | uniq -c | sort -rn | head -10
+```
 
 ---
 
 ## ✅ Salida esperada
-
-```
-150 10.0.0.5
+```bash
+ 150 10.0.0.5
  89 203.0.113.45
  45 192.168.1.200
 ```
 
-- Una IP con muchas más conexiones que el resto → probable atacante
-- Si son pocas conexiones por IP pero muchas IPs distintas → escaneo distribuido
+Interpretación:
+
+- una IP con muchos más eventos → probable atacante
+- valores similares → tráfico más distribuido
 
 ---
 
-## 📌 Pipelines de diagnóstico
+## ✅ Solución
 
-### Puertos escaneados por IP sospechosa
-
-```bash
-IP_SOSPE="10.0.0.5"
-grep "SRC=$IP_SOSPE" labs/firewall.log | awk '{for(i=1;i<=NF;i++) if($i ~ /^DPT=/) print substr($i,5)}' | sort -n | uniq \
-| awk '{ print "Puerto:", $1 } END { print "Total puertos únicos:", NR }'
-```
-
-### Detectar SYN scan (SYN sin ACK)
+Bloquear IP sospechosa:
 
 ```bash
-grep "SYN" labs/firewall.log | grep -v "ACK" \
-| awk '{for(i=1;i<=NF;i++) if($i ~ /^SRC=/) print substr($i,5)}' | sort | uniq -c | sort -rn \
-| awk '$1>10{print $2, "->", $1, "SYNs (posible SYN scan)"}'
-```
-
-### Reporte completo de escaneo
-
-```bash
-grep "SRC=10.0.0.5" labs/firewall.log \
-| awk '{ for(i=1;i<=NF;i++){ if($i~ /SRC=/)ip=substr($i,5); if($i~ /DPT=/)port=substr($i,5); if($i~ /PROTO=/)proto=substr($i,7) } print ip,port,proto }' \
-| sort -k2 -n | uniq | column -t
-```
-
-### Puertos más escaneados (top 20)
-
-```bash
-awk '{for(i=1;i<=NF;i++) if($i ~ /^DPT=/) print substr($i,5)}' labs/firewall.log | sort | uniq -c | sort -rn | head -20 \
-| awk '{ p=$2; if(p==22)s="SSH"; else if(p==80)s="HTTP"; else if(p==443)s="HTTPS"; else if(p==3306)s="MySQL"; else if(p==5432)s="PostgreSQL"; else if(p==3389)s="RDP"; else if(p==6379)s="Redis"; else s=""; printf "Puerto %-5s %-12s %d\n", p, s, $1 }'
-```
-
-### Generar reglas de bloqueo
-
-```bash
-awk '{for(i=1;i<=NF;i++) if($i ~ /^SRC=/) print substr($i,5)}' labs/firewall.log | sort | uniq -c | sort -rn \
-| awk '$1>20{print "iptables -A INPUT -s", $2, "-j DROP"}'
-```
-
-### Watch en tiempo real
-
-```bash
-tail -f /var/log/kern.log | grep --line-buffered "IPTABLES" | awk '{for(i=1;i<=NF;i++) if($i ~ /^SRC=/) print substr($i,5)}' | sort | uniq -c
-```
-
----
-
-## 🧯 Mitigación
-
-```bash
-# Bloquear IP sospechosa
 iptables -A INPUT -s 10.0.0.5 -j DROP
+```
 
-# Verificar reglas aplicadas
+Verificar:
+
+```bash
 iptables -L INPUT -v -n | grep 10.0.0.5
+```
 
-# Rollback
+Rollback:
+
+```bash
 iptables -D INPUT -s 10.0.0.5 -j DROP
 ```
 
-⚠️ Aplicá de a una IP, verificá que no te bloquees a vos mismo.
+---
+
+## ⚠️ Errores comunes
+
+- confundir tráfico legítimo con escaneo
+- bloquear sin validar patrones completos
+- bloquear IP propia (muy común en labs)
+- analizar solo cantidad y no tipo de tráfico
 
 ---
 
 ## 🛡️ Prevención
 
-- [ ] Tener solo los puertos necesarios abiertos
-- [ ] Usar fail2ban para bloqueo automático
-- [ ] Cambiar puertos no estándar para SSH (>1024)
-- [ ] Rate limiting con iptables: `-m limit --limit 10/sec`
-- [ ] Monitorear logs de firewall periódicamente
+- cerrar puertos innecesarios
+- usar fail2ban
+- aplicar rate limiting (iptables -m limit)
+- monitorear logs periódicamente
 
 ---
 
-## 🧪 Variantes
-
-### Detectar Xmas scan (flags FIN+PSH+URG)
-
-```bash
-grep "FIN" labs/firewall.log | grep "PSH" | grep "URG"
-```
-
-### Escaneo horizontal (mismo puerto, distintas IPs)
-
-```bash
-grep "DPT=22" labs/firewall.log | awk '{for(i=1;i<=NF;i++) if($i ~ /^SRC=/) print substr($i,5)}' | sort -u | wc -l
-```
-
----
-
-## 🧑‍🏫 Modo docente
-
-**Preguntas:** ¿Por qué un SYN scan sin ACK es sospechoso? ¿Qué diferencia un escaneo de una conexión legítima?
-**Ejercicio:** Detectar IPs que escanean más de 10 puertos distintos en menos de 1 minuto.
-**Evaluación:** extracción correcta de IPs/puertos, clasificación del tipo de escaneo, mitigación sin bloquearte.
-
----
-
-## 🧪 Cómo practicarlo en el lab
+## 🧪 Cómo practicarlo
 
 ```bash
 cd labs && docker compose -f docker-compose.security.yml up -d sec-attacker
-# Simular escaneo desde el contenedor atacante
-docker exec sec-attacker nmap -sS 10.99.0.0/24
-# Ver logs
-docker logs sec-attacker 2>&1 | tail -20
-```
 
-[Ver laboratorio completo →](../../labs/README.md)
+docker exec sec-attacker nmap -sS 10.99.0.0/24
+```
 
 ---
 
-## 🔗 Referencias
+## 🔗 Ver también
 
-- [`guides/grep.md`](../../guides/grep.md) — `-oP`, `\K`
-- [`guides/awk.md`](../../guides/awk.md) — procesamiento de logs
-- [`guides/sort.md`](../../guides/sort.md) + [`guides/uniq.md`](../../guides/uniq.md) — conteo
-- [`guides/iptables.md`](../../guides/iptables.md) — reglas de bloqueo y logging
-- [`guides/tcpdump.md`](../../guides/tcpdump.md) — captura para confirmar
+- ../../guides/awk.md
+- ../../guides/iptables.md
+- ../../guides/tcpdump.md
+- ../../concepts/how-to-think-like-sysadmin.md

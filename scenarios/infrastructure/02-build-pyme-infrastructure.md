@@ -1,23 +1,6 @@
 ⬅️ [Volver a scenarios](../README.md)
 
-# Escenario: Construir infraestructura PYME desde cero
-
-## ⚡ Quick command (SRE)
-
-`ip -br a; ip r; ss -tuln | head -30`
-
-## 🔍 Análisis paso a paso
-
-1. ip -br a → muestra interfaces de red activas y sus direcciones IP
-2. ip r → muestra la tabla de rutas para verificar conectividad entre redes
-3. ss -tuln → lista puertos en escucha y servicios activos
-4. head -30 → limita la salida para facilitar lectura rápida
-
-## ✅ Resultado
-
-- verificás que las interfaces estén correctamente configuradas
-- confirmás rutas de red y gateway
-- detectás qué servicios están expuestos y en qué puertos
+# 🧩 Escenario: Construir infraestructura PYME desde cero
 
 ---
 
@@ -25,16 +8,46 @@
 
 Eres el primer administrador de sistemas de una PYME en crecimiento (~50 empleados). Te piden construir la infraestructura desde cero: segmentar la red por departamentos, montar un NAS para backups y archivos compartidos, servir páginas web con nginx, configurar DHCP/DNS interno, y aislar la red de invitados. Todo debe hacerse en un solo servidor Linux que oficia de router, NAS, web server y DNS/DHCP.
 
-## Datos de entrada
+---
 
-- Servidor: Ubuntu Server 22.04, 3 interfaces de red
-  - `eth0`: WAN (Internet, IP pública)
-  - `eth1`: LAN interna (switch gestionable)
-  - `eth2`: WiFi AP para invitados
-- Departamentos: Admin, IT, RRHH, Producción, Gerencia
-- Subredes: 10.0.10.0/24, 10.0.20.0/24, 10.0.30.0/24, 10.0.40.0/24, 10.0.50.0/24
+## ⚡ Quick command (SRE)
 
-## Pipeline 1: Crear VLANs y asignar IPs
+`ip -br a; ip r; ss -tuln | head -30`
+
+---
+
+## ✅ Salida esperada
+
+- verificás que las interfaces estén correctamente configuradas
+- confirmás rutas de red y gateway
+- detectás qué servicios están expuestos
+
+Interpretación inicial:
+
+- interfaces activas → base de conectividad correcta
+- rutas correctas → comunicación entre segmentos posible
+- servicios expuestos → superficie de ataque a controlar
+
+---
+
+## 🧠 Diagnóstico
+
+Una infraestructura construida desde cero debe validarse en múltiples capas: red, servicios, seguridad y almacenamiento.
+
+Patrones clave:
+
+- interfaces y rutas incorrectas → problemas de conectividad
+- servicios no funcionando (dnsmasq, nginx, samba) → infraestructura incompleta
+- reglas de firewall ausentes → exposición insegura entre segmentos
+- ausencia de segmentación → riesgo de lateral movement
+
+👉 No basta con configurar: es necesario validar conectividad, aislamiento y disponibilidad de servicios.
+
+---
+
+## 🛠️ Procedimiento (runbook)
+
+### 1. Crear VLANs e IPs
 
 ```bash
 # Crear interfaces VLAN sobre eth1
@@ -57,14 +70,7 @@ ip link set dev eth2.200 up
 ip -d link show | grep vlan | awk '{print $2, $3, $5}'
 ```
 
-### Explicación paso a paso
-
-1. **VLANs** — Cada departamento tiene su propia VLAN y subred
-2. **IP fija NAS** — 10.0.10.10 para servicios de almacenamiento
-3. **IP fija Web** — 10.0.40.10 para nginx
-4. **VLAN invitados** — Red separada sin acceso a LAN
-
-## Pipeline 2: Configurar routing y NAT
+### 2. Configurar routing y NAT
 
 ```bash
 # Activar forwarding
@@ -83,13 +89,7 @@ iptables -t nat -A POSTROUTING -s 10.0.200.0/24 -o eth0 -j MASQUERADE
 ip route show | grep -E "10\.0\.[0-9]+\.0"
 ```
 
-### Explicación paso a paso
-
-1. **ip_forward** — Permite reenviar paquetes entre interfaces
-2. **MASQUERADE** — Traduce IPs internas a la IP pública para salir a internet
-3. **Invitados** — También con NAT para que tengan internet
-
-## Pipeline 3: Firewall ACLs entre segmentos
+### 3. Firewall entre segmentos
 
 ```bash
 # Política base
@@ -126,15 +126,7 @@ iptables -A FORWARD -s 10.0.200.0/24 -d 10.0.0.0/8 -j DROP
 iptables -L FORWARD -v -n | column -t | head -30
 ```
 
-### Explicación paso a paso
-
-1. **Política DROP** — Por defecto no se permite tráfico entre segmentos
-2. **Admin → todo** — El departamento de administración tiene acceso completo (IT, gerencia)
-3. **IT → servidores** — Solo puertos específicos a producción
-4. **RRHH → NAS** — Solo archivos compartidos, no acceso a servidores
-5. **Invitados** — Solo internet, completamente aislados de la LAN
-
-## Pipeline 4: NAS con Samba + NFS
+### 4. NAS con Samba + NFS
 
 ```bash
 # Crear directorios del NAS
@@ -181,14 +173,7 @@ smbclient -L localhost -U admin -N 2>/dev/null | grep -E "^\s+[A-Z]"
 exportfs -v
 ```
 
-### Explicación paso a paso
-
-1. **Directorios** — Estructura clara por departamento y propósito
-2. **NFS** — Para servidores Linux (rápido, montaje transparente)
-3. **Samba** — Para clientes Windows, con autenticación por grupo
-4. **Grupos** — Cada departamento solo ve su propio directorio
-
-## Pipeline 5: DHCP + DNS interno (dnsmasq)
+### 5. DHCP + DNS interno
 
 ```bash
 apt install -y dnsmasq
@@ -238,14 +223,7 @@ systemctl restart dnsmasq
 cat /var/lib/misc/dnsmasq.leases | awk '{print $3, $4}'
 ```
 
-### Explicación paso a paso
-
-1. **dnsmasq** — Un solo servicio para DHCP + DNS en todos los segmentos
-2. **Resoluciones estáticas** — Los servidores tienen nombres fáciles de recordar
-3. **DHCP por interfaz** — Cada VLAN recibe IPs de su propio rango
-4. **Reservas** — Servidores críticos con IP fija vía MAC
-
-## Pipeline 6: nginx con hosts virtuales
+### 6. nginx con hosts virtuales
 
 ```bash
 apt install -y nginx
@@ -289,13 +267,7 @@ curl -s -o /dev/null -w "%{http_code}" http://localhost
 curl -s -o /dev/null -w "%{http_code}" http://10.0.40.10
 ```
 
-### Explicación paso a paso
-
-1. **Sitio público** — Portal corporativo accesible desde internet
-2. **Sitio interno** — Intranet solo accesible desde Admin, IT y Gerencia
-3. **`allow/deny`** — Control de acceso por IP
-
-## Pipeline 7: Backup automático al NAS
+### 7. Backup automático al NAS
 
 ```bash
 # Backup de configuraciones del router
@@ -331,12 +303,6 @@ restic backup /etc/ /var/www/ /srv/nas/ \
 restic snapshots --repo /srv/nas/backups/restic
 ls -la /srv/nas/backups/router/
 ```
-
-### Explicación paso a paso
-
-1. **Backup de configs** — Todo lo que hace funcionar al router se respalda diario
-2. **restic** — Backup deduplicado y cifrado de datos importantes
-3. **Cron** — Automatización diaria
 
 ## Variantes
 
@@ -375,19 +341,54 @@ ss -tun | grep -E "10\.0\." \
   | head -10
 ```
 
-## Interpretación
+---
 
-| Indicador | Significado |
-|-----------|-------------|
-| Todas las VLANs tienen IP | Segmentación configurada correctamente |
-| `iptables -L FORWARD` con reglas | ACLs activas entre segmentos |
-| `dnsmasq` leases activos | DHCP funcionando en todos los segmentos |
-| `exportfs -v` muestra recursos | NFS exportando correctamente |
-| `curl` desde LAN da 200, desde invitados no | Aislamiento de red de invitados OK |
-| `restic snapshots` con snapshots recientes | Backups funcionando |
-| `smbclient -L` lista recursos | Samba autenticando correctamente |
+## 🧯 Mitigación
 
-## Comandos relacionados
+Si la infraestructura no funciona correctamente:
+
+Verificar:
+
+```bash
+ip a; ip r; systemctl status dnsmasq nginx nfs-kernel-server smbd
+```
+
+Acción:
+
+```bash
+systemctl restart dnsmasq nginx
+iptables -L -v -n
+```
+
+Rollback:
+
+```bash
+# limpiar configuraciones recientes
+iptables -F
+systemctl restart networking
+```
+
+Casos comunes:
+
+- sin conectividad → revisar routing/NAT
+- VLAN no funciona → verificar interfaces
+- DHCP no asigna IP → revisar dnsmasq
+- acceso NAS falla → revisar permisos y firewall
+
+---
+
+## ✅ Interpretación
+
+- VLANs con IPs asignadas → segmentación correcta
+- reglas en iptables activas → control de tráfico entre redes
+- dnsmasq con leases activos → DHCP funcionando
+- recursos NFS/Samba accesibles → NAS operativo
+- acceso web desde LAN pero no invitados → aislamiento correcto
+- backups recientes en restic → protección de datos activa
+
+---
+
+## 🔗 Referencias
 
 - [network_segmentation.md](../../guides/network_segmentation.md)
 - [nginx.md](../../guides/nginx.md)

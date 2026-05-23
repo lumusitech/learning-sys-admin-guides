@@ -7,24 +7,6 @@
 **Herramientas:** `grep`, `awk`, `sort`, `uniq`, `sed`, `journalctl`, `tail`
 **Archivos:** `labs/syslog.log`
 
-## ⚡ Quick command (SRE)
-
-`grep -iE 'error|fail|critical' labs/syslog.log | awk '{c[$5]++} END{for(s in c) print c[s], s}' | sort -rn | head -10`
-
-## 🔍 Análisis paso a paso
-
-1. grep -iE 'error|fail|critical' → filtra líneas con errores (case‑insensitive)
-2. awk '{c[$5]++} ...' → cuenta ocurrencias agrupadas por servicio (columna 5 del log)
-3. END{for(s in c) print c[s], s} → imprime cantidad de errores por servicio
-4. sort -rn → ordena de mayor a menor frecuencia
-5. head -10 → muestra los 10 servicios con más errores
-
-## ✅ Resultado
-
-- identificás qué servicios generan más errores
-- detectás focos de falla recurrentes
-- priorizás debugging y mitigación por impacto
-
 ---
 
 ## 🎯 Problema
@@ -37,33 +19,9 @@ El sistema genera errores en distintos servicios que pueden afectar la estabilid
 
 ---
 
-## 🧠 Contexto
+## ⚡ Quick command (SRE)
 
-El servidor genera errores en logs que deben ser analizados para identificar la causa raíz de inestabilidad. Los errores pueden ser de aplicación, sistema, hardware o seguridad.
-
----
-
-## ✅ Datos de entrada
-
-- **Producción:** `/var/log/syslog`, `/var/log/messages`, `journalctl`
-- **Práctica:** `labs/syslog.log`
-
----
-
-## ⚡ Quick run (errores por servicio)
-
-```bash
-grep -i "error\|fail\|critical" labs/syslog.log | awk '{ print $5 }' | sort | uniq -c | sort -rn | head -10
-```
-
----
-
-## 🔍 Paso a paso
-
-1. `grep -i "error\|fail\|critical"` → filtra líneas con palabras clave (case-insensitive)
-2. `awk '{ print $5 }'` → extrae el nombre del servicio (campo 5)
-3. `sort | uniq -c | sort -rn` → cuenta y ordena por frecuencia
-4. `head -10` → top 10 servicios con más errores
+`grep -iE 'error|fail|critical' labs/syslog.log | awk '{c[$5]++} END{for(s in c) print c[s], s}' | sort -rn | head -10`
 
 ---
 
@@ -75,13 +33,30 @@ grep -i "error\|fail\|critical" labs/syslog.log | awk '{ print $5 }' | sort | un
  45 mysqld
 ```
 
-- `kernel` con muchos errores → posible hardware (disco, memoria)
-- `sshd` con muchos fallos → fuerza bruta SSH
-- Un servicio de app con muchos errores → bug/fuga de recursos
+Interpretación:
+
+- `kernel` con muchos errores → posible fallo de hardware (disco, memoria)
+- `sshd` con muchos errores → posible ataque de fuerza bruta
+- servicio de aplicación con errores → bug o fuga de recursos
 
 ---
 
-## 📌 Pipelines de diagnóstico
+## 🧠 Diagnóstico
+
+Los logs deben analizarse buscando patrones, no eventos aislados.
+
+Patrones relevantes:
+
+- muchos errores del mismo servicio → posible falla interna o bug
+- errores distribuidos en varios servicios → problema del sistema (red, disco, recursos)
+- errores repetitivos con mismo mensaje → problema cíclico
+- picos de errores en una ventana de tiempo → incidente activo
+
+👉 Un solo error no indica problema: la repetición y concentración son la señal real.
+
+---
+
+## 🛠️ Validación extendida
 
 ### Errores por hora
 
@@ -131,15 +106,25 @@ grep -i "critical" labs/syslog.log | tail -5
 
 ## 🧯 Mitigación
 
-| Error | Acción |
-|-------|--------|
-| OOM killer | Agregar RAM, limitar memoria por proceso, verificar memory leak |
-| EXT4-fs error | `fsck`, revisar cable/HDD, reemplazar disco |
-| segfault | Reinstalar/recompilar servicio, reportar bug upstream |
-| Connection refused | `systemctl restart <servicio>`, verificar puerto |
-| Disk full | `du -sh /* | sort -rh`, rotar logs, borrar temporales |
+Ejemplo: error OOM
 
-⚠️ Cuando veas OOM: no agregues swap como solución permanente, buscá la fuga de memoria.
+```bash
+systemctl restart <servicio>
+```
+
+Verificar:
+
+```bash
+journalctl -u <servicio> -n 20
+```
+
+Rollback:
+
+```bash
+systemctl stop <servicio> && systemctl start <servicio>
+```
+
+👉 No aplicar mitigaciones sin validar primero el patrón de error.
 
 ---
 
