@@ -146,5 +146,5 @@ Casos comunes:
 
 ## 🔗 Referencias
 
-- [system_top.md](../../guides/system_top.md)
+- [`top.md`](../../guides/top.md)
 - [system_iostat.md](../../guides/system_iostat.md)
