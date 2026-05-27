@@ -63,18 +63,18 @@ services:
       - lab-net
 
   # === DNS ROTO ===
-  # Resolver DNS apunta a 192.0.2.1 (no existe)
   dns-broken-client:
     image: alpine:latest
     container_name: dns-broken-client
     hostname: dns-broken-client
+    dns:
+      - 192.0.2.1 # Docker fuerza este DNS inválido en /etc/resolv.conf nativamente
     command: >
       sh -c "
         apk add --no-cache bind-tools curl &&
-        echo 'nameserver 192.0.2.1' > /etc/resolv.conf &&
         echo '=== DNS roto — no resuelve nombres ===' &&
         echo 'Prueba: ping google.com, curl http://example.com' &&
-        echo 'Solucion: revisa /etc/resolv.conf, cambia a 1.1.1.1' &&
+        echo 'Solucion: para arreglarlo en caliente en la práctica, ejecutá: echo \"nameserver 1.1.1.1\" > /etc/resolv.conf' &&
         tail -f /dev/null
       "
     networks:
@@ -162,7 +162,7 @@ zone 'lab.test' {
 };
 EOF
         cat > /etc/bind/db.lab.test << 'EOF'
-\$TTL 86400
+$$TTL 86400
 @ IN SOA ns1.lab.test. admin.lab.test. (20240101 3600 1800 86400 3600)
 @ IN NS ns1.lab.test.
 ns1 IN A 10.99.0.5
