@@ -105,22 +105,17 @@ free -h
 5. Los scenarios deben ser operativos, no guides largas.
 6. Las guides pueden explicar, pero deben mantener estructura consistente.
 7. Todo link relativo debe estar bien formado.
-8. Evitar links vacíos tipo:
+8. Evitar links vacíos. El formato estándar es:
+
+```md
+- [`awk`](../../guides/awk.md) — arrays asociativos y formateo
+```
+
+No usar:
 
 ```md
 - [../../guides/algo.md]()
-```
-
-Debe ser:
-
-```md
-- [algo.md](../../guides/algo.md)
-```
-
-o, si el repo prefiere rutas visibles:
-
-```md
-- ../../guides/algo.md
+- [guides/awk.md](../../guides/awk.md)
 ```
 
 1. En scenarios, el `Quick command (SRE)` debe ser útil, directo y lo más robusto posible desde la primera propuesta.
@@ -295,10 +290,35 @@ Casos comunes:
 
 ---
 
+## 🐧 Variante Alpine (OpenRC)
+
+> Opcional. Incluir solo si el escenario usa `systemctl`, `journalctl`, `apt`, `ufw`, `fallocate`, `bc`, `watch` o `column`.
+
+Este escenario asume systemd (Debian/Ubuntu). En Alpine Linux:
+
+```bash
+# Debian:                          # Alpine:
+systemctl restart <svc>             rc-service <svc> restart
+systemctl status <svc>              rc-service <svc> status
+```
+
+Variantes disponibles según comandos usados:
+
+| Variante | Cuándo usarla |
+|----------|--------------|
+| **A** (systemctl) | Solo `systemctl` en mitigación |
+| **B** (systemctl + logs) | `systemctl` + `journalctl` |
+| **C** (provisionamiento) | `apt` + `ufw` + `systemctl` + `adduser` + `fallocate` |
+| **D** (herramientas) | `watch`, `column`, `bc` (no están en BusyBox) |
+
+---
+
 ## 🔗 Referencias
 
-- [guide.md](../../guides/guide.md)
-- [otra_guide.md](../../guides/otra_guide.md)
+- [`guide`](../../guides/guide.md) — descripción breve
+- [`apk`](../../guides/apk.md) — Alpine Linux: gestor de paquetes (si usaste Variante C)
+- [`openrc`](../../guides/openrc.md) — Alpine Linux: servicios (si usaste systemctl)
+- [`busybox`](../../guides/busybox.md) — Alpine Linux: toolchain mínima (si usaste journalctl)
 
 ```text
 
@@ -452,14 +472,44 @@ Plantilla recomendada:
 ```md
 # <comando> — Guía completa
 
-**Nivel:** 🟢 Básico | 🟡 Intermedio | 🔴 Avanzado  
-**Contexto:** system | networking | text-processing | security | web | infrastructure  
-**Archivos de práctica:** `labs/...`  
-**Ver escenarios relacionados:** [links]
+**Nivel:** 🟢 Básico | 🟡 Intermedio | 🔴 Avanzado
+**Archivos de práctica:** `labs/...`
+**Ver escenarios relacionados:** [`scenario-id`](../scenarios/...)
 
 ---
 
-## 🎯 ¿Qué es?
+## ⚡ Quick command
+
+`comando mínimo representativo`
+
+> ⚠️ Notas de compatibilidad si aplica (ej: Alpine, BusyBox).
+
+---
+
+## ⚡ Quick run
+
+```bash
+comando práctico para probar rápido con labs o sistema local
+```
+
+---
+
+## Índice
+
+1. [¿Qué es <tool>?](#qué-es-tool)
+2. [Sintaxis básica](#sintaxis-básica)
+3. [Salida clave](#salida-clave)
+4. [Opciones principales](#opciones-principales)
+5. [Patrones de uso](#patrones-de-uso)
+6. [Uso en troubleshooting](#uso-en-troubleshooting)
+7. [Combinación con otras herramientas](#combinación-con-otras-herramientas)
+8. [Uno-liners imprescindibles](#uno-liners-imprescindibles)
+9. [Errores comunes](#errores-comunes)
+10. [Buenas prácticas](#buenas-prácticas)
+
+---
+
+## ¿Qué es <tool>?
 
 Definición clara y corta.
 
@@ -472,23 +522,7 @@ Explicar:
 
 ---
 
-## ⚡ Quick command
-
-```bash
-comando mínimo representativo
-```
-
----
-
-## ⚡ Quick run
-
-```bash
-comando práctico para probar rápido con labs o sistema local
-```
-
----
-
-## 🧠 Modelo mental
+## Modelo mental
 
 Explicar cómo pensar la herramienta.
 
@@ -499,12 +533,10 @@ Ejemplos:
 - `sed` transforma texto.
 - `top` muestra estado vivo del sistema.
 - `ps` muestra snapshot de procesos.
-- `iostat` muestra rendimiento de disco.
-- `vmstat` conecta procesos, memoria, swap, I/O y CPU.
 
 ---
 
-## 🛠️ Sintaxis básica
+## Sintaxis básica
 
 ```bash
 comando [opciones] [argumentos]
@@ -514,22 +546,22 @@ Explicación breve.
 
 ---
 
-## 📊 Salida clave
+## Salida clave
 
 Explicar los campos importantes de la salida.
 
-No copiar todo el man.  
+No copiar todo el man.
 Explicar lo que sirve para troubleshooting.
 
 ---
 
-## ⚙️ Opciones principales
+## Opciones principales
 
 Tabla o lista breve con las opciones realmente útiles.
 
 ---
 
-## 🔎 Patrones de uso
+## Patrones de uso
 
 Casos reales y frecuentes:
 
@@ -543,24 +575,15 @@ Casos reales y frecuentes:
 
 ---
 
-## 🧯 Uso en troubleshooting
+## Uso en troubleshooting
 
 Cómo se usa en incidentes reales.
 
 Conectar con scenarios.
 
-Ejemplo:
-
-```md
-Se usa en:
-- CPU alta
-- procesos zombie
-- I/O wait
-```
-
 ---
 
-## 🔗 Combinación con otras herramientas
+## Combinación con otras herramientas
 
 Pipelines reales.
 
@@ -572,7 +595,7 @@ comando | sort | uniq -c
 
 ---
 
-## 🔥 Uno-liners imprescindibles
+## Uno-liners imprescindibles
 
 Máximo recomendado: 10–15.
 
@@ -580,7 +603,7 @@ Deben ser memorizables y realmente útiles.
 
 ---
 
-## ⚠️ Errores comunes
+## Errores comunes
 
 - errores de sintaxis;
 - interpretaciones incorrectas;
@@ -589,7 +612,7 @@ Deben ser memorizables y realmente útiles.
 
 ---
 
-## ✅ Buenas prácticas
+## Buenas prácticas
 
 - recomendaciones;
 - cuándo usar;
@@ -598,10 +621,10 @@ Deben ser memorizables y realmente útiles.
 
 ---
 
-## 🔗 Referencias internas
+## Referencias internas
 
-- [scenario relacionado](../scenarios/...)
-- [otra guide](...)
+- [`guide`](../../guides/guide.md) — descripción breve
+- [`scenario`](../scenarios/dominio/01-nombre.md) — descripción breve
 
 ```text
 
@@ -614,33 +637,30 @@ El índice es útil, pero no debe cortar el flujo rápido.
 Regla:
 
 ```txt
-guide corta  → sin índice
-guide media  → índice después de Quick + Modelo mental + Qué es
-guide larga  → índice permitido después de introducción
+guide corta  → sin índice (< 4 secciones)
+guide media  → índice después de Quick run, antes de ¿Qué es?
+guide larga  → índice obligatorio después de Quick run
 ```
 
-Orden recomendado para guides largas:
+Orden recomendado:
 
 ```md
 # título
 metadata
 Quick command
 Quick run
-¿Qué es?
-Modelo mental
 Índice
-contenido
+¿Qué es <tool>?
+Modelo mental
+Sintaxis básica
+... contenido ...
 ```
-
-Para guides muy largas como `awk.md` o `nmap.md`, el índice tiene sentido.
-
-Para guides simples como `grep.md`, puede ser opcional.
 
 ---
 
 ## Guides actuales
 
-Guides existentes conocidas:
+Guides existentes:
 
 ```txt
 awk.md
@@ -651,9 +671,9 @@ find.md
 grep.md
 ip_ss.md
 iptables.md
+network_segmentation.md
 nginx.md
 nmap.md
-network_segmentation.md
 ping_traceroute.md
 production_server.md
 sed.md
@@ -662,6 +682,7 @@ ssh.md
 storage_backup.md
 systemd_journalctl.md
 tcpdump.md
+top.md
 uniq.md
 wc.md
 xargs.md
@@ -1070,12 +1091,13 @@ Antes de aprobar un scenario:
 [ ] procedimiento con pasos numerados
 [ ] mitigación con verificar / acción / rollback
 [ ] interpretación final
-[ ] referencias con links válidos
+[ ] 🐧 Variante Alpine si usa systemctl/journalctl/apt/ufw
+[ ] referencias en formato: [`name`](../../path/name.md) — descripción
 [ ] sin bloques "Explicación paso a paso"
 [ ] sin links vacíos
-[ ] sin numeración rota
 [ ] sin comandos peligrosos como primera acción
 [ ] si hay placeholders, están entre <...>
+[ ] pnpm lint:md → 0 errores
 ```
 
 ---
@@ -1083,22 +1105,23 @@ Antes de aprobar un scenario:
 ## Checklist de PR para guides
 
 ```txt
-[ ] metadata consistente
-[ ] quick command
-[ ] quick run
-[ ] qué es
-[ ] modelo mental
-[ ] sintaxis básica
-[ ] salida clave
-[ ] opciones principales
-[ ] uso en troubleshooting
-[ ] pipelines / combinaciones
-[ ] errores comunes
-[ ] buenas prácticas
-[ ] referencias internas
-[ ] índice solo si aporta
-[ ] no es copia del man
-[ ] ejemplos útiles y reales
+[ ] metadata: Nivel + Archivos de práctica + Ver escenarios
+[ ] Quick command (inline code: `comando`)
+[ ] Quick run (bloque ```bash)
+[ ] Índice (si la guía tiene 4+ secciones)
+[ ] ¿Qué es <tool>?
+[ ] Modelo mental
+[ ] Sintaxis básica
+[ ] Salida clave
+[ ] Opciones principales
+[ ] Uso en troubleshooting
+[ ] Combinación con otras herramientas
+[ ] Uno-liners imprescindibles
+[ ] Errores comunes
+[ ] Buenas prácticas
+[ ] Referencias en formato: [`name`](../../guides/name.md) — descripción
+[ ] Sin emojis en headers de sección
+[ ] pnpm lint:md → 0 errores
 ```
 
 ---
@@ -1106,25 +1129,20 @@ Antes de aprobar un scenario:
 ## Pendientes conocidos
 
 1. Crear guides:
-   - `top.md`
    - `ps.md`
 
-2. Revisar formato de links en referencias de scenarios:
-   - detectar links vacíos;
-   - detectar rutas mal movidas;
-   - corregir referencias después de mover scenarios de `web` a `networking`.
-
-3. Normalizar todas las guides existentes con la plantilla final.
-
-4. Agregar después:
+2. Agregar después:
    - `vmstat.md`
    - `iostat.md`
    - `free.md`
    - `df.md`
    - `du.md`
    - `lsof.md`
+   - `apk.md`
+   - `openrc.md`
+   - `busybox.md`
 
-5. Continuar scenarios avanzados:
+3. Continuar scenarios avanzados:
    - `system/fork-bomb`
    - `system/process-leak`
    - `system/raid-degradation`

@@ -12,6 +12,7 @@ Reglas:
 
 1. Scenarios deben usar esta estructura:
    - `# 🧩 Escenario: ...`
+   - metadata: `**Dominio:**`, `**Nivel:**`, `**Herramientas:**`, `**Archivos:**`
    - `## 🎯 Problema`
    - `## ⚡ Quick command (SRE)`
    - `## ✅ Salida esperada` + `Interpretación:`
@@ -19,6 +20,7 @@ Reglas:
    - `## 🛠️ Procedimiento (runbook)`
    - `## 🧯 Mitigación`
    - `## ✅ Interpretación`
+   - `## 🐧 Variante Alpine (OpenRC)` — si usa systemctl/journalctl/apt/ufw/bc
    - `## 🔗 Referencias`
 
 2. No usar `### Explicación paso a paso` en scenarios.
@@ -33,31 +35,33 @@ Reglas:
    - paso exacto;
    - bloque final listo para pegar.
 
-6. Guides deben seguir:
-   - título;
-   - metadata;
-   - quick command;
-   - quick run;
-   - qué es;
-   - modelo mental;
-   - sintaxis básica;
-   - salida clave;
-   - opciones principales;
-   - uso en troubleshooting;
-   - combinaciones;
-   - uno-liners;
-   - errores comunes;
-   - buenas prácticas;
-   - referencias.
+6. Guides deben seguir esta estructura (sin emojis en headers):
+   - `# <tool> — Guía completa`
+   - metadata: `**Nivel:**`, `**Archivos de práctica:**`, `**Ver escenarios:**`
+   - `## ⚡ Quick command` (inline code)
+   - `## ⚡ Quick run` (```bash)
+   - `## Índice` (si 4+ secciones)
+   - `## ¿Qué es <tool>?`
+   - `## Modelo mental`
+   - `## Sintaxis básica`
+   - `## Salida clave`
+   - `## Opciones principales`
+   - `## Patrones de uso`
+   - `## Uso en troubleshooting`
+   - `## Combinación con otras herramientas`
+   - `## Uno-liners imprescindibles`
+   - `## Errores comunes`
+   - `## Buenas prácticas`
+   - `## Referencias internas`
 
 7. Índice:
-   - guides cortas: sin índice;
-   - guides medias: índice después de intro;
-   - guides largas: índice permitido después de quick + qué es + modelo mental.
+   - guides cortas (<4 secciones): sin índice;
+   - guides medias/largas: índice después de Quick run, antes de ¿Qué es?.
 
-8. Links relativos deben ser válidos:
-   - correcto: `[ip_ss.md](../../guides/ip_ss.md)`
-   - incorrecto: `[../../guides/ip_ss.md]()`
+8. Links relativos en formato estándar:
+   - correcto: `- [`awk`](../../guides/awk.md) — descripción breve`
+   - incorrecto: `- [../../guides/awk.md]()`
+   - incorrecto: `- [`guides/awk.md`](../../guides/awk.md)`
 
 9. Commits:
    - `feat(system): add zombie process troubleshooting scenario`
@@ -71,10 +75,15 @@ Reglas:
 - refactors separados;
 - limpiar rama local y remota después del merge.
 
+1. Linter:
+
+- `pnpm lint:md` debe pasar antes de hacer commit
+- Quick run: `pnpm lint:md:fix` corrige espacios automáticamente
+- ```` ``` ```` sin lenguaje → ```` ```bash ```` o ```` ```text ````
+
 Pendientes:
 
-- crear `top.md` y `ps.md`;
-- normalizar guides existentes;
-- revisar links de referencias en scenarios;
+- crear `ps.md`;
+- crear guides Alpine: `apk.md`, `openrc.md`, `busybox.md`;
 - agregar guides: `vmstat.md`, `iostat.md`, `free.md`, `df.md`, `du.md`, `lsof.md`;
 - seguir scenarios avanzados: fork bomb, process leak, API timeouts, cloud firewall/security groups.
