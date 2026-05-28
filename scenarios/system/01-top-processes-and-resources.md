@@ -270,10 +270,57 @@ También podés probar los pipelines contra `labs/syslog.log` para practicar fil
 
 ---
 
+## 🐧 Variante Alpine (OpenRC + herramientas)
+
+Este escenario asume systemd (Debian/Ubuntu). En Alpine Linux (contenedor Docker mínimo) se usa OpenRC y algunas herramientas requieren instalación adicional.
+
+### Gestión de servicios
+
+```bash
+# Debian (systemd):                # Alpine (OpenRC):
+systemctl restart <svc>             rc-service <svc> restart
+systemctl status <svc>              rc-service <svc> status
+systemctl enable --now <svc>        rc-update add <svc> default && rc-service <svc> start
+systemctl stop <svc>                rc-service <svc> stop
+systemctl start <svc>               rc-service <svc> start
+```
+
+### Logs del sistema
+
+```bash
+# Debian:                          # Alpine:
+journalctl -k | grep oom_kill       dmesg | grep oom_kill
+journalctl -u <svc> -n 20           logread | grep <svc>
+```
+
+### Herramientas adicionales
+
+`watch`, `column` y `bc` no vienen en BusyBox (shell mínima de Alpine):
+
+```bash
+apk add procps     # watch
+apk add util-linux # column
+apk add bc         # bc
+```
+
+Alternativas sin instalar nada:
+
+```bash
+# Con paquete:                    # Sin instalar:
+watch -n 5 '<comando>'             while true; do clear; <comando>; sleep 5; done
+echo "2+2" | bc                    awk 'BEGIN {print 2+2}'
+column -t archivo                  awk '{ printf "%-20s %-10s\n", $1, $2 }' archivo
+```
+
+---
+
 ## 🔗 Referencias (guías del repo)
 
-- [`guides/awk.md`](../../guides/awk.md) — arrays asociativos y formateo
-- [`guides/sort.md`](../../guides/sort.md) — ordenamiento numérico por campo
-- [`guides/grep.md`](../../guides/grep.md) — filtrado de procesos
-- [`guides/xargs.md`](../../guides/xargs.md) — actuar sobre procesos encontrados
-- [`guides/production_server.md`](../../guides/production_server.md) — systemd resource control, monitoreo
+- [`awk`](../../guides/awk.md) — arrays asociativos y formateo
+- [`sort`](../../guides/sort.md) — ordenamiento numérico por campo
+- [`grep`](../../guides/grep.md) — filtrado de procesos
+- [`xargs`](../../guides/xargs.md) — actuar sobre procesos encontrados
+- [`production_server`](../../guides/production_server.md) — systemd resource control, monitoreo
+- [`apk`](../../guides/apk.md) — Alpine Linux: gestor de paquetes
+- [`openrc`](../../guides/openrc.md) — Alpine Linux: servicios (rc-service, rc-update)
+- [`busybox`](../../guides/busybox.md) — Alpine Linux: toolchain mínima (logread, dmesg)

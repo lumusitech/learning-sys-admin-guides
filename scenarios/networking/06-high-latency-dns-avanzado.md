@@ -136,7 +136,22 @@ Casos comunes:
 
 ---
 
+## 🐧 Variante Alpine (OpenRC)
+
+Este escenario asume systemd (Debian/Ubuntu). En Alpine Linux:
+
+```bash
+# Debian:                          # Alpine:
+systemctl status systemd-resolved    cat /etc/resolv.conf; rc-service networking status
+systemctl restart systemd-resolved   rc-service networking restart
+```
+
+> Alpine no tiene `systemd-resolved`. La resolución DNS se configura directamente en `/etc/resolv.conf`.
+
+---
+
 ## 🔗 Referencias
 
-- [../../guides/network_dns.md](../../guides/network_dns.md)
-- [../../guides/network_ping_traceroute.md](../../guides/network_ping_traceroute.md)
+- [`network_dns`](../../guides/network_dns.md)
+- [`network_ping_traceroute`](../../guides/network_ping_traceroute.md)
+- [`openrc`](../../guides/openrc.md) — Alpine Linux: servicios (rc-service, rc-update)

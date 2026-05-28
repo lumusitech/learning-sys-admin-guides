@@ -133,7 +133,25 @@ Casos comunes:
 
 ---
 
+## 🐧 Variante Alpine (OpenRC + logs)
+
+Este escenario asume systemd (Debian/Ubuntu). En Alpine Linux:
+
+```bash
+# Debian:                          # Alpine:
+systemctl status nginx              rc-service nginx status
+systemctl restart nginx             rc-service nginx restart
+systemctl reload nginx              rc-service nginx reload
+systemctl status <backend>          rc-service <backend> status
+systemctl restart <backend>         rc-service <backend> restart
+journalctl -u <svc> --no-pager      logread | grep <svc>
+```
+
+---
+
 ## 🔗 Referencias
 
-- [../../guides/nginx.md](../../guides/nginx.md)
-- [../../guides/systemd_journalctl.md](../../guides/systemd_journalctl.md)
+- [`nginx`](../../guides/nginx.md)
+- [`systemd_journalctl`](../../guides/systemd_journalctl.md)
+- [`openrc`](../../guides/openrc.md) — Alpine Linux: servicios (rc-service, rc-update)
+- [`busybox`](../../guides/busybox.md) — Alpine Linux: toolchain mínima (logread, dmesg)

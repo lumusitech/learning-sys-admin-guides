@@ -388,12 +388,52 @@ Casos comunes:
 
 ---
 
+## 🐧 Variante Alpine (provisionamiento)
+
+Este escenario usa comandos específicos de Debian/Ubuntu. En Alpine Linux:
+
+### Paquetes
+
+```bash
+# Debian:                     # Alpine:
+apt install -y nfs-kernel-server   apk add nfs-utils
+apt install -y samba               apk add samba
+apt install -y dnsmasq             apk add dnsmasq
+apt install -y nginx               apk add nginx
+apt install -y restic              apk add restic
+apt install -y bridge-utils        apk add bridge
+apt install -y iptstate            apk add iptstate
+```
+
+### Servicios
+
+```bash
+# Debian (systemd):                # Alpine (OpenRC):
+systemctl restart nfs-kernel-server   rc-service nfs restart
+systemctl restart smbd               rc-service samba restart
+systemctl restart dnsmasq            rc-service dnsmasq restart
+systemctl reload nginx               rc-service nginx reload
+systemctl status dnsmasq nginx nfs   rc-service dnsmasq status; rc-service nginx status; rc-service nfs status
+systemctl restart networking         rc-service networking restart
+```
+
+### Herramientas adicionales
+
+```bash
+# column -t no viene en BusyBox:
+apk add util-linux
+```
+
+---
+
 ## 🔗 Referencias
 
-- [network_segmentation.md](../../guides/network_segmentation.md)
-- [nginx.md](../../guides/nginx.md)
-- [storage_backup.md](../../guides/storage_backup.md)
-- [production_server.md](../../guides/production_server.md)
-- [iptables.md](../../guides/iptables.md)
-- [ip_ss.md](../../guides/ip_ss.md)
-- [systemd_journalctl.md](../../guides/systemd_journalctl.md)
+- [`network_segmentation`](../../guides/network_segmentation.md)
+- [`nginx`](../../guides/nginx.md)
+- [`storage_backup`](../../guides/storage_backup.md)
+- [`production_server`](../../guides/production_server.md)
+- [`iptables`](../../guides/iptables.md)
+- [`ip_ss`](../../guides/ip_ss.md)
+- [`systemd_journalctl`](../../guides/systemd_journalctl.md)
+- [`apk`](../../guides/apk.md) — Alpine Linux: gestor de paquetes
+- [`openrc`](../../guides/openrc.md) — Alpine Linux: servicios (rc-service, rc-update)

@@ -328,11 +328,67 @@ echo "=== SIMULACRO COMPLETADO ==="
 
 ---
 
+## 🐧 Variante Alpine (provisionamiento)
+
+Este escenario usa comandos específicos de Debian/Ubuntu. En Alpine Linux:
+
+### Paquetes
+
+```bash
+# Debian:                     # Alpine:
+apt update && apt upgrade -y   apk update && apk upgrade
+apt install -y nfs-common      apk add nfs-utils
+apt install -y mysql-server    apk add mariadb mariadb-client
+```
+
+### Firewall
+
+```bash
+# Debian (ufw):                    # Alpine (iptables):
+ufw default deny incoming           iptables -P INPUT DROP
+ufw allow 22/tcp                    iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+ufw allow 80/tcp                    iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+ufw allow 443/tcp                   iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+ufw --force enable                  iptables -P INPUT DROP; iptables -P FORWARD DROP; iptables -P OUTPUT ACCEPT; iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT; iptables -A INPUT -i lo -j ACCEPT
+```
+
+### Servicios
+
+```bash
+# Debian (systemd):                # Alpine (OpenRC):
+systemctl stop mysql                rc-service mariadb stop
+systemctl start mysql               rc-service mariadb start
+systemctl restart nginx             rc-service nginx restart
+systemctl is-active nginx           rc-service nginx status
+systemctl list-units --state=running --type=service   rc-status
+```
+
+> Alpine usa `mariadb` como servidor MySQL. `systemd-journald` no existe en Alpine; los servicios se listan con `rc-status`.
+
+### Usuarios
+
+```bash
+# Debian:                          # Alpine:
+adduser --disabled-password --gecos "" admin   adduser -D -s /bin/sh admin
+usermod -aG sudo admin                         adduser admin wheel
+```
+
+### Logs del sistema
+
+```bash
+# Debian:                          # Alpine:
+journalctl -p err -b --no-pager     logread | grep -i error
+```
+
+---
+
 ## 🔗 Referencias
 
-- [storage_backup.md](../../guides/storage_backup.md)
-- [production_server.md](../../guides/production_server.md)
-- [nginx.md](../../guides/nginx.md)
-- [restic backup](../..//guides/storage_backup.md#restic)
-- [systemd_journalctl.md](../../guides/systemd_journalctl.md)
-- [ssh.md](../../guides/ssh.md)
+- [`storage_backup`](../../guides/storage_backup.md)
+- [`production_server`](../../guides/production_server.md)
+- [`nginx`](../../guides/nginx.md)
+- [`systemd_journalctl`](../../guides/systemd_journalctl.md)
+- [`ssh`](../../guides/ssh.md)
+- [`apk`](../../guides/apk.md) — Alpine Linux: gestor de paquetes
+- [`openrc`](../../guides/openrc.md) — Alpine Linux: servicios (rc-service, rc-update)
+- [`busybox`](../../guides/busybox.md) — Alpine Linux: toolchain mínima (logread, dmesg)

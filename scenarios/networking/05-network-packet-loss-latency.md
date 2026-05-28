@@ -135,7 +135,21 @@ Casos comunes:
 
 ---
 
+## 🐧 Variante Alpine (OpenRC)
+
+Este escenario asume systemd (Debian/Ubuntu). En Alpine Linux:
+
+```bash
+# Debian:                          # Alpine:
+systemctl restart NetworkManager    rc-service networking restart
+```
+
+> Alpine no tiene `NetworkManager`. La red se gestiona con `/etc/network/interfaces` y `rc-service networking`.
+
+---
+
 ## 🔗 Referencias
 
-- [../../guides/network_ping_traceroute.md](../../guides/network_ping_traceroute.md)
-- [../../guides/ip_ss.md](../../guides/ip_ss.md)
+- [`network_ping_traceroute`](../../guides/network_ping_traceroute.md)
+- [`ip_ss`](../../guides/ip_ss.md)
+- [`openrc`](../../guides/openrc.md) — Alpine Linux: servicios (rc-service, rc-update)

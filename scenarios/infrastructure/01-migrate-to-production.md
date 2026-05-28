@@ -280,10 +280,80 @@ ssh deploy@prod.empresa.local -p 2222 \
 
 ---
 
+## 🐧 Variante Alpine (provisionamiento)
+
+Este escenario usa comandos específicos de Debian/Ubuntu. En Alpine Linux (contenedor Docker mínimo):
+
+### Paquetes
+
+```bash
+# Debian:                     # Alpine:
+apt update                     apk update
+apt upgrade -y                 apk upgrade
+apt install -y <pkg>           apk add <pkg>
+```
+
+### Firewall
+
+```bash
+# Debian (ufw):                    # Alpine (iptables):
+ufw default deny incoming           iptables -P INPUT DROP
+ufw allow 2222/tcp                  iptables -A INPUT -p tcp --dport 2222 -j ACCEPT
+ufw allow 80/tcp                    iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+ufw allow 443/tcp                   iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+ufw --force enable                  iptables -P INPUT DROP; iptables -P FORWARD DROP; iptables -P OUTPUT ACCEPT; iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT; iptables -A INPUT -i lo -j ACCEPT
+```
+
+### Servicios
+
+```bash
+# Debian (systemd):                # Alpine (OpenRC):
+systemctl restart sshd              rc-service sshd restart
+systemctl enable --now fail2ban     rc-update add fail2ban default && rc-service fail2ban start
+systemctl enable --now chrony       rc-update add chronyd default && rc-service chronyd start
+systemctl restart docker            rc-service docker restart
+systemctl reload nginx              rc-service nginx reload
+```
+
+### Usuarios
+
+```bash
+# Debian:                          # Alpine:
+adduser --disabled-password --gecos "" deploy   adduser -D -s /bin/sh deploy
+usermod -aG sudo deploy                         adduser deploy wheel
+```
+
+Alpine usa el grupo `wheel` en lugar de `sudo` para privilegios administrativos.
+
+### Swap file
+
+```bash
+# Debian:                          # Alpine (portable):
+fallocate -l 2G /swapfile           dd if=/dev/zero of=/swapfile bs=1M count=2048
+chmod 600 /swapfile                 chmod 600 /swapfile
+mkswap /swapfile                    mkswap /swapfile
+swapon /swapfile                    swapon /swapfile
+```
+
+### Sysctl
+
+En Alpine los parámetros del kernel se configuran igual, pero se cargan con:
+
+```bash
+# Debian:                          # Alpine:
+sysctl --system                     rc-service sysctl start
+```
+
+O directamente en `/etc/sysctl.conf` si se prefiere un solo archivo.
+
+---
+
 ## 🔗 Referencias
 
-- [nginx.md](../../guides/nginx.md)
-- [production_server.md](../../guides/production_server.md)
-- [storage_backup.md](../../guides/storage_backup.md)
-- [ssh.md](../../guides/ssh.md)
-- [systemd_journalctl.md](../../guides/systemd_journalctl.md)
+- [`nginx`](../../guides/nginx.md)
+- [`production_server`](../../guides/production_server.md)
+- [`storage_backup`](../../guides/storage_backup.md)
+- [`ssh`](../../guides/ssh.md)
+- [`systemd_journalctl`](../../guides/systemd_journalctl.md)
+- [`apk`](../../guides/apk.md) — Alpine Linux: gestor de paquetes
+- [`openrc`](../../guides/openrc.md) — Alpine Linux: servicios (rc-service, rc-update)
