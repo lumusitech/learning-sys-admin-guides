@@ -57,7 +57,7 @@ awk '{ print $NF, $7 }' labs/nginx_access.log | sort -rn | head -10 | awk '{ pri
 
 ## ✅ Salida esperada
 
-```
+```text
  5.234s /api/reportes
  3.102s /productos/123
  0.892s /index.html
@@ -136,7 +136,6 @@ labs/nginx_access.log | sort -rn | head -10
 ```
 
 ---
-
 
 ## 🧯 Mitigación
 

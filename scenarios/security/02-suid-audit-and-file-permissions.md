@@ -27,7 +27,7 @@ Es necesario auditar el sistema para detectar configuraciones inseguras de permi
 
 ## ✅ Salida esperada
 
-```
+```text
 -rwsr-xr-x root root /usr/bin/passwd
 -rwsr-xr-x root root /usr/bin/su
 -rwsr-xr-x root root /usr/bin/sudo

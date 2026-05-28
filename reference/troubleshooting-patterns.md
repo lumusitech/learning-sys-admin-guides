@@ -5,6 +5,7 @@ Problema → qué herramienta usar (no cómo)
 
 LOGS
 ----
+
 Buscar eventos     → grep, journalctl
 Agrupar por tipo   → sort | uniq -c | sort -rn
 Extraer campo      → awk, cut
@@ -14,6 +15,7 @@ Seguir en vivo     → tail -f | grep
 
 RED
 ---
+
 Puertos abiertos   → ss -tuln, nmap
 Conectividad       → ping, traceroute, mtr
 Ancho de banda     → vnstat, iftop, bmon
@@ -24,6 +26,7 @@ Latencia vs pérdida → mtr (muestra ambos por salto)
 
 PROCESOS
 --------
+
 CPU alto           → ps aux --sort=-%cpu, top, htop
 Memoria alta       → ps aux --sort=-%mem, free -h
 Disco lento        → iostat -x, iotop, dstat
@@ -33,6 +36,7 @@ Hilos              → ps -eLf, /proc/PID/task
 
 SISTEMA
 -------
+
 Espacio disco      → df -h, du -sh /*
 Inodos             → df -i
 Swap               → swapon --show, free -h
@@ -43,6 +47,7 @@ Actualizaciones    → apt list --upgradable
 
 ERRORES COMUNES
 --------------
+
 Connection refused    → servicio no corre / puerto equivocado
 Connection timed out → firewall DROP / host caído
 No route to host     → ruta incorrecta / gateway caído
@@ -54,6 +59,7 @@ Permission denied    → permisos / dueño incorrecto
 
 PASO RÁPIDO
 -----------
+
 1. ¿Qué cambió? (último deploy, config, reboot)
 2. ¿El servicio corre? (systemctl status)
 3. ¿Escucha? (ss -tuln)

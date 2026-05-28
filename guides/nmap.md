@@ -17,6 +17,7 @@ nmap -sS -T4 localhost
 ---
 
 ## Índice
+
 1. [¿Qué es nmap?](#qué-es-nmap)
 2. [Tipos de escaneo](#tipos-de-escaneo)
 3. [Opciones principales](#opciones-principales)
@@ -220,7 +221,8 @@ sudo nmap -sV --version-light 192.168.1.1
 ```
 
 Salida típica:
-```
+
+```text
 PORT     STATE SERVICE  VERSION
 22/tcp   open  ssh      OpenSSH 8.9p1 Ubuntu 3
 80/tcp   open  http     Apache httpd 2.4.57
@@ -254,7 +256,8 @@ sudo nmap -O --osscan-guess 192.168.1.1
 ```
 
 Salida típica:
-```
+
+```text
 Device type: general purpose
 Running: Linux 5.X
 OS CPE: cpe:/o:linux:linux_kernel:5

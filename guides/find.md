@@ -17,6 +17,7 @@ find / -type f -name "*.log" -size +100M 2>/dev/null
 ---
 
 ## Índice
+
 1. [¿Qué es find?](#qué-es-find)
 2. [Sintaxis básica](#sintaxis-básica)
 3. [Búsqueda por nombre](#búsqueda-por-nombre)

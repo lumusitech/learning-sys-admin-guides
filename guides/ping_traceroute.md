@@ -17,6 +17,7 @@ ping -c 4 google.com && traceroute google.com
 ---
 
 ## Índice
+
 1. [ping — Introducción](#ping--introducción)
 2. [Opciones de ping](#opciones-de-ping)
 3. [Interpretar salida de ping](#interpretar-salida-de-ping)
@@ -27,6 +28,12 @@ ping -c 4 google.com && traceroute google.com
 8. [mtr — La combinación](#mtr--la-combinación)
 9. [Escenarios de traceroute/mtr](#escenarios-de-traceroutemtr)
 10. [Uno-liners imprescindibles](#uno-liners-imprescindibles)
+
+---
+
+## ¿Qué es ping?
+
+**ping** envía paquetes ICMP ECHO_REQUEST a un host y espera respuestas ICMP ECHO_REPLY. Sirve para verificar conectividad, medir latencia (RTT) y detectar pérdida de paquetes. Es la primera herramienta de diagnóstico de red.
 
 ---
 
@@ -135,7 +142,7 @@ ping -w 10 google.com
 
 ### Salida exitosa
 
-```
+```text
 PING google.com (142.250.80.46) 56(84) bytes of data.
 64 bytes from 142.250.80.46: icmp_seq=1 ttl=116 time=15.2 ms
 64 bytes from 142.250.80.46: icmp_seq=2 ttl=116 time=14.8 ms
@@ -182,7 +189,7 @@ El TTL inicial revela el sistema operativo remoto:
 
 ### Salida de fallo
 
-```
+```text
 From 192.168.1.1 icmp_seq=1 Destination Host Unreachable
 From 192.168.1.1 icmp_seq=1 Destination Net Unreachable
 From 192.168.1.1 icmp_seq=1 Destination Port Unreachable
@@ -193,7 +200,7 @@ From 192.168.1.1 icmp_seq=1 Destination Port Unreachable
 
 ### Salida de timeout
 
-```
+```text
 PING 10.0.0.1 (10.0.0.1) 56(84) bytes of data.
 
 --- 10.0.0.1 ping statistics ---
@@ -206,18 +213,20 @@ PING 10.0.0.1 (10.0.0.1) 56(84) bytes of data.
 
 ### 1. Host responde — conectividad OK
 
-```
+```text
 64 bytes from 8.8.8.8: icmp_seq=1 ttl=116 time=15.2 ms
 ```
+
 → Red funcionando, host alive, latencia normal (<50ms es excelente, <100ms bueno)
 
 ### 2. Host no responde — 100% loss
 
-```
+```text
 5 packets transmitted, 0 received, 100% packet loss
 ```
 
 Causas posibles:
+
 - Host **apagado** o caído
 - **Firewall** bloqueando ICMP (común en muchos servidores)
 - **Ruta de retorno** rota (el paquete llega pero la respuesta no vuelve)
@@ -226,22 +235,24 @@ Causas posibles:
 
 ### 3. Destination Host Unreachable
 
-```
+```text
 From 192.168.1.1 icmp_seq=1 Destination Host Unreachable
 ```
 
 → El **router local** (192.168.1.1) no tiene ruta al destino. Posibles causas:
+
 - La IP destino no existe en la subred local
 - Gateway por defecto no configurado correctamente
 - Enlace entre routers caído
 
 ### 4. Pérdida parcial de paquetes (20-50%)
 
-```
+```text
 5 packets transmitted, 3 received, 40% packet loss
 ```
 
 → Problemas de red intermitentes:
+
 - **Congestión** (buffer overflow en router)
 - **Enlace con errores** (cobre, fibra, WiFi con interferencia)
 - **Colisiones** en half-duplex
@@ -249,7 +260,7 @@ From 192.168.1.1 icmp_seq=1 Destination Host Unreachable
 
 ### 5. Latencia alta y variable
 
-```
+```text
 time=250 ms
 time=50 ms
 time=800 ms
@@ -257,6 +268,7 @@ time=60 ms
 ```
 
 → Indica:
+
 - **Congestión**: buffers de router llenos, colas largas
 - **Enrutamiento asimétrico**: ida y vuelta por caminos diferentes
 - **Enlace congestionado**: saturación de ancho de banda
@@ -264,11 +276,12 @@ time=60 ms
 
 ### 6. TTL exceeded in transit
 
-```
+```text
 From 192.168.1.1: icmp_seq=1 Time to live exceeded
 ```
 
 → El TTL llegó a 0 antes de alcanzar el destino. Causas:
+
 - **Bucle de enrutamiento** (loop)
 - TTL inicial demasiado pequeño para la distancia real
 
@@ -380,7 +393,7 @@ traceroute -m 15 -n 8.8.8.8
 
 ### Salida exitosa
 
-```
+```text
 traceroute to 8.8.8.8 (8.8.8.8), 30 hops max, 60 byte packets
  1  192.168.1.1  1.234 ms  1.189 ms  1.156 ms
  2  10.0.0.1    5.432 ms  5.210 ms  5.198 ms
@@ -398,18 +411,19 @@ traceroute to 8.8.8.8 (8.8.8.8), 30 hops max, 60 byte packets
 
 ### Salto sin respuesta
 
-```
+```text
  4  * * *
 ```
 
 → El router no respondió. Causas:
+
 - **Firewall** bloquea ICMP Time Exceeded
 - Router **no envía** ICMP Time Exceeded (por configuración o por ser demasiado lento)
 - **Congestión** severa
 
 ### Salto con latencia alta
 
-```
+```text
  3  172.16.0.1  300.234 ms  250.189 ms  310.156 ms
 ```
 
@@ -417,7 +431,7 @@ traceroute to 8.8.8.8 (8.8.8.8), 30 hops max, 60 byte packets
 
 ### Salto con nombres y resolución
 
-```
+```text
  1  router.home (192.168.1.1)  1.234 ms
  2  10.0.0.1 (10.0.0.1)  5.432 ms
  3  core-1.isp.net (172.16.0.1)  10.123 ms
@@ -426,7 +440,7 @@ traceroute to 8.8.8.8 (8.8.8.8), 30 hops max, 60 byte packets
 
 ### RTT incrementándose gradualmente
 
-```
+```text
  1  1 ms
  2  5 ms
  3  10 ms
@@ -437,7 +451,7 @@ traceroute to 8.8.8.8 (8.8.8.8), 30 hops max, 60 byte packets
 
 ### RTT de un salto mucho mayor que el siguiente
 
-```
+```text
  3  100 ms
  4  5 ms
 ```
@@ -482,7 +496,7 @@ mtr -b 8.8.8.8
 
 ### Salida de mtr
 
-```
+```text
                               My traceroute  [v0.95]
 host.local (192.168.1.100)                             2024-01-15T14:30:22+0000
 Keys: Help   Display mode   Restart statistics   Order of fields   quit
@@ -508,7 +522,7 @@ Keys: Help   Display mode   Restart statistics   Order of fields   quit
 
 #### Pérdida en un salto intermedio pero no en el destino
 
-```
+```text
  3. 172.16.0.1  50.0%  100
  4. 8.8.8.8     0.0%  100
 ```
@@ -517,7 +531,7 @@ Keys: Help   Display mode   Restart statistics   Order of fields   quit
 
 #### Pérdida en el último salto o acumulativa
 
-```
+```text
  3. 172.16.0.1  0.0%
  4. 8.8.8.8    50.0%
 ```
@@ -526,7 +540,7 @@ Keys: Help   Display mode   Restart statistics   Order of fields   quit
 
 #### Pérdida creciente a partir de un salto
 
-```
+```text
  3. 172.16.0.1   0.0%
  4. 10.1.1.1    20.0%
  5. 10.2.2.2    40.0%
@@ -537,7 +551,7 @@ Keys: Help   Display mode   Restart statistics   Order of fields   quit
 
 #### StDev alto en un salto (jitter)
 
-```
+```text
  3. 172.16.0.1  Avg=50  StDev=45.2
 ```
 
@@ -549,7 +563,7 @@ Keys: Help   Display mode   Restart statistics   Order of fields   quit
 
 ### 1. Red local funcionando normalmente
 
-```
+```text
  1  192.168.1.1   1ms
  2  10.0.0.1     20ms
  3  8.8.8.8      30ms
@@ -559,7 +573,7 @@ Keys: Help   Display mode   Restart statistics   Order of fields   quit
 
 ### 2. Internet lenta después de cierto punto
 
-```
+```text
  1  192.168.1.1     1ms
  2  10.0.0.1       5ms
  3  172.16.0.1    300ms  ← cuello de botella
@@ -570,7 +584,7 @@ Keys: Help   Display mode   Restart statistics   Order of fields   quit
 
 ### 3. Pérdida de paquetes total en un salto (pero llega al destino)
 
-```
+```text
  3  * * *
  4  * * *
  5  8.8.8.8  15ms
@@ -580,7 +594,7 @@ Keys: Help   Display mode   Restart statistics   Order of fields   quit
 
 ### 4. No se alcanza el destino (caída en medio)
 
-```
+```text
  1  192.168.1.1    1ms
  2  10.0.0.1       5ms
  3  * * *
@@ -588,13 +602,14 @@ Keys: Help   Display mode   Restart statistics   Order of fields   quit
 ```
 
 → A partir del salto 2 no hay respuesta. Posibles causas:
+
 - Router del ISP caído
 - Corte de fibra/enlace
 - Firewall bloqueando todo
 
 ### 5. Bucle de enrutamiento
 
-```
+```text
  1  192.168.1.1    1ms
  2  10.0.0.1       2ms
  3  192.168.1.1    1ms  ← volvió al salto 1

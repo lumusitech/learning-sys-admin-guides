@@ -1,10 +1,15 @@
 # curl — Guía completa
 
+**Nivel:** 🟡 Intermedio
+**Archivos de práctica:** Sistema en vivo
+**Ver escenarios relacionados:** [`web/01-performance`](../scenarios/web/01-performance-and-error-analysis.md)
+
 ## ⚡ Quick command
 
 `curl -sI https://example.com`
 
 ## Índice
+
 1. [¿Qué es curl?](#qué-es-curl)
 2. [Sintaxis básica](#sintaxis-básica)
 3. [Métodos HTTP](#métodos-http)

@@ -17,6 +17,7 @@ wc -l labs/auth.log
 ---
 
 ## Índice
+
 1. [¿Qué es wc?](#qué-es-wc)
 2. [Sintaxis básica](#sintaxis-básica)
 3. [Contar líneas (-l)](#contar-líneas--l)

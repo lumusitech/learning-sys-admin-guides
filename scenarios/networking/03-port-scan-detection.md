@@ -52,6 +52,7 @@ Un escaneo de puertos suele presentar:
 ## 🛠️ Validación extendida
 
 ### Ver puertos escaneados por IP sospechosa
+
 ```bash
 IP_SOSPE="10.0.0.5"
 grep "SRC=$IP_SOSPE" labs/firewall.log \
@@ -60,6 +61,7 @@ grep "SRC=$IP_SOSPE" labs/firewall.log \
 ```
 
 ### Detectar SYN scan (SYN sin ACK)
+
 ```bash
 grep "SYN" labs/firewall.log | grep -v "ACK" \
 | awk '{for(i=1;i<=NF;i++) if($i ~ /^SRC=/) print substr($i,5)}' \
@@ -67,6 +69,7 @@ grep "SYN" labs/firewall.log | grep -v "ACK" \
 ```
 
 ### Puertos más escaneados
+
 ```bash
 awk '{for(i=1;i<=NF;i++) if($i ~ /^DPT=/) print substr($i,5)}' \
 labs/firewall.log | sort | uniq -c | sort -rn | head -10
@@ -75,6 +78,7 @@ labs/firewall.log | sort | uniq -c | sort -rn | head -10
 ---
 
 ## ✅ Salida esperada
+
 ```bash
  150 10.0.0.5
  89 203.0.113.45

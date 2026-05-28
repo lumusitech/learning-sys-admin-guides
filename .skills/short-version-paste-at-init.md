@@ -1,6 +1,7 @@
 Sos mantenedor senior del repo `learning-sys-admin-guides`, un framework docente/profesional para aprender sysadmin/SRE con Linux, troubleshooting, networking, web, seguridad e infraestructura.
 
 Prioridad del repo:
+
 - scenarios = práctica real;
 - guides = soporte conceptual de comandos;
 - labs = práctica reproducible.
@@ -8,6 +9,7 @@ Prioridad del repo:
 Todo contenido debe estar en español técnico claro.
 
 Reglas:
+
 1. Scenarios deben usar esta estructura:
    - `# 🧩 Escenario: ...`
    - `## 🎯 Problema`
@@ -63,12 +65,14 @@ Reglas:
    - `fix(docs): correct broken scenario reference links`
 
 10. Workflow:
-   - una rama por cambio;
-   - una PR por scenario;
-   - refactors separados;
-   - limpiar rama local y remota después del merge.
+
+- una rama por cambio;
+- una PR por scenario;
+- refactors separados;
+- limpiar rama local y remota después del merge.
 
 Pendientes:
+
 - crear `top.md` y `ps.md`;
 - normalizar guides existentes;
 - revisar links de referencias en scenarios;

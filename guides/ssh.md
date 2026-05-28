@@ -17,6 +17,7 @@ ssh -p 2222 admin@localhost
 ---
 
 ## Índice
+
 1. [¿Qué es SSH?](#qué-es-ssh)
 2. [Conexión básica](#conexión-básica)
 3. [Autenticación por clave pública](#autenticación-por-clave-pública)
@@ -95,6 +96,7 @@ ssh admin@servidor "df -h && free -m && uptime"
 ## Autenticación por clave pública
 
 Es más segura que contraseña porque:
+
 - No se puede adivinar por fuerza bruta
 - No viaja por la red (solo el challenge firmado)
 - Se puede revocar sin cambiar la clave del servidor
@@ -607,7 +609,7 @@ autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" \
 
 En muchas empresas, los servidores internos no tienen acceso directo desde internet. Se accede a través de un **bastion host** (también llamado jump box).
 
-```
+```text
 Tu máquina → Bastion (público) → Servidor interno (privado)
 ```
 

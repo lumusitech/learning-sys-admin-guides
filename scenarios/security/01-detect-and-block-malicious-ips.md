@@ -29,7 +29,7 @@ Es necesario:
 
 ## ✅ Salida esperada
 
-```
+```text
 10.0.0.5
 192.168.1.200
 ```

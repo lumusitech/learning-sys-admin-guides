@@ -18,6 +18,7 @@ Guías conceptuales sobre cómo pensar como administrador de sistemas.
 ## 🎯 Cuándo usar esta sección
 
 Usá `concepts/` cuando:
+
 - no sabés por dónde empezar un problema
 - querés entender cómo analizar logs
 - querés identificar patrones normales vs anómalos
@@ -27,6 +28,7 @@ Usá `concepts/` cuando:
 ---
 
 👉 Esta sección es conceptual:
+
 - NO incluye comandos
 - NO incluye pasos
 - SOLO explica cómo entender y razonar
@@ -44,6 +46,7 @@ Para ejecutar acciones, ver `guides/`
 ---
 
 📌 Ver también:
+
 - [`troubleshooting-patterns.md`](../reference/troubleshooting-patterns.md — mapa rápido de diagnóstico)
 
 ---

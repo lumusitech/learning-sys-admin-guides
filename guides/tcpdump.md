@@ -6,7 +6,7 @@
 
 ## ⚡ Quick command
 
-`tcpdump -c 10 -i any
+`tcpdump -c 10 -i any`
 
 ## ⚡ Quick run
 
@@ -17,6 +17,7 @@ sudo tcpdump -i any -c 10 port 80
 ---
 
 ## Índice
+
 1. [¿Qué es tcpdump?](#qué-es-tcpdump)
 2. [Sintaxis básica](#sintaxis-básica)
 3. [Opciones principales](#opciones-principales)
@@ -301,7 +302,7 @@ sudo tcpdump 'greater 100'
 
 ### Formato básico TCP
 
-```
+```text
 14:30:22.123456 IP 192.168.1.100.54321 > 93.184.216.34.80: Flags [S], seq 1234567890, win 65535, options [mss 1460], length 0
 ```
 
@@ -334,21 +335,21 @@ sudo tcpdump 'greater 100'
 
 ### Formato ARP
 
-```
+```text
 14:30:22.123456 ARP, Request who-has 192.168.1.1 tell 192.168.1.100, length 46
 14:30:22.123456 ARP, Reply 192.168.1.1 is-at 00:11:22:33:44:55, length 28
 ```
 
 ### Formato ICMP
 
-```
+```text
 14:30:22.123456 IP 192.168.1.100 > 8.8.8.8: ICMP echo request, id 12345, seq 1, length 64
 14:30:22.123456 IP 8.8.8.8 > 192.168.1.100: ICMP echo reply, id 12345, seq 1, length 64
 ```
 
 ### -X: contenido hex+ASCII
 
-```
+```text
 0x0000:  4500 0054 1234 4000 4001 5678 c0a8 0164  E..T.4@.@.Vx...d
 0x0010:  58b8 d822 0800 4a3f 0123 4567 4865 6c6c  X.."...J?#.EgHell
 0x0020:  6f20 576f 726c 6421                      o.World!

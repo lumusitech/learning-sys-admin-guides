@@ -27,7 +27,7 @@ El sistema presenta alto consumo de recursos o degradación de rendimiento, lo q
 
 ## ✅ Salida esperada
 
-```
+```text
 USUARIO  CPU%  MEM%  COMANDO
 root     85.2   2.3  /usr/bin/python3 /app/worker.py
 admin     5.1  12.4  /usr/lib/mysql/mysqld

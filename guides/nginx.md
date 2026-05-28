@@ -17,6 +17,7 @@ nginx -t && systemctl reload nginx
 ---
 
 ## Índice
+
 1. [¿Qué es nginx?](#qué-es-nginx)
 2. [Instalación](#instalación)
 3. [Estructura de directorios y archivos](#estructura-de-directorios)
@@ -40,6 +41,7 @@ nginx -t && systemctl reload nginx
 nginx es un servidor web, proxy inverso, balanceador de carga y caché HTTP de alto rendimiento. Es el más usado globalmente para sitios de alto tráfico.
 
 **Casos de uso:**
+
 - Servir contenido estático (HTML, CSS, JS, imágenes)
 - Proxy inverso para aplicaciones (Node.js, Python, PHP-FPM)
 - Balanceador de carga entre varios servidores de backend
@@ -80,7 +82,7 @@ sudo iptables -A INPUT -p tcp -m multiport --dports 80,443 -m conntrack --ctstat
 
 ## Estructura de directorios
 
-```
+```text
 /etc/nginx/
 ├── nginx.conf              → Configuración principal
 ├── sites-available/        → Virtual hosts disponibles (por dominio)

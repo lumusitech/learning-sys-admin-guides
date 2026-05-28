@@ -91,7 +91,8 @@ Bloque final:
 ```bash
 free -h
 ```
-```
+
+```text
 
 ---
 
@@ -122,17 +123,17 @@ o, si el repo prefiere rutas visibles:
 - ../../guides/algo.md
 ```
 
-9. En scenarios, el `Quick command (SRE)` debe ser útil, directo y lo más robusto posible desde la primera propuesta.
-10. Si un patrón diagnóstico es imprescindible, debe ir en la primera versión, no aparecer recién en la revisión final.
-11. Evitar explicar paso a paso dentro de scenarios con bloques largos tipo guide.
-12. En scenarios NO usar secciones `### Explicación paso a paso`.
-13. En scenarios usar `## 🛠️ Procedimiento (runbook)` con pasos numerados.
-14. En scenarios usar `## ✅ Salida esperada` + `Interpretación:`.
-15. En scenarios usar `## 🧠 Diagnóstico`.
-16. En scenarios usar `## 🧯 Mitigación`.
-17. En scenarios usar `## ✅ Interpretación`.
-18. En scenarios usar `## 🔗 Referencias`.
-19. En escenarios, si se usan campos, estados, métricas o strings reales de salida, escribirlos entre backticks:
+1. En scenarios, el `Quick command (SRE)` debe ser útil, directo y lo más robusto posible desde la primera propuesta.
+2. Si un patrón diagnóstico es imprescindible, debe ir en la primera versión, no aparecer recién en la revisión final.
+3. Evitar explicar paso a paso dentro de scenarios con bloques largos tipo guide.
+4. En scenarios NO usar secciones `### Explicación paso a paso`.
+5. En scenarios usar `## 🛠️ Procedimiento (runbook)` con pasos numerados.
+6. En scenarios usar `## ✅ Salida esperada` + `Interpretación:`.
+7. En scenarios usar `## 🧠 Diagnóstico`.
+8. En scenarios usar `## 🧯 Mitigación`.
+9. En scenarios usar `## ✅ Interpretación`.
+10. En scenarios usar `## 🔗 Referencias`.
+11. En escenarios, si se usan campos, estados, métricas o strings reales de salida, escribirlos entre backticks:
     - `wa`
     - `Query time`
     - `SERVER`
@@ -140,7 +141,7 @@ o, si el repo prefiere rutas visibles:
     - `<defunct>`
     - `DROP`
     - `REJECT`
-20. En comandos de scenarios, preferir herramientas estándar:
+12. En comandos de scenarios, preferir herramientas estándar:
     - `ps`
     - `awk`
     - `grep`
@@ -298,7 +299,8 @@ Casos comunes:
 
 - [guide.md](../../guides/guide.md)
 - [otra_guide.md](../../guides/otra_guide.md)
-```
+
+```text
 
 ---
 
@@ -600,7 +602,8 @@ Deben ser memorizables y realmente útiles.
 
 - [scenario relacionado](../scenarios/...)
 - [otra guide](...)
-```
+
+```text
 
 ---
 
@@ -792,7 +795,8 @@ comando
 
 - señal esperada
 - interpretación
-```
+
+```text
 
 Reglas de labs:
 
@@ -873,7 +877,8 @@ Bloque:
 ```bash
 free -h
 ```
-```
+
+```text
 
 ---
 

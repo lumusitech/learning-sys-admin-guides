@@ -17,6 +17,7 @@ systemctl status sshd && journalctl -u sshd -b --no-pager | tail -10
 ---
 
 ## Índice
+
 1. [¿Qué es systemd?](#qué-es-systemd)
 2. [Unidades (units)](#unidades-units)
 3. [systemctl: gestión de servicios](#systemctl-gestión-de-servicios)

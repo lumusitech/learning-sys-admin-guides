@@ -17,6 +17,7 @@ iptables -L -v -n | head -10
 ---
 
 ## Índice
+
 1. [¿Qué es iptables?](#qué-es-iptables)
 2. [Conceptos fundamentales](#conceptos-fundamentales)
 3. [Tablas y cadenas](#tablas-y-cadenas)
@@ -56,7 +57,7 @@ ls -la $(which iptables)
 
 ### Flujo de un paquete
 
-```
+```text
 →[PREROUTING]→[INPUT]→[PROCESO LOCAL]
 →[PREROUTING]→[FORWARD]→[POSTROUTING]→
 →[PROCESO LOCAL]→[OUTPUT]→[POSTROUTING]→
@@ -86,7 +87,7 @@ ls -la $(which iptables)
 
 ### Cadenas por tabla
 
-```
+```text
                ┌─────────────────────────────────┐
                │         mangle / raw             │
                │         PREROUTING               │

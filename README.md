@@ -5,7 +5,6 @@
 Sistema de aprendizaje para **administración de servidores Linux y redes**:
 guías de referencia, laboratorio Docker y escenarios prácticos.
 
-
 **Enfoque:** cada opción explicada, cada salida interpretada, uso real en troubleshooting, fallas y seguridad.
 
 **Quality Gates (CI):** [SRE Validation](.github/workflows/sre-validate.yml) — bloquea regresiones de portabilidad (`grep -P`, `\K`, `<(`).
@@ -29,6 +28,7 @@ guías de referencia, laboratorio Docker y escenarios prácticos.
 Este repo puede usarse de 3 formas:
 
 ### 🧑‍🎓 Aprendizaje progresivo (RECOMENDADO)
+
 1. 👉 concepts/ — cómo pensar como sysadmin  
 2. 👉 reference/ — orientarse rápidamente  
 3. 👉 guides/ — aprender cada herramienta  
@@ -38,6 +38,7 @@ Este repo puede usarse de 3 formas:
 ---
 
 ### ⚡ Resolución rápida (modo producción)
+
 1. 👉 [scenarios/](scenarios/) — encontrar problema  
 2. ejecutar **Quick command (SRE)**  
 3. validar con 👉 [labs/](labs/)  
@@ -47,6 +48,7 @@ Este repo puede usarse de 3 formas:
 ---
 
 ### 📚 Referencia rápida
+
 - abrir 👉 [guides/](guides/)  
 - copiar comandos  
 - adaptar al caso  
@@ -56,7 +58,9 @@ Este repo puede usarse de 3 formas:
 ## 🧱 Estructura (navegación directa)
 
 ### 🧠 [concepts/](concepts/) — mindset de sysadmin
+
 Patrones de pensamiento:
+
 - cómo analizar logs
 - cómo diagnosticar problemas
 - cómo pensar como SRE
@@ -64,7 +68,9 @@ Patrones de pensamiento:
 ---
 
 ### 📚 [reference/](reference/) — mapas rápidos
+
 Apoyo durante troubleshooting:
+
 - cheatsheets
 - mapa problema → herramienta
 - orientación rápida
@@ -74,7 +80,9 @@ Apoyo durante troubleshooting:
 ---
 
 ### 🛠️ [guides/](guides/) — herramientas
+
 Aprender cada comando:
+
 - grep, awk, sort, uniq, etc.
 - redes (ip, ss, tcpdump)
 - sistema (systemctl, journalctl)
@@ -82,6 +90,7 @@ Aprender cada comando:
 ---
 
 ### 🧪 [labs/](labs/) — práctica real
+
 - logs de ejemplo
 - entorno Docker
 - datos reproducibles
@@ -89,13 +98,16 @@ Aprender cada comando:
 ---
 
 ### 🚨 [scenarios/](scenarios/) — problemas reales
+
 Casos como:
+
 - brute force SSH
 - port scan
 - errores web
 - performance issues
 
 👉 Cada uno incluye:
+
 - problema real
 - quick command (SRE)
 - pipeline completo

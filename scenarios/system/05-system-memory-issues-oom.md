@@ -3,6 +3,7 @@
 ---
 
 ## 🎯 Problema
+
 El sistema presenta lentitud extrema, procesos que se caen inesperadamente o errores relacionados con memoria insuficiente. Es necesario identificar si existe un problema de consumo de memoria (RAM) o si el sistema está activando el OOM killer (Out Of Memory).
 
 ---

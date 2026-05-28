@@ -15,6 +15,7 @@
 Colección completa de guías de referencia para administración de servidores Linux y redes. Cada guía cubre una herramienta desde lo más básico hasta escenarios profesionales reales, explicando **cada opción** y la **interpretación de salidas** en contextos de éxito, falla y ataque.
 
 ## 🎯 Cuándo usar esta sección
+
 Usá guides/ cuando:
 
 necesitás aprender una herramienta específica
@@ -25,6 +26,7 @@ querés interpretar salidas correctamente
 👉 Esto es tu caja de herramientas
 
 ## 🔄 Flujo recomendado
+
 concepts → guides → labs → scenarios
 👉 entender → aprender → practicar → aplicar
 

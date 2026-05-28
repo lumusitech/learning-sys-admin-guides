@@ -17,6 +17,7 @@ cut -d' ' -f1 labs/nginx_access.log | sort | uniq -c | sort -rn | head -5
 ---
 
 ## Índice
+
 1. [¿Qué es uniq?](#qué-es-uniq)
 2. [Sintaxis básica](#sintaxis-básica)
 3. [Requisito: entrada ordenada](#requisito-entrada-ordenada)

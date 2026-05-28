@@ -18,7 +18,6 @@ dig google.com +stats
 
 ## ✅ Salida esperada
 
-
 - tiempo total de resolución (`Query time`)
 - servidor DNS consultado (`SERVER`)
 - respuesta válida con dirección IP
