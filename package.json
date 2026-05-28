@@ -1,0 +1,19 @@
+{
+  "name": "sys-admin-guides",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sistema de aprendizaje para administración de servidores Linux y redes",
+  "scripts": {
+    "lint:md": "markdownlint-cli2 '**/*.md' '#node_modules' '#.git' '#labs'",
+    "lint:md:fix": "markdownlint-cli2 --fix '**/*.md' '#node_modules' '#.git' '#labs'",
+    "lint:sh": "command -v shellcheck >/dev/null 2>&1 && shellcheck scripts/*.sh || echo '⚠️ shellcheck no instalado — salteando lint:sh'",
+    "lint": "pnpm lint:md && pnpm lint:sh",
+    "validate:sre": "bash scripts/validate_sre.sh",
+    "validate": "pnpm lint && pnpm validate:sre"
+  },
+  "keywords": [],
+  "license": "MIT",
+  "devDependencies": {
+    "markdownlint-cli2": "^0.22.1"
+  }
+}

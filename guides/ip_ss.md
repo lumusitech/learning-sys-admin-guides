@@ -4,7 +4,7 @@
 **Archivos de práctica:** Sistema en vivo
 **Ver escenarios relacionados:** [`networking/03-port-scan`](../scenarios/networking/03-port-scan-detection.md), [`infrastructure/02-build-pyme`](../scenarios/infrastructure/02-build-pyme-infrastructure.md)
 
-# ⚡ Quick command
+## ⚡ Quick command
 
 `ip addr show`
 
@@ -17,6 +17,7 @@ ip addr show && ss -tuln
 ---
 
 ## Índice
+
 1. [¿Qué son ip y ss?](#qué-son-ip-y-ss)
 2. [ip link — Interfaces de red](#ip-link--interfaces-de-red)
 3. [ip addr — Direcciones IP](#ip-addr--direcciones-ip)
@@ -72,7 +73,7 @@ ip -s -s link show eth0  # aún más detalle
 
 ### Columnas de `ip link show`
 
-```
+```text
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
 2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP mode DEFAULT group default qlen 1000
@@ -191,7 +192,7 @@ ip addr show eth0 up
 
 ### Columnas de `ip addr show`
 
-```
+```text
 2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
     link/ether 08:00:27:ab:cd:ef brd ff:ff:ff:ff:ff:ff
     inet 192.168.1.100/24 brd 192.168.1.255 scope global dynamic eth0
@@ -271,7 +272,7 @@ ip -br route show
 
 ### Columnas de `ip route show`
 
-```
+```text
 default via 192.168.1.1 dev eth0 proto static metric 100
 10.0.0.0/8 via 10.1.1.1 dev eth1 proto static metric 200
 192.168.1.0/24 dev eth0 proto kernel scope link src 192.168.1.100 metric 100
@@ -369,7 +370,7 @@ ip neigh show nud reachable
 
 ### Columnas de `ip neigh show`
 
-```
+```text
 192.168.1.1 dev eth0 lladdr 00:11:22:33:44:55 REACHABLE
 192.168.1.2 dev eth0 lladdr aa:bb:cc:dd:ee:ff STALE
 192.168.1.3 dev eth0 FAILED
@@ -501,7 +502,7 @@ ss -tuln
 
 Salida típica:
 
-```
+```text
 Netid  State   Recv-Q  Send-Q  Local Address:Port   Peer Address:Port
 tcp    LISTEN  0       128     0.0.0.0:22           0.0.0.0:*
 tcp    LISTEN  0       128     127.0.0.1:3306       0.0.0.0:*
@@ -534,12 +535,12 @@ ss -s
 # TCP:   12 (estab 6, closed 0, orphaned 0, synrecv 0, timewait 0/0), ports 0
 #
 # Transport Total     IP        IPv6
-# *	  0        -         -
-# RAW	  0         0         0
-# UDP	  5         3         2
-# TCP	  12        8         4
-# INET	  17        11        6
-# FRAG	  0         0         0
+# *   0        -         -
+# RAW   0         0         0
+# UDP   5         3         2
+# TCP   12        8         4
+# INET   17        11        6
+# FRAG   0         0         0
 ```
 
 ### Estados TCP

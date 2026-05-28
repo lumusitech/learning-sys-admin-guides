@@ -23,6 +23,7 @@ Un diagnóstico incorrecto genera más downtime que el problema original.
 ## 🧩 Conceptos clave
 
 ### Normal vs anómalo
+
 Un sysadmin no mira valores absolutos, sino patrones:
 
 - ¿Este comportamiento es esperado?
@@ -32,6 +33,7 @@ Un sysadmin no mira valores absolutos, sino patrones:
 ---
 
 ### Señales del sistema
+
 El sistema siempre deja pistas:
 
 - uso de CPU
@@ -45,6 +47,7 @@ Interpretar estas señales correctamente es la base del diagnóstico.
 ---
 
 ### Reducción del problema
+
 Diagnosticar es descartar hipótesis:
 
 - ¿es la red?

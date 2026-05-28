@@ -17,6 +17,7 @@ sed 's/error/ERROR/g' labs/syslog.log | head -10
 ---
 
 ## Índice
+
 1. [¿Qué es sed?](#qué-es-sed)
 2. [Sintaxis básica](#sintaxis-básica)
 3. [Sustitución (s///)](#sustitución-s)

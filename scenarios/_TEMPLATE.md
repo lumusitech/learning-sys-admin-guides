@@ -55,7 +55,7 @@ Explicación de cada etapa del pipeline.
 
 ## ✅ Salida esperada
 
-```
+```text
 IP         INTENTOS
 10.0.0.5   150
 ```

@@ -27,7 +27,7 @@ El sistema genera errores en distintos servicios que pueden afectar la estabilid
 
 ## ✅ Salida esperada
 
-```
+```text
 150 sshd
  89 kernel
  45 mysqld

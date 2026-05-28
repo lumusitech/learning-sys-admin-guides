@@ -129,7 +129,7 @@ systemctl restart <servicio>
 
 Casos comunes:
 
-- proceso padre con bug → no ejecuta wait() / waitpid() correctamente 
+- proceso padre con bug → no ejecuta wait() / waitpid() correctamente
 - demonio o servicio colgado → deja zombies acumulándose
 - contenedor o app con mala gestión de hijos → proliferación de zombies y presión sobre PIDs
 

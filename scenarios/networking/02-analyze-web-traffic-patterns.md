@@ -27,7 +27,7 @@ Se observa tráfico web irregular en los logs del servidor HTTP, lo que puede in
 
 ## ✅ Salida esperada
 
-```
+```text
 150 /index.html
  89 /api/usuarios
  45 /productos/123

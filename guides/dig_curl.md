@@ -17,6 +17,7 @@ dig +short google.com && curl -sI https://google.com | head -5
 ---
 
 ## Índice
+
 1. [¿Qué es dig?](#qué-es-dig)
 2. [Consultas básicas](#consultas-básicas)
 3. [Tipos de registro DNS](#tipos-de-registro-dns)
@@ -186,6 +187,7 @@ dig +trace google.com
 ```
 
 Muestra:
+
 1. Root servers (.)
 2. TLD servers (.com)
 3. Servidores autoritativos (google.com)
@@ -214,7 +216,7 @@ dig +multiline TXT google.com
 
 ### Estructura de la respuesta
 
-```
+```text
 ; <<>> DiG 9.16.1-Ubuntu <<>> google.com
 ;; global options: +cmd
 ;; Got answer:
@@ -366,7 +368,7 @@ dig +noall +additional example.com NS
 
 ### 1. NXDOMAIN — El dominio no existe
 
-```
+```text
 status: NXDOMAIN
 ```
 
@@ -376,17 +378,19 @@ dig +short dominioquenoexiste12345.com
 ```
 
 Causas:
+
 - Dominio no registrado
 - DNS mal configurado (falta registro A)
 - **Cache poisoning**: si un resolver devuelve NXDOMAIN para un dominio que existe
 
 ### 2. SERVFAIL — Error de servidor
 
-```
+```text
 status: SERVFAIL
 ```
 
 Causas:
+
 - El servidor DNS autoritativo no responde o está caído
 - Problema de **delegación** (los NS no apuntan a IPs válidas)
 - **DNSSEC validation failure**: la cadena de confianza está rota
@@ -399,11 +403,12 @@ dig +trace example.com
 
 ### 3. REFUSED — Consulta rechazada
 
-```
+```text
 status: REFUSED
 ```
 
 Causas:
+
 - El servidor DNS no tiene autoridad sobre la zona
 - El servidor no permite consultas recursivas (bloquea consultas de terceros)
 - **Política de acceso**: solo permite consultas desde ciertas IPs

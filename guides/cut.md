@@ -17,6 +17,7 @@ cut -d: -f1,3 /etc/passwd | head -5
 ---
 
 ## Índice
+
 1. [¿Qué es cut?](#qué-es-cut)
 2. [Sintaxis básica](#sintaxis-básica)
 3. [Selección por caracteres (-c)](#selección-por-caracteres--c)
@@ -91,7 +92,7 @@ cut -c-10 archivo.txt
 
 ### Ejemplo con columnas de ancho fijo
 
-```
+```text
 ID    NOMBRE    EDAD
 001   Carlos    30
 002   Ana       25

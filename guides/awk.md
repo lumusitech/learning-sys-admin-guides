@@ -13,9 +13,11 @@
 ```bash
 awk '{ print $1, $3 }' labs/datos.txt | column -t
 ```
+
 ---
 
 ## Índice
+
 1. [¿Qué es awk?](#qué-es-awk)
 2. [Estructura básica](#estructura-básica)
 3. [Campos y separadores](#campos-y-separadores)
@@ -56,7 +58,7 @@ awk procesa archivos línea por línea, divide cada línea en campos, y ejecuta 
 
 ## Estructura básica
 
-```
+```text
 awk 'patrón { acción }' archivo
 ```
 
@@ -861,7 +863,8 @@ awk '{ print $2, "+", $3 }' numeros.txt | bc
 ### 1. Analizar access.log de nginx/apache
 
 Formato típico:
-```
+
+```text
 192.168.1.1 - - [10/Oct/2023:13:55:36 +0000] "GET /index.html HTTP/1.1" 200 2326
 ```
 

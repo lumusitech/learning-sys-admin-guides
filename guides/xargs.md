@@ -17,6 +17,7 @@ find /tmp -type f -mtime +7 -print | xargs rm -f
 ---
 
 ## Índice
+
 1. [¿Qué es xargs?](#qué-es-xargs)
 2. [Sintaxis básica](#sintaxis-básica)
 3. [Cómo funciona](#cómo-funciona)
@@ -182,6 +183,7 @@ grep -rlZ "patron" . | xargs -0 sed -i 's/foo/bar/g'
 ```
 
 > **REGLAS DE ORO**:
+>
 > 1. SIEMPRE usa `-print0` con `xargs -0` para archivos
 > 2. NUNCA uses `find ... | xargs` sin `-0`
 > 3. `xargs -0` + `find -print0` es la combinación más segura

@@ -32,6 +32,7 @@ Interpretación:
 ---
 
 ## 🧠 Diagnóstico
+
 Los problemas de disco pueden estar relacionados con capacidad o cantidad de archivos.
 
 Patrones clave:

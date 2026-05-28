@@ -17,6 +17,7 @@ grep "Failed password" labs/auth.log | head -10
 ---
 
 ## Índice
+
 1. [¿Qué es grep?](#qué-es-grep)
 2. [Sintaxis básica](#sintaxis-básica)
 3. [Tipos de patrón](#tipos-de-patrón)

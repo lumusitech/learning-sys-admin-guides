@@ -15,6 +15,7 @@
 Escenarios reales que combinan herramientas de las guías mediante pipes para resolver problemas concretos de administración de servidores Linux y redes.
 
 ## 🎯 Cuándo usar esta sección
+
 Usá scenarios/ cuando:
 
 tenés un problema real para resolver
@@ -25,12 +26,13 @@ querés ver cómo se combinan herramientas en contexto
 👉 Esto es el mundo real, donde aplicás todo lo aprendido
 
 ## 🔄 Flujo recomendado
+
 concepts → guides → labs → scenarios
 👉 entender → aprender → practicar → aplicar
 
 ## Estructura
 
-```
+```text
 scenarios/
 ├── networking/       → Problemas de red, conectividad, tráfico
 ├── system/           → Administración del sistema, recursos, logs

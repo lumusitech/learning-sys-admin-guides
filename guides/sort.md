@@ -17,6 +17,7 @@ ps aux | sort -k3 -rn | head -5
 ---
 
 ## Índice
+
 1. [¿Qué es sort?](#qué-es-sort)
 2. [Sintaxis básica](#sintaxis-básica)
 3. [Orden numérico (-n)](#orden-numérico--n)
@@ -46,6 +47,7 @@ sort archivo.txt
 ```
 
 Por defecto sort ordena:
+
 - Alfabéticamente (según el locale)
 - Por la línea completa
 - Ascendente
