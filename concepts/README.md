@@ -22,6 +22,9 @@ Usá `concepts/` cuando:
 - no sabés por dónde empezar un problema
 - querés entender cómo analizar logs
 - querés identificar patrones normales vs anómalos
+- necesitás establecer una baseline de rendimiento
+- querés entender SLI, SLO y error budget
+- buscás criterios de seguridad por capas
 
 👉 Esto va ANTES de usar herramientas
 
@@ -41,13 +44,16 @@ Para ejecutar acciones, ver `guides/`
 
 | Concepto | Nivel | Descripción |
 |----------|-------|-------------|
-| [Cómo pensar como un sysadmin](how-to-think-like-sysadmin.md) | 🟢 Básico | Patrones normales vs anómalos, lectura de logs, latencia vs pérdida, modelo mental de diagnóstico |
+| [Cómo pensar como un sysadmin](how-to-think-like-sysadmin.md) | 🟢 Básico | Patrones normales vs anómalos, embudo diagnóstico OSI, proceso iterativo de troubleshooting, lectura de logs |
+| [Baseline y detección de anomalías](baseline-and-anomalies.md) | 🟢 Básico | Cómo establecer una baseline, métricas de referencia (CPU, memoria, disco, red), detección de desvíos |
+| [Fundamentos SRE](sre-fundamentals.md) | 🟡 Intermedio | SLI, SLO, error budget, monitoreo vs observabilidad, postmortem, modelos USE/RED |
+| [Defensa en profundidad](defense-in-depth.md) | 🟡 Intermedio | Seguridad por capas, privilegio mínimo, aislamiento, hardening progresivo |
 
 ---
 
 📌 Ver también:
 
-- [`troubleshooting-patterns.md`](../reference/troubleshooting-patterns.md — mapa rápido de diagnóstico)
+- [`troubleshooting-patterns.md`](../reference/troubleshooting-patterns.md) — mapa rápido de diagnóstico
 
 ---
 
