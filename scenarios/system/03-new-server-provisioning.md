@@ -230,10 +230,77 @@ ssh practica@localhost -p 2201  # password: practica123
 
 ---
 
+## 🐧 Variante Alpine (provisionamiento)
+
+Este escenario usa comandos específicos de Debian/Ubuntu. En Alpine Linux (contenedor Docker mínimo):
+
+### Paquetes
+
+```bash
+# Debian:                     # Alpine:
+apt update                     apk update
+apt upgrade -y                 apk upgrade
+apt install -y <pkg>           apk add <pkg>
+```
+
+### Firewall
+
+Debian/Ubuntu usa `ufw`. Alpine usa `iptables` directamente:
+
+```bash
+# Debian (ufw):                    # Alpine (iptables):
+ufw default deny incoming           iptables -P INPUT DROP
+ufw allow 22/tcp                    iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+ufw --force enable                  iptables -P INPUT DROP; iptables -P FORWARD DROP; iptables -P OUTPUT ACCEPT; iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT; iptables -A INPUT -i lo -j ACCEPT
+ufw status verbose                  iptables -L -v -n
+```
+
+### Servicios
+
+```bash
+# Debian (systemd):                # Alpine (OpenRC):
+systemctl reload sshd               rc-service sshd reload
+systemctl restart fail2ban          rc-service fail2ban restart
+systemctl enable --now <svc>        rc-update add <svc> default && rc-service <svc> start
+```
+
+### Usuarios
+
+```bash
+# Debian:                          # Alpine:
+useradd -m -s /bin/bash admin       adduser -D -s /bin/sh admin
+usermod -aG sudo admin              adduser admin wheel
+```
+
+> Alpine usa el grupo `wheel` en lugar de `sudo` para privilegios administrativos.
+
+### Zona horaria y NTP
+
+```bash
+# Debian:                          # Alpine:
+timedatectl set-timezone Europe/Madrid   cp /usr/share/zoneinfo/Europe/Madrid /etc/localtime
+timedatectl set-ntp true                 apk add chrony && rc-update add chronyd default && rc-service chronyd start
+```
+
+### Nombres de paquetes
+
+| Propósito | Debian/Ubuntu | Alpine |
+|-----------|---------------|--------|
+| DNS utils | `dnsutils` | `bind-tools` |
+| Net tools | `net-tools` | (no existe, usar `ip`/`ss`) |
+| Actualizaciones automáticas | `unattended-upgrades` | cron + `apk upgrade --available` |
+| Tcpdump | `tcpdump` | `tcpdump` |
+| MTR | `mtr` | `mtr` |
+| Htop | `htop` | `htop` |
+
+---
+
 ## 🔗 Referencias
 
-- [`guides/ssh.md`](../../guides/ssh.md) — hardening SSH detallado
-- [`guides/iptables.md`](../../guides/iptables.md) — firewall
-- [`guides/systemd_journalctl.md`](../../guides/systemd_journalctl.md) — gestión de servicios
-- [`guides/production_server.md`](../../guides/production_server.md) — servidor en producción
-- [`concepts/how-to-think-like-sysadmin.md`](../../concepts/how-to-think-like-sysadmin.md) — checklist mental
+- [`ssh`](../../guides/ssh.md) — hardening SSH detallado
+- [`iptables`](../../guides/iptables.md) — firewall
+- [`systemd_journalctl`](../../guides/systemd_journalctl.md) — gestión de servicios
+- [`production_server`](../../guides/production_server.md) — servidor en producción
+- [`how-to-think-like-sysadmin`](../../concepts/how-to-think-like-sysadmin.md) — checklist mental
+- [`apk`](../../guides/apk.md) — Alpine Linux: gestor de paquetes
+- [`openrc`](../../guides/openrc.md) — Alpine Linux: servicios (rc-service, rc-update)

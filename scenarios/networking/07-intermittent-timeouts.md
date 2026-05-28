@@ -136,7 +136,23 @@ Casos comunes:
 
 ---
 
+## 🐧 Variante Alpine (OpenRC + logs)
+
+Este escenario asume systemd (Debian/Ubuntu). En Alpine Linux:
+
+```bash
+# Debian:                          # Alpine:
+systemctl restart NetworkManager    rc-service networking restart
+journalctl -p err -b | tail -20     logread | grep -i error | tail -20
+```
+
+> Alpine no tiene `NetworkManager` ni `journalctl`. La red se gestiona con `rc-service networking` y los logs se leen con `logread` o directamente de `/var/log/messages`.
+
+---
+
 ## 🔗 Referencias
 
-- [network_ping_traceroute.md](../../guides/network_ping_traceroute.md)
-- [systemd_journalctl.md](../../guides/systemd_journalctl.md)
+- [`network_ping_traceroute`](../../guides/network_ping_traceroute.md)
+- [`systemd_journalctl`](../../guides/systemd_journalctl.md)
+- [`openrc`](../../guides/openrc.md) — Alpine Linux: servicios (rc-service, rc-update)
+- [`busybox`](../../guides/busybox.md) — Alpine Linux: toolchain mínima (logread, dmesg)

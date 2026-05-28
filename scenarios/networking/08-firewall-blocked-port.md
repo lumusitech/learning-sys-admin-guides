@@ -138,7 +138,30 @@ Casos comunes:
 
 ---
 
+## 🐧 Variante Alpine (OpenRC)
+
+Este escenario asume systemd (Debian/Ubuntu). En Alpine Linux:
+
+### Servicios
+
+```bash
+# Debian:                          # Alpine:
+systemctl status <servicio>         rc-service <servicio> status
+```
+
+### Firewall
+
+Debian/Ubuntu puede usar `ufw`. Alpine usa `iptables` directamente (ya viene instalado):
+
+```bash
+# Debian:                          # Alpine:
+sudo ufw status                     iptables -L -v -n
+```
+
+---
+
 ## 🔗 Referencias
 
-- [ip_ss.md](../../guides/ip_ss.md)
-- [iptables.md](../../guides/iptables.md)
+- [`ip_ss`](../../guides/ip_ss.md)
+- [`iptables`](../../guides/iptables.md)
+- [`openrc`](../../guides/openrc.md) — Alpine Linux: servicios (rc-service, rc-update)

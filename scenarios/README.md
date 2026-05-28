@@ -113,4 +113,9 @@ cd ../labs
 bash ../scenarios/networking/01-detect-ssh-brute-force.md  # (o copiar los comandos)
 ```
 
+---
+
+> 💡 **Variante Alpine:** Los escenarios que listan `systemctl`, `journalctl`, `ufw`, `apt` o `bc` asumen Debian/Ubuntu.
+> Cada uno incluye un bloque **🐧 Variante Alpine** con los comandos equivalentes para contenedores Docker mínimos (`apk`, `rc-service`, `logread`, `iptables`).
+
 ⬅️ [Volver al README principal](../README.md)

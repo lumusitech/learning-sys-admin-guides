@@ -214,9 +214,34 @@ docker logs web-nginx 2>&1 | tail -20
 
 ---
 
+## 🐧 Variante Alpine (OpenRC)
+
+Este escenario asume systemd (Debian/Ubuntu). En Alpine Linux:
+
+```bash
+# Debian:                          # Alpine:
+systemctl restart <servicio>        rc-service <servicio> restart
+```
+
+`bc` no viene en BusyBox. Instalalo con:
+
+```bash
+apk add bc
+```
+
+O usá `awk` directamente sin instalar nada:
+
+```bash
+# echo "scale=2; $ERRORES*100/$TOTAL" | bc
+# → awk "BEGIN {printf \"%.2f\n\", $ERRORES*100/$TOTAL}"
+```
+
+---
+
 ## 🔗 Referencias
 
-- [`guides/awk.md`](../../guides/awk.md) — arrays, split, acumuladores
-- [`guides/grep.md`](../../guides/grep.md) — filtrado por patrón
-- [`guides/sort.md`](../../guides/sort.md) + [`guides/uniq.md`](../../guides/uniq.md) — frecuencias
-- [`guides/nginx.md`](../../guides/nginx.md) — rate limiting, cache, optimización
+- [`awk`](../../guides/awk.md) — arrays, split, acumuladores
+- [`grep`](../../guides/grep.md) — filtrado por patrón
+- [`sort`](../../guides/sort.md) + [`uniq`](../../guides/uniq.md) — frecuencias
+- [`nginx`](../../guides/nginx.md) — rate limiting, cache, optimización
+- [`openrc`](../../guides/openrc.md) — Alpine Linux: servicios (rc-service, rc-update)

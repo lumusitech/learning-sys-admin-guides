@@ -177,10 +177,36 @@ dmesg | tail -5
 
 ---
 
+## 🐧 Variante Alpine (OpenRC + logs)
+
+Este escenario asume systemd (Debian/Ubuntu). En Alpine Linux (contenedor Docker mínimo) se usa OpenRC.
+
+### Gestión de servicios
+
+```bash
+# Debian (systemd):                # Alpine (OpenRC):
+systemctl restart <svc>             rc-service <svc> restart
+systemctl status <svc>              rc-service <svc> status
+systemctl stop <svc>                rc-service <svc> stop
+systemctl start <svc>               rc-service <svc> start
+```
+
+### Logs del sistema
+
+```bash
+# Debian:                          # Alpine:
+journalctl -u sshd -b               logread | grep sshd
+journalctl -u <svc> -n 20           logread | grep <svc>
+```
+
+---
+
 ## 🔗 Referencias
 
-- [`guides/grep.md`](../../guides/grep.md) — `-i` para ignorar mayúsculas
-- [`guides/awk.md`](../../guides/awk.md) — `split`, `substr`
-- [`guides/sed.md`](../../guides/sed.md) — rangos de líneas
-- [`guides/sort.md`](../../guides/sort.md) + [`guides/uniq.md`](../../guides/uniq.md) — frecuencias
-- [`guides/systemd_journalctl.md`](../../guides/systemd_journalctl.md) — journalctl avanzado
+- [`grep`](../../guides/grep.md) — `-i` para ignorar mayúsculas
+- [`awk`](../../guides/awk.md) — `split`, `substr`
+- [`sed`](../../guides/sed.md) — rangos de líneas
+- [`sort`](../../guides/sort.md) + [`uniq`](../../guides/uniq.md) — frecuencias
+- [`systemd_journalctl`](../../guides/systemd_journalctl.md) — journalctl avanzado
+- [`openrc`](../../guides/openrc.md) — Alpine Linux: servicios (rc-service, rc-update)
+- [`busybox`](../../guides/busybox.md) — Alpine Linux: toolchain mínima (logread, dmesg)

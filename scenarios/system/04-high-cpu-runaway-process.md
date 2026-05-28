@@ -122,8 +122,20 @@ Casos comunes:
 
 ---
 
+## 🐧 Variante Alpine (OpenRC)
+
+Este escenario asume systemd (Debian/Ubuntu). En Alpine Linux:
+
+```bash
+# Debian:                          # Alpine:
+systemctl restart <svc>             rc-service <svc> restart
+```
+
+> Si un proceso vuelve a iniciarse solo, en Alpine está gestionado por OpenRC (`rc-update`) o un supervisor como `s6`/`runit`.
+
+---
+
 ## 🔗 Referencias
 
-<!-- TODO: Crear guides para top y ps que no existen todavía -->
-- [`guides/top.md`](../../guides/top.md)
-- [`guides/ps.md`](../../guides/ps.md)
+- [`top`](../../guides/top.md)
+- [`ps`](../../guides/ps.md)

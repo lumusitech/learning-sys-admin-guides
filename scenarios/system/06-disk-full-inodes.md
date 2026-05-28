@@ -141,7 +141,18 @@ Casos comunes:
 
 ---
 
+## 🐧 Variante Alpine (OpenRC)
+
+Este escenario asume systemd (Debian/Ubuntu). En Alpine Linux:
+
+```bash
+# Debian:                          # Alpine:
+systemctl restart <svc>             rc-service <svc> restart
+```
+
+---
+
 ## 🔗 Referencias
 
-[../../guides/du.md](../../guides/du.md)
-[../../guides/df.md](../../guides/df.md)
+- [`du`](../../guides/du.md)
+- [`df`](../../guides/df.md)
