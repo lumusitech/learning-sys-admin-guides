@@ -2,8 +2,6 @@
 # Uso: docker compose up -d
 # Ver README para escenarios disponibles
 
-version: '3.8'
-
 services:
   # === SSH LAB ===
 
@@ -20,7 +18,7 @@ services:
     ports:
       - "2222:22"
     volumes:
-      - ${HOME}/.ssh/id_ed25519.pub:/config/ssh-key.pub:ro
+      - ./ssh-key.pub:/config/ssh-key.pub:ro
       - ssh_data:/config
     networks:
       - lab
@@ -51,7 +49,7 @@ services:
       - PUBLIC_KEY_FILE=/config/ssh-key.pub
       - PASSWORD_ACCESS=false
     volumes:
-      - ${HOME}/.ssh/id_ed25519.pub:/config/ssh-key.pub:ro
+      - ./ssh-key.pub:/config/ssh-key.pub:ro
     networks:
       - lab
     restart: unless-stopped
@@ -68,6 +66,11 @@ services:
     networks:
       - lab
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
   web-apache:
     image: httpd:alpine
@@ -95,6 +98,12 @@ services:
     networks:
       - lab
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-prootpass"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
   db-postgres:
     image: postgres:alpine
@@ -110,24 +119,28 @@ services:
     networks:
       - lab
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d app"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
 
   # === MONITORING ===
 
   monitoring:
-    image: ubuntu:22.04
+    build:
+      context: .
+      dockerfile: monitoring.Dockerfile
     container_name: monitoring
     hostname: monitoring
-    command: >
-      bash -c "
-        apt update && apt install -y openssh-server net-tools procps iproute2 tcpdump curl && \
-        mkdir -p /home/admin/.ssh && \
-        cat /config/ssh-key.pub >> /home/admin/.ssh/authorized_keys && \
-        chmod 600 /home/admin/.ssh/authorized_keys && \
-        chown -R 1000:1000 /home/admin/.ssh && \
-        /usr/sbin/sshd -D
-      "
+    ports:
+      - "2299:22"
+    environment:
+      - PUBLIC_KEY=${SSH_PUB_KEY:-}
     volumes:
       - ${HOME}/.ssh/id_ed25519.pub:/config/ssh-key.pub:ro
+      - ${HOME}/.ssh/id_rsa.pub:/config/ssh-key-rsa.pub:ro
     networks:
       - lab
     restart: unless-stopped

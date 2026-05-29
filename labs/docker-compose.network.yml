@@ -15,7 +15,7 @@ services:
       - NET_ADMIN
     command: >
       sh -c "
-        apk add --no-cache iproute2 mtr bind-tools &&
+        apk add --no-cache iproute2 mtr --repository=https://dl-cdn.alpinelinux.org/alpine/latest-stable/community &&
         tc qdisc add dev eth0 root netem delay 200ms &&
         echo '=== Latencia: 200ms a cualquier destino ===' &&
         echo 'Prueba: ping -c 5 server-web' &&
@@ -34,7 +34,7 @@ services:
       - NET_ADMIN
     command: >
       sh -c "
-        apk add --no-cache iproute2 mtr &&
+        apk add --no-cache iproute2 mtr --repository=https://dl-cdn.alpinelinux.org/alpine/latest-stable/community &&
         tc qdisc add dev eth0 root netem loss 20% &&
         echo '=== Pérdida: 20% de paquetes perdidos ===' &&
         echo 'Prueba: ping -c 10 server-web' &&
@@ -53,7 +53,7 @@ services:
       - NET_ADMIN
     command: >
       sh -c "
-        apk add --no-cache iproute2 mtr bind-tools &&
+        apk add --no-cache iproute2 mtr bind-tools --repository=https://dl-cdn.alpinelinux.org/alpine/latest-stable/community &&
         tc qdisc add dev eth0 root netem delay 300ms loss 15% corrupt 1% &&
         echo '=== Red inestable: 300ms + 15% pérdida + 1% corruptos ===' &&
         echo 'Prueba: ping, mtr, o curl al server-web' &&
@@ -63,6 +63,8 @@ services:
       - lab-net
 
   # === DNS ROTO ===
+  # Las herramientas se instalan ANTES de romper DNS (en el build)
+  # o se usa una imagen que ya las tenga
   dns-broken-client:
     image: alpine:latest
     container_name: dns-broken-client
@@ -71,10 +73,9 @@ services:
       - 192.0.2.1 # Docker fuerza este DNS inválido en /etc/resolv.conf nativamente
     command: >
       sh -c "
-        apk add --no-cache bind-tools curl &&
         echo '=== DNS roto — no resuelve nombres ===' &&
-        echo 'Prueba: ping google.com, curl http://example.com' &&
-        echo 'Solucion: para arreglarlo en caliente en la práctica, ejecutá: echo \"nameserver 1.1.1.1\" > /etc/resolv.conf' &&
+        echo 'Prueba: ping google.com' &&
+        echo 'Solucion: echo \"nameserver 1.1.1.1\" > /etc/resolv.conf' &&
         tail -f /dev/null
       "
     networks:
@@ -149,27 +150,8 @@ services:
       sh -c "
         apk add --no-cache bind &&
         mkdir -p /etc/bind &&
-        cat > /etc/bind/named.conf << 'EOF'
-options {
-    directory '/var/bind';
-    listen-on { any; };
-    allow-query { any; };
-    recursion yes;
-};
-zone 'lab.test' {
-    type master;
-    file '/etc/bind/db.lab.test';
-};
-EOF
-        cat > /etc/bind/db.lab.test << 'EOF'
-$$TTL 86400
-@ IN SOA ns1.lab.test. admin.lab.test. (20240101 3600 1800 86400 3600)
-@ IN NS ns1.lab.test.
-ns1 IN A 10.99.0.5
-server-web IN A 10.99.0.3
-internal-server IN A 10.99.0.2
-router IN A 10.99.0.1
-EOF
+        printf 'options {\n    directory \x27/var/bind\x27;\n    listen-on { any; };\n    allow-query { any; };\n    recursion yes;\n};\nzone \x27lab.test\x27 {\n    type master;\n    file \x27/etc/bind/db.lab.test\x27;\n};\n' > /etc/bind/named.conf &&
+        printf '\x24TTL 86400\n@ IN SOA ns1.lab.test. admin.lab.test. (20240101 3600 1800 86400 3600)\n@ IN NS ns1.lab.test.\nns1 IN A 10.99.0.5\nserver-web IN A 10.99.0.3\ninternal-server IN A 10.99.0.2\nrouter IN A 10.99.0.1\n' > /etc/bind/db.lab.test &&
         named -c /etc/bind/named.conf -g &
         echo '=== DNS interno funcionando ===' &&
         echo 'Desde los clientes: dig @server-dns server-web.lab.test' &&

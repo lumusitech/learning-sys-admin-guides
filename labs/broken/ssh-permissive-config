@@ -14,8 +14,5 @@ PasswordAuthentication yes
 # Error: sin límite, permite fuerza bruta ilimitada
 MaxAuthTries 0
 
-# Puerto no estándar (no es error en sí, pero nadie lo sabe)
-Port 22222
-
 # Problema adicional: admin creó ~/.ssh con permisos 777
 # y authorized_keys con permisos 644 (debería ser 600)
