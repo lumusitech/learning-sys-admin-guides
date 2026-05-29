@@ -12,46 +12,83 @@
 
 # 🧪 Escenarios prácticos
 
-Escenarios reales que combinan herramientas de las guías mediante pipes para resolver problemas concretos de administración de servidores Linux y redes.
+44 escenarios reales que combinan herramientas de las guías para resolver problemas concretos de administración de servidores Linux y redes.
+
+---
 
 ## 🎯 Cuándo usar esta sección
 
 Usá scenarios/ cuando:
 
-tenés un problema real para resolver
-necesitás un resultado rápido (modo SRE)
-querés practicar troubleshooting con casos reales
-querés ver cómo se combinan herramientas en contexto
+- tenés un problema real para resolver
+- necesitás un resultado rápido (modo SRE)
+- querés practicar troubleshooting con casos reales
+- querés ver cómo se combinan herramientas en contexto
 
 👉 Esto es el mundo real, donde aplicás todo lo aprendido
 
+---
+
 ## 🔄 Flujo recomendado
 
-concepts → guides → labs → scenarios
-👉 entender → aprender → practicar → aplicar
-
-## Estructura
-
 ```text
-scenarios/
-├── networking/       → Problemas de red, conectividad, tráfico
-├── system/           → Administración del sistema, recursos, logs
-├── security/         → Amenazas, auditoría, hardening
-├── web/              → Servidores web, rendimiento, errores
-└── infrastructure/   → Migración, infraestructura PYME, disaster recovery
+concepts → guides → labs → scenarios
+entender → aprender → practicar → aplicar
 ```
 
-## Laboratorio Docker
+---
 
-Usa los entornos Docker en [`labs/`](../labs/) para practicar. Hay **5 compose files** según el tipo de práctica:
+## 📂 Escenarios por dominio
+
+### [🖥️ system/](system/) — 14 escenarios
+
+Procesos, memoria, disco, I/O, logs, cron, provisioning, context switches, fork bombs, zombies, Docker troubleshooting.
+
+Niveles: 🟢 Básico · 🟡 Intermedio · 🔴 Avanzado
+
+### [🌐 networking/](networking/) — 11 escenarios
+
+SSH brute force, port scans, DNS, latencia, timeouts, firewalls, ARP spoofing, DHCP exhaustion, MTU fragmentation.
+
+Niveles: 🟢 Básico · 🟡 Intermedio · 🔴 Avanzado
+
+### [🔒 security/](security/) — 6 escenarios
+
+IPs maliciosas, SUID/permisos, claves SSH no autorizadas, cron sospechoso, procesos anómalos, manipulación de logs.
+
+Niveles: 🟡 Intermedio · 🔴 Avanzado
+
+### [🌍 web/](web/) — 7 escenarios
+
+Rendimiento, errores 5xx, slow SQL, rate limiting, 502 bad gateway, CORS, WebSocket timeout.
+
+Niveles: 🟡 Intermedio · 🔴 Avanzado
+
+### [🏗️ infrastructure/](infrastructure/) — 6 escenarios
+
+Migración a producción, infraestructura PYME, disaster recovery, TLS expirado, NFS stale mount, RAID degradation.
+
+Niveles: 🟡 Intermedio · 🔴 Avanzado
+
+---
+
+## 🧪 Laboratorio Docker
+
+Usá los entornos Docker en [`labs/`](../labs/) para practicar. Hay **11 entornos** según el tipo de práctica:
 
 | Archivo | Para qué |
 |---------|----------|
 | `docker-compose.yml` | Servidores funcionando (SSH, web, DB, monitoreo) |
-| `docker-compose.broken.yml` | Servicios rotos que debes diagnosticar |
+| `docker-compose.broken.yml` | Servicios rotos para diagnosticar |
 | `docker-compose.from-scratch.yml` | Servidores desde cero (instalar todo) |
 | `docker-compose.network.yml` | Problemas de red (latencia, pérdida, DNS) |
 | `docker-compose.security.yml` | Servicios vulnerables para hardening |
+| `docker-compose.performance.yml` | Stress de CPU, memoria, I/O, swap |
+| `docker-compose.cron.yml` | Cron jobs con fallos |
+| `docker-compose.tls.yml` | TLS expirado y renovación |
+| `docker-compose.web-cors.yml` | CORS bloqueado (frontend + API) |
+| `docker-compose.web-websocket.yml` | WebSocket timeout |
+| `docker-compose.docker.yml` | Docker crash loop, OOM, resource limits |
 
 ```bash
 cd labs
@@ -60,60 +97,20 @@ docker compose -f docker-compose.network.yml up -d   # Ej: escenarios de red
 
 Ver [`labs/README.md`](../labs/README.md) para instrucciones detalladas de cada uno.
 
-## Networking
-
-| Escenario | Herramientas clave |
-|-----------|-------------------|
-| [Detectar SSH brute force](networking/01-detect-ssh-brute-force.md) | `grep` `awk` `sort` `uniq` `iptables` |
-| [Analizar tráfico web](networking/02-analyze-web-traffic-patterns.md) | `awk` `sort` `uniq` `grep` |
-| [Detectar escaneo de puertos](networking/03-port-scan-detection.md) | `grep` `awk` `sort` `uniq` `iptables` |
-
-## System
-
-| Escenario | Herramientas clave |
-|-----------|-------------------|
-| [Procesos y recursos](system/01-top-processes-and-resources.md) | `ps` `sort` `awk` `grep` |
-| [Logs y errores](system/02-log-analysis-and-error-tracking.md) | `grep` `awk` `sort` `uniq` `sed` |
-| [Provisionamiento inicial](system/03-new-server-provisioning.md) | `ssh` `ufw` `iptables` `fail2ban` `systemctl` |
-
-## Security
-
-| Escenario | Herramientas clave |
-|-----------|-------------------|
-| [Detectar y bloquear IPs maliciosas](security/01-detect-and-block-malicious-ips.md) | `grep` `awk` `sort` `uniq` `comm` `iptables` |
-| [Auditar SUID y permisos](security/02-suid-audit-and-file-permissions.md) | `find` `xargs` `awk` `sort` `diff` |
-
-## Infrastructure
-
-| Escenario | Herramientas clave |
-|-----------|-------------------|
-| [Migrar a producción](infrastructure/01-migrate-to-production.md) | `ssh` `rsync` `nginx` `docker` `mysql` `curl` |
-| [Construir PYME desde cero](infrastructure/02-build-pyme-infrastructure.md) | `vlan` `iptables` `samba` `nfs` `dnsmasq` `nginx` `restic` |
-| [Disaster recovery](infrastructure/03-disaster-recovery.md) | `restic` `rsync` `nginx` `mysql` `rclone` `systemctl` |
-
-## Web
-
-| Escenario | Herramientas clave |
-|-----------|-------------------|
-| [Rendimiento y errores](web/01-performance-and-error-analysis.md) | `awk` `grep` `sort` `uniq` `bc` |
+---
 
 ## Cómo usar
 
 Cada escenario incluye:
 
 1. **Problema real** descrito al inicio
-2. **Pipeline completo** listo para copiar y pegar
-3. **Explicación paso a paso** de qué hace cada herramienta
+2. **Quick command (SRE)** para diagnóstico inmediato
+3. **Procedimiento paso a paso** con comandos listos para copiar
 4. **Salida esperada** para validar el resultado
-5. **Variantes** con diferentes enfoques
+5. **Mitigación** con verificar / acción / rollback
 6. **Interpretación** de los resultados
-7. **Enlaces** a las guías relevantes
-
-```bash
-# Ejecutar un escenario con datos de ejemplo
-cd ../labs
-bash ../scenarios/networking/01-detect-ssh-brute-force.md  # (o copiar los comandos)
-```
+7. **Variante Alpine** si aplica
+8. **Enlaces** a las guías relevantes
 
 ---
 

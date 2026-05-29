@@ -2,14 +2,21 @@
 
 [![SRE Validation](https://github.com/lumusitech/learning-sys-admin-guides/actions/workflows/sre-validate.yml/badge.svg?branch=main)](https://github.com/lumusitech/learning-sys-admin-guides/actions/workflows/sre-validate.yml)
 
-Sistema de aprendizaje para **administración de servidores Linux y redes**:
-guías de referencia, laboratorio Docker y escenarios prácticos.
+Sistema de aprendizaje para **administración de servidores Linux y redes**: guías de referencia, laboratorio Docker y escenarios prácticos.
 
 **Enfoque:** cada opción explicada, cada salida interpretada, uso real en troubleshooting, fallas y seguridad.
 
-**Quality Gates (CI):** [SRE Validation](.github/workflows/sre-validate.yml) — bloquea regresiones de portabilidad (`grep -P`, `\K`, `<(`).
+---
 
-> ✅ *"Aprendo herramienta por herramienta, pero practico cómo se usan en conjunto."*
+## 📊 En números
+
+| Categoría | Cantidad |
+|-----------|:--------:|
+| 🛠️ [Guías](guides/) | 38 |
+| 🚨 [Escenarios](scenarios/) | 44 |
+| 🧪 [Entornos Docker](labs/) | 11 |
+| 🧠 [Conceptos](concepts/) | 4 |
+| 📚 [Referencias rápidas](reference/) | 5 |
 
 ---
 
@@ -19,107 +26,78 @@ guías de referencia, laboratorio Docker y escenarios prácticos.
 - ✅ Funciona en BusyBox / Alpine Linux
 - ✅ No usa flags GNU-only (grep -P, etc.)
 - ✅ Sin bashismos (<(), arrays, etc.)
-- ✅ Pipelines reproducibles en entornos mínimos
+- ✅ CI valida cada PR automáticamente
 
 ---
 
-## 🧭 ¿Por dónde empezar?
+## 📋 Prerrequisitos
 
-Este repo puede usarse de 3 formas:
-
-### 🧑‍🎓 Aprendizaje progresivo (RECOMENDADO)
-
-1. 👉 concepts/ — cómo pensar como sysadmin  
-2. 👉 reference/ — orientarse rápidamente  
-3. 👉 guides/ — aprender cada herramienta  
-4. 👉 labs/ — practicar con datos reales  
-5. 👉 scenarios/ — resolver problemas reales
+- Terminal Linux / macOS / WSL2
+- `docker --version` y `docker compose version`
+- `git clone git@github.com:lumusitech/learning-sys-admin-guides.git`
 
 ---
 
-### ⚡ Resolución rápida (modo producción)
+## 🗺️ Roadmap de aprendizaje
 
-1. 👉 [scenarios/](scenarios/) — encontrar problema  
-2. ejecutar **Quick command (SRE)**  
-3. validar con 👉 [labs/](labs/)  
-4. orientar con 👉 [reference/](reference/)  
-5. profundizar en 👉 [guides/](guides/)  
+### Fase 0 — Conceptos (30 min)
 
----
+Leer [`concepts/`](concepts/):
 
-### 📚 Referencia rápida
+1. `how-to-think-like-sysadmin.md` — modelo mental de troubleshooting
+2. `baseline-and-anomalies.md` — cómo detectar desvíos
 
-- abrir 👉 [guides/](guides/)  
-- copiar comandos  
-- adaptar al caso  
+### Fase 1 — Base (2-3 días)
 
----
+Elegí un escenario 🟢 Básico, ejecutá los comandos. Cuando veas una herramienta que no conocés, abrí su guía en [`guides/`](guides/).
 
-## 🧱 Estructura (navegación directa)
+> Regla: **guías on demand, no por catálogo.**
 
-### 🧠 [concepts/](concepts/) — mindset de sysadmin
+Guías para leer completas antes de arrancar:
 
-Patrones de pensamiento:
+- [`awk.md`](guides/awk.md)
+- [`grep.md`](guides/grep.md)
+- [`curl.md`](guides/curl.md)
 
-- cómo analizar logs
-- cómo diagnosticar problemas
-- cómo pensar como SRE
+### Fase 2 — Labs de calentamiento (1 día)
 
----
+Levantá estos entornos en [`labs/`](labs/) en este orden:
 
-### 📚 [reference/](reference/) — mapas rápidos
+| Lab | Aprendés |
+|-----|----------|
+| [`docker-compose.broken.yml`](labs/docker-compose.broken.yml) | Diagnóstico básico (nginx, DNS, disco, zombie, CPU) |
+| [`docker-compose.performance.yml`](labs/docker-compose.performance.yml) | Stress y resource limits |
+| [`docker-compose.network.yml`](labs/docker-compose.network.yml) | Latencia, pérdida, DNS roto |
 
-Apoyo durante troubleshooting:
+### Fase 3 — Escenarios en espiral (el resto)
 
-- cheatsheets
-- mapa problema → herramienta
-- orientación rápida
+No los hagas lineales. Hacé espirales de complejidad:
 
-👉 Útil cuando ya sabés qué pasa pero necesitás dirección rápida
-
----
-
-### 🛠️ [guides/](guides/) — herramientas
-
-Aprender cada comando:
-
-- grep, awk, sort, uniq, etc.
-- redes (ip, ss, tcpdump)
-- sistema (systemctl, journalctl)
+1. Un escenario 🟢 Básico de cada dominio en [`scenarios/`](scenarios/)
+2. Escenarios 🟡 Intermedio del dominio que más te guste
+3. Escenarios 🔴 Avanzado + labs especializados (TLS, CORS, WebSocket, Docker)
 
 ---
 
-### 🧪 [labs/](labs/) — práctica real
+## 🔗 Enlaces rápidos
 
-- logs de ejemplo
-- entorno Docker
-- datos reproducibles
-
----
-
-### 🚨 [scenarios/](scenarios/) — problemas reales
-
-Casos como:
-
-- brute force SSH
-- port scan
-- errores web
-- performance issues
-
-👉 Cada uno incluye:
-
-- problema real
-- quick command (SRE)
-- pipeline completo
-- interpretación
+| Sección | Contenido |
+|---------|-----------|
+| [🧠 concepts/](concepts/) | Cómo pensar como sysadmin |
+| [📚 reference/](reference/) | Mapas rápidos para troubleshooting |
+| [🛠️ guides/](guides/) | Todas las herramientas explicadas |
+| [🧪 labs/](labs/) | Entornos Docker para practicar |
+| [🚨 scenarios/](scenarios/) | 44 problemas reales resueltos |
 
 ---
 
-## 🔄 Flujo de trabajo (muy importante)
+## 🔄 Flujo de trabajo
 
 ```bash
 problema → scenarios → quick command → labs → reference → guides
 ```
+
+---
 
 ## ✅ Licencia
 
