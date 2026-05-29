@@ -52,6 +52,8 @@ docker compose version  # o docker-compose
 | `docker compose -f docker-compose.performance.yml up -d` | Stress de CPU, memoria, I/O, swap |
 | `docker compose -f docker-compose.cron.yml up -d` | Cron jobs con fallos para diagnóstico |
 | `docker compose -f docker-compose.tls.yml up -d` | TLS expirado y renovación manual |
+| `docker compose -f docker-compose.web-cors.yml up -d` | CORS bloqueado (frontend + API sin headers) |
+| `docker compose -f docker-compose.web-websocket.yml up -d` | WebSocket timeout (proxy sin configuración) |
 
 > **Importante**: Usa `-f` para elegir el archivo. Si no pones `-f`, usa el `docker-compose.yml` por defecto (el original).
 
@@ -525,6 +527,106 @@ docker exec tls-client curl -k https://nginx-tls-expired
 
 ---
 
+## 9. CORS (`docker-compose.web-cors.yml`)
+
+Frontend nginx sirve una página HTML que hace `fetch()` a una API en diferente origen (puerto 8080). La API **no tiene headers CORS**, por lo que el navegador bloquea las requests.
+
+```bash
+docker compose -f docker-compose.web-cors.yml up -d
+```
+
+### Servicios
+
+| Servicio | Puerto | Descripción |
+|----------|--------|-------------|
+| `cors-frontend` | 3000 | Página HTML que hace fetch() a la API |
+| `cors-api` | 8080 | API JSON sin headers CORS |
+| `cors-client` | — | Cliente con curl para diagnóstico CLI |
+
+### Ejemplo: diagnosticar CORS bloqueado
+
+```bash
+# 1. Verificar que la API responde
+docker exec cors-client curl -s http://cors-api/health
+
+# 2. Probar con Origin header (simula browser)
+docker exec cors-client curl -s -D - -H "Origin: http://cors-frontend" http://cors-api/data
+# No debería tener Access-Control-Allow-Origin
+
+# 3. Probar preflight OPTIONS
+docker exec cors-client curl -s -D - -X OPTIONS -H "Origin: http://cors-frontend" -H "Access-Control-Request-Method: POST" http://cors-api/data
+# Debería devolver 405
+
+# 4. Abrir en browser: http://localhost:3000
+# Hacer click en los botones → errores CORS en consola (F12)
+
+# 5. Agregar headers CORS al nginx de la API
+docker exec -it cors-api sh
+# Editar /etc/nginx/conf.d/default.conf
+# Agregar en location /data:
+#   add_header 'Access-Control-Allow-Origin' 'http://cors-frontend';
+#   add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+#   add_header 'Access-Control-Allow-Headers' 'Content-Type';
+# Luego: nginx -s reload
+
+# 6. Verificar que funciona
+docker exec cors-client curl -s -D - -H "Origin: http://cors-frontend" http://cors-api/data
+# Ahora debería tener Access-Control-Allow-Origin
+```
+
+---
+
+## 10. WebSocket (`docker-compose.web-websocket.yml`)
+
+Nginx proxy hacia un servidor WebSocket (websocat), pero **sin configuración de WebSocket**. Las conexiones se caen tras 60 segundos de inactividad (timeout default de nginx).
+
+```bash
+docker compose -f docker-compose.web-websocket.yml up -d
+```
+
+### Servicios
+
+| Servicio | Puerto | Descripción |
+|----------|--------|-------------|
+| `ws-nginx` | 8086 | Proxy nginx sin configuración WebSocket |
+| `ws-backend` | 8080 | WebSocket echo server (websocat) |
+| `ws-client` | — | Cliente con curl + websocat |
+
+### Ejemplo: diagnosticar timeout de WebSocket
+
+```bash
+# 1. Probar handshake HTTP (debería funcionar con 101 Switching Protocols)
+docker exec ws-client curl -s -i -H "Upgrade: websocket" -H "Connection: Upgrade" -H "Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==" -H "Sec-WebSocket-Version: 13" http://ws-nginx/ws
+
+# 2. Conectar al WebSocket (interactivo)
+docker exec -it ws-client websocat ws://ws-nginx/ws
+# Enviar mensajes → funciona
+# Esperar 60 segundos sin enviar → conexión se cierra
+
+# 3. Ver logs de nginx
+docker logs ws-nginx 2>&1 | grep -i timeout
+
+# 4. Verificar configuración de nginx
+docker exec ws-nginx cat /etc/nginx/conf.d/default.conf
+# Faltan: proxy_set_header Upgrade, proxy_set_header Connection
+# proxy_read_timeout = 60s (muy corto)
+
+# 5. Agregar headers de WebSocket y aumentar timeout
+docker exec -it ws-nginx sh
+# Editar /etc/nginx/conf.d/default.conf
+# En location /ws agregar:
+#   proxy_set_header Upgrade $http_upgrade;
+#   proxy_set_header Connection "upgrade";
+#   proxy_read_timeout 3600s;
+#   proxy_send_timeout 3600s;
+# Luego: nginx -s reload
+
+# 6. Verificar que la conexión se mantiene más de 60s
+docker exec -it ws-client websocat ws://ws-nginx/ws
+```
+
+---
+
 ## Logs de práctica
 
 Archivos de log incluidos para practicar pattern matching con `grep`, `awk`, `sort`:
@@ -610,6 +712,8 @@ docker compose -f docker-compose.broken.yml down -v
 docker compose -f docker-compose.from-scratch.yml down -v
 docker compose -f docker-compose.network.yml down -v
 docker compose -f docker-compose.security.yml down -v
+docker compose -f docker-compose.web-cors.yml down -v
+docker compose -f docker-compose.web-websocket.yml down -v
 ```
 
 ### Ver todos los contenedores activos
@@ -633,6 +737,10 @@ labs/
 ├── docker-compose.performance.yml   # Stress CPU, mem, I/O, swap
 ├── docker-compose.cron.yml          # Cron jobs con fallos
 ├── docker-compose.tls.yml           # TLS expirado y renovación
+├── docker-compose.web-cors.yml     # CORS bloqueado (frontend + API)
+├── docker-compose.web-websocket.yml # WebSocket timeout (proxy)
+├── cors-setup.sh                    # Script de setup para CORS lab
+├── ws-setup.sh                      # Script de setup para WebSocket lab
 ├── README.md                        # Este archivo
 ├── setup.sh                         # Setup inicial (genera clave SSH)
 ├── monitoring.Dockerfile            # Dockerfile para contenedor monitoring
