@@ -55,6 +55,7 @@ docker compose version  # o docker-compose
 | `docker compose -f docker-compose.web-cors.yml up -d` | CORS bloqueado (frontend + API sin headers) |
 | `docker compose -f docker-compose.web-websocket.yml up -d` | WebSocket timeout (proxy sin configuración) |
 | `docker compose -f docker-compose.docker.yml up -d` | Docker crash loop, OOM, resource limits |
+| `docker compose -f docker-compose.integrative.yml up -d --build` | Proyecto integrador (PYME completa) |
 
 > **Importante**: Usa `-f` para elegir el archivo. Si no pones `-f`, usa el `docker-compose.yml` por defecto (el original).
 
@@ -687,6 +688,32 @@ docker ps -a --filter name=oom-killer
 
 ---
 
+## 12. Proyecto integrador (`docker-compose.integrative.yml`)
+
+Entorno completo de 7 servicios que integra todos los conceptos del repo: segmentación de red, despliegue de app, hardening, backup y respuesta a incidentes.
+
+```bash
+docker compose -f docker-compose.integrative.yml up -d --build
+```
+
+### Servicios
+
+| Servicio | IP | Rol |
+|----------|----|-----|
+| `router` | 10.77.0.1 | Gateway con iptables |
+| `storage` | 10.77.0.10 | NAS con NFS |
+| `web-nginx` | 10.77.0.20 | Reverse proxy con SSL |
+| `web-app` | 10.77.0.30 | App Node.js + MySQL |
+| `db-mysql` | 10.77.0.40 | MariaDB |
+| `cron-backup` | 10.77.0.50 | Backup con restic |
+| `attacker` | 10.77.0.100 | nmap, curl, nc |
+
+### Fases del proyecto
+
+Ver [`scenarios/infrastructure/07-integrative-project.md`](../scenarios/infrastructure/07-integrative-project.md)
+
+---
+
 ## Logs de práctica
 
 Archivos de log incluidos para practicar pattern matching con `grep`, `awk`, `sort`:
@@ -775,6 +802,7 @@ docker compose -f docker-compose.security.yml down -v
 docker compose -f docker-compose.web-cors.yml down -v
 docker compose -f docker-compose.web-websocket.yml down -v
 docker compose -f docker-compose.docker.yml down -v
+docker compose -f docker-compose.integrative.yml down -v
 ```
 
 ### Ver todos los contenedores activos
@@ -801,6 +829,7 @@ labs/
 ├── docker-compose.web-cors.yml     # CORS bloqueado (frontend + API)
 ├── docker-compose.web-websocket.yml # WebSocket timeout (proxy)
 ├── docker-compose.docker.yml        # Docker crash loop, OOM, resource limits
+├── docker-compose.integrative.yml   # Proyecto integrador (PYME completa)
 ├── cors-setup.sh                    # Script de setup para CORS lab
 ├── ws-setup.sh                      # Script de setup para WebSocket lab
 ├── README.md                        # Este archivo
@@ -812,6 +841,12 @@ labs/
 │   ├── ubuntu-bare.Dockerfile
 │   ├── debian-bare.Dockerfile
 │   └── rocky-bare.Dockerfile
+├── integrative/                     # Proyecto integrador (app, setup)
+│   ├── app/
+│   │   ├── Dockerfile
+│   │   ├── app.js
+│   │   └── package.json
+│   └── setup.sh
 ├── broken/                          # Configuraciones rotas
 │   ├── nginx-bad.conf
 │   ├── nginx-info-leak.conf
