@@ -1,0 +1,52 @@
+# Laboratorio: Cron — Fallos de programación para diagnóstico
+# Uso: docker compose -f docker-compose.cron.yml up -d
+# Escenarios relacionados: 11-cron-failure
+
+services:
+
+  # === CRON CON FALLOS VARIOS ===
+  # Servicio con múltiples cron jobs, algunos fallan en silencio
+  cron-lab:
+    image: alpine:latest
+    container_name: cron-lab
+    hostname: cron-lab
+    volumes:
+      - ./cron-jobs.sh:/usr/local/bin/cron-jobs.sh:ro
+    command: >
+      sh -c "
+        apk add --no-cache dcron mailx &&
+        echo 'root:cron123' | chpasswd &&
+
+        echo '=== Configurando cron jobs con fallos ===' &&
+
+        echo '# Job 1: backup diario (funciona OK)' > /etc/crontabs/root &&
+        echo '0 2 * * * /usr/local/bin/cron-jobs.sh backup' >> /etc/crontabs/root &&
+        echo '# Job 2: reporte con PATH roto' >> /etc/crontabs/root &&
+        echo '0 3 * * * /usr/local/bin/cron-jobs.sh reporte-roto' >> /etc/crontabs/root &&
+        echo '# Job 3: limpieza sin permisos' >> /etc/crontabs/root &&
+        echo '0 4 * * * /usr/local/bin/cron-jobs.sh limpieza-sin-permisos' >> /etc/crontabs/root &&
+        echo '# Job 4: script inexistente' >> /etc/crontabs/root &&
+        echo '0 5 * * * /scripts/no-existe.sh' >> /etc/crontabs/root &&
+        echo '# Job 5: notificación sin MAILTO configurado' >> /etc/crontabs/root &&
+        echo '0 6 * * * /usr/local/bin/cron-jobs.sh notificacion' >> /etc/crontabs/root &&
+
+        chmod 600 /etc/crontabs/root &&
+        crond -b -l 8 &&
+
+        echo '' &&
+        echo '=== Cron lab listo ===' &&
+        echo 'Jobs configurados:' &&
+        cat /etc/crontabs/root &&
+        echo '' &&
+        echo 'Logs: docker exec cron-lab cat /var/log/messages | grep CRON' &&
+        echo 'Estado: docker exec cron-lab ps aux | grep crond' &&
+        tail -f /dev/null
+      "
+    ports:
+      - "2298:22"
+    networks:
+      - lab-cron
+
+networks:
+  lab-cron:
+    driver: bridge

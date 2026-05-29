@@ -1,0 +1,98 @@
+# cron.log — Entradas de cron con fallos para práctica de pattern matching
+# Uso: grep, awk, sort sobre este archivo para practicar detección de fallos
+# Patrones clave: errores PATH, permisos, MAILTO, sintaxis
+
+May 28 02:00:01 server CRON[1001]: (root) CMD (/usr/local/bin/backup.sh)
+May 28 02:00:02 server backup.sh: Backup iniciado correctamente
+May 28 02:00:15 server backup.sh: Backup completado — 1.2GB copiados
+May 28 02:00:15 server CRON[1001]: (root) CMD (/usr/local/bin/backup.sh) — PID 1001 exit 0
+May 28 03:00:01 server CRON[1002]: (root) CMD (/scripts/generate-report.sh)
+May 28 03:00:01 server CRON[1002]: (root) CMD — /bin/sh: /scripts/generate-report.sh: No such file or directory
+May 28 03:00:01 server CRON[1002]: (root) CMD — PID 1002 exit 127
+May 28 03:00:01 server postfix/sendmail[1003]: fatal: open /etc/postfix/main.cf: No such file or directory
+May 28 04:00:01 server CRON[1004]: (root) CMD (/usr/local/bin/cleanup.sh)
+May 28 04:00:01 server CRON[1004]: (root) CMD — /bin/sh: /usr/local/bin/cleanup.sh: Permission denied
+May 28 04:00:01 server CRON[1004]: (root) CMD — PID 1004 exit 126
+May 28 04:00:01 server postfix/sendmail[1005]: fatal: open /etc/postfix/main.cf: No such file or directory
+May 28 05:00:01 server CRON[1006]: (root) CMD (/usr/bin/python3 /opt/scripts/monitor.py)
+May 28 05:00:02 server python3[1006]: ModuleNotFoundError: No module named 'requests'
+May 28 05:00:02 server CRON[1006]: (root) CMD — PID 1006 exit 1
+May 28 05:00:02 server postfix/sendmail[1007]: fatal: open /etc/postfix/main.cf: No such file or directory
+May 28 06:00:01 server CRON[1008]: (deploy) CMD (/opt/app/healthcheck.sh)
+May 28 06:00:01 server CRON[1008]: (deploy) CMD — /bin/sh: /opt/app/healthcheck.sh: No such file or directory
+May 28 06:00:01 server CRON[1008]: (deploy) CMD — PID 1008 exit 127
+May 28 06:00:01 server postfix/sendmail[1009]: fatal: open /etc/postfix/main.cf: No such file or directory
+May 28 07:00:01 server CRON[1010]: (root) CMD (/usr/local/bin/backup.sh)
+May 28 07:00:02 server backup.sh: Backup iniciado correctamente
+May 28 07:00:18 server backup.sh: Backup completado — 1.3GB copiados
+May 28 07:00:18 server CRON[1010]: (root) CMD (/usr/local/bin/backup.sh) — PID 1010 exit 0
+May 28 08:00:01 server CRON[1011]: (www-data) CMD (/usr/bin/php /var/www/html/cron.php)
+May 28 08:00:02 server php[1011]: PHP Fatal error: Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /var/www/html/cron.php:15
+May 28 08:00:02 server CRON[1011]: (www-data) CMD — PID 1011 exit 255
+May 28 08:00:02 server postfix/sendmail[1012]: fatal: open /etc/postfix/main.cf: No such file or directory
+May 28 09:00:01 server CRON[1013]: (root) CMD (/usr/local/bin/report.sh >> /var/log/report.log 2>&1)
+May 28 09:00:01 server report.sh: Error: no se pudo conectar a la base de datos
+May 28 09:00:01 server report.sh: Error: retry 1/3 failed
+May 28 09:00:05 server report.sh: Error: retry 2/3 failed
+May 28 09:00:10 server report.sh: Error: retry 3/3 failed
+May 28 09:00:10 server CRON[1013]: (root) CMD — PID 1013 exit 1
+May 28 10:00:01 server CRON[1014]: (root) CMD (/usr/local/bin/backup.sh)
+May 28 10:00:02 server backup.sh: Backup iniciado correctamente
+May 28 10:00:20 server backup.sh: Backup completado — 1.4GB copiados
+May 28 10:00:20 server CRON[1014]: (root) CMD (/usr/local/bin/backup.sh) — PID 1014 exit 0
+May 28 11:00:01 server CRON[1015]: (root) CMD (/usr/local/bin/cleanup-old.sh)
+May 28 11:00:01 server cleanup-old.sh: find: '/var/log/old/*.log': No such file or directory
+May 28 11:00:01 server CRON[1015]: (root) CMD — PID 1015 exit 1
+May 28 11:00:01 server postfix/sendmail[1016]: fatal: open /etc/postfix/main.cf: No such file or directory
+May 28 12:00:01 server CRON[1017]: (admin) CMD (/home/admin/scripts/sync.sh)
+May 28 12:00:01 server CRON[1017]: (admin) CMD — /bin/sh: /home/admin/scripts/sync.sh: No such file or directory
+May 28 12:00:01 server CRON[1017]: (admin) CMD — PID 1017 exit 127
+May 28 12:00:01 server postfix/sendmail[1018]: fatal: open /etc/postfix/main.cf: No such file or directory
+May 28 13:00:01 server CRON[1019]: (root) CMD (/usr/local/bin/backup.sh)
+May 28 13:00:02 server backup.sh: Backup iniciado correctamente
+May 28 13:00:19 server backup.sh: Backup completado — 1.5GB copiados
+May 28 13:00:19 server CRON[1019]: (root) CMD (/usr/local/bin/backup.sh) — PID 1019 exit 0
+May 28 14:00:01 server CRON[1020]: (www-data) CMD (/usr/bin/php /var/www/html/cron.php)
+May 28 14:00:02 server php[1020]: PHP Fatal error: Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /var/www/html/cron.php:15
+May 28 14:00:02 server CRON[1020]: (www-data) CMD — PID 1020 exit 255
+May 28 14:00:02 server postfix/sendmail[1021]: fatal: open /etc/postfix/main.cf: No such file or directory
+May 28 15:00:01 server CRON[1022]: (root) CMD (/usr/local/bin/report.sh >> /var/log/report.log 2>&1)
+May 28 15:00:01 server report.sh: Error: no se pudo conectar a la base de datos
+May 28 15:00:01 server report.sh: Error: retry 1/3 failed
+May 28 15:00:05 server report.sh: Error: retry 2/3 failed
+May 28 15:00:10 server report.sh: Error: retry 3/3 failed
+May 28 15:00:10 server CRON[1022]: (root) CMD — PID 1022 exit 1
+May 28 16:00:01 server CRON[1023]: (root) CMD (/usr/local/bin/backup.sh)
+May 28 16:00:02 server backup.sh: Backup iniciado correctamente
+May 28 16:00:21 server backup.sh: Backup completado — 1.6GB copiados
+May 28 16:00:21 server CRON[1023]: (root) CMD (/usr/local/bin/backup.sh) — PID 1023 exit 0
+May 28 17:00:01 server CRON[1024]: (root) CMD (/usr/local/bin/monitor.sh)
+May 28 17:00:01 server CRON[1024]: (root) CMD — /bin/sh: can't open '/usr/local/bin/monitor.sh': No such file or directory
+May 28 17:00:01 server CRON[1024]: (root) CMD — PID 1024 exit 127
+May 28 17:00:01 server postfix/sendmail[1025]: fatal: open /etc/postfix/main.cf: No such file or directory
+May 28 18:00:01 server CRON[1026]: (deploy) CMD (/opt/app/healthcheck.sh)
+May 28 18:00:01 server CRON[1026]: (deploy) CMD — /bin/sh: /opt/app/healthcheck.sh: No such file or directory
+May 28 18:00:01 server CRON[1026]: (deploy) CMD — PID 1026 exit 127
+May 28 18:00:01 server postfix/sendmail[1027]: fatal: open /etc/postfix/main.cf: No such file or directory
+May 28 19:00:01 server CRON[1028]: (root) CMD (/usr/local/bin/backup.sh)
+May 28 19:00:02 server backup.sh: Backup iniciado correctamente
+May 28 19:00:22 server backup.sh: Backup completado — 1.7GB copiados
+May 28 19:00:22 server CRON[1028]: (root) CMD (/usr/local/bin/backup.sh) — PID 1028 exit 0
+May 28 20:00:01 server CRON[1029]: (www-data) CMD (/usr/bin/php /var/www/html/cron.php)
+May 28 20:00:02 server php[1029]: PHP Fatal error: Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /var/www/html/cron.php:15
+May 28 20:00:02 server CRON[1029]: (www-data) CMD — PID 1029 exit 255
+May 28 20:00:02 server postfix/sendmail[1030]: fatal: open /etc/postfix/main.cf: No such file or directory
+May 28 21:00:01 server CRON[1031]: (root) CMD (/usr/local/bin/cleanup-old.sh)
+May 28 21:00:01 server cleanup-old.sh: find: '/var/log/old/*.log': No such file or directory
+May 28 21:00:01 server CRON[1031]: (root) CMD — PID 1031 exit 1
+May 28 21:00:01 server postfix/sendmail[1032]: fatal: open /etc/postfix/main.cf: No such file or directory
+May 28 22:00:01 server CRON[1033]: (root) CMD (/usr/local/bin/report.sh >> /var/log/report.log 2>&1)
+May 28 22:00:01 server report.sh: Error: no se pudo conectar a la base de datos
+May 28 22:00:01 server report.sh: Error: retry 1/3 failed
+May 28 22:00:05 server report.sh: Error: retry 2/3 failed
+May 28 22:00:10 server report.sh: Error: retry 3/3 failed
+May 28 22:00:10 server CRON[1033]: (root) CMD — PID 1033 exit 1
+May 28 23:00:01 server CRON[1034]: (root) CMD (/usr/local/bin/backup.sh)
+May 28 23:00:02 server backup.sh: Backup iniciado correctamente
+May 28 23:00:23 server backup.sh: Backup completado — 1.8GB copiados
+May 28 23:00:23 server CRON[1034]: (root) CMD (/usr/local/bin/backup.sh) — PID 1034 exit 0

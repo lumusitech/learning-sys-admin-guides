@@ -1,0 +1,47 @@
+# Laboratorio: TLS — Certificado expirado y renovación manual
+# Uso: docker compose -f docker-compose.tls.yml up -d
+# Herramientas: openssl, curl, nginx
+# Escenarios relacionados: 04-tls-expired
+
+services:
+
+  # === NGINX CON TLS EXPIRADO ===
+  # Servidor con certificado TLS que expiró hace 30 días
+  # Tarea: detectar el certificado expirado, renovarlo, configurar nginx
+  nginx-tls-expired:
+    image: nginx:alpine
+    container_name: nginx-tls-expired
+    hostname: nginx-tls-expired
+    ports:
+      - "8443:443"
+      - "8085:80"
+    volumes:
+      - ./tls-setup.sh:/usr/local/bin/tls-setup.sh:ro
+    command: ["sh", "/usr/local/bin/tls-setup.sh"]
+    networks:
+      - lab-tls
+
+  # === CLIENTE PARA PROBAR TLS ===
+  # Contenedor con curl y openssl para diagnosticar TLS
+  tls-client:
+    image: alpine:latest
+    container_name: tls-client
+    hostname: tls-client
+    command: >
+      sh -c "
+        apk add --no-cache curl openssl &&
+        echo '=== Cliente TLS listo ===' &&
+        echo 'Probar certificado expirado:' &&
+        echo '  curl -k https://nginx-tls-expired' &&
+        echo '  openssl s_client -connect nginx-tls-expired:443 -servername nginx-tls-expired' &&
+        echo '' &&
+        echo 'Verificar fechas del certificado:' &&
+        echo '  echo | openssl s_client -connect nginx-tls-expired:443 2>/dev/null | openssl x509 -noout -dates' &&
+        tail -f /dev/null
+      "
+    networks:
+      - lab-tls
+
+networks:
+  lab-tls:
+    driver: bridge

@@ -49,6 +49,9 @@ docker compose version  # o docker-compose
 | `docker compose -f docker-compose.from-scratch.yml up -d` | Servidores desde cero (instalar todo) |
 | `docker compose -f docker-compose.network.yml up -d` | Problemas de red (latencia, pérdida, DNS) |
 | `docker compose -f docker-compose.security.yml up -d` | Servicios vulnerables para hardening |
+| `docker compose -f docker-compose.performance.yml up -d` | Stress de CPU, memoria, I/O, swap |
+| `docker compose -f docker-compose.cron.yml up -d` | Cron jobs con fallos para diagnóstico |
+| `docker compose -f docker-compose.tls.yml up -d` | TLS expirado y renovación manual |
 
 > **Importante**: Usa `-f` para elegir el archivo. Si no pones `-f`, usa el `docker-compose.yml` por defecto (el original).
 
@@ -394,6 +397,174 @@ telnet localhost 2323
 
 ---
 
+## 6. Performance (`docker-compose.performance.yml`)
+
+Contenedores con `stress-ng` para simular problemas de rendimiento: CPU alta, memory leak, I/O saturado, swap pressure y context switches.
+
+```bash
+docker compose -f docker-compose.performance.yml up -d
+```
+
+### Servicios
+
+| Servicio | Problema simulado | Escenario relacionado |
+|----------|-------------------|----------------------|
+| `cpu-stress` | 2 workers consumiendo 100% CPU | 04-high-cpu-runaway-process |
+| `mem-stress` | 512MB de memoria asignada | 05-memory-issues-oom, 12-python-memory-leak |
+| `io-stress` | 4 workers saturando I/O | 07-high-io-wait |
+| `swap-stress` | Contenedor con 128MB RAM + 128MB swap, forzando swap | 10-swap-exhaustion |
+| `ctx-stress` | 512 workers causando context switches | 13-high-context-switches |
+| `perf-diagnostics` | Contenedor con herramientas de diagnóstico | — |
+
+### Ejemplo: diagnosticar CPU alta
+
+```bash
+# 1. Ver qué contenedor consume más CPU
+docker stats --no-stream
+
+# 2. Entrar al contenedor de diagnóstico
+docker exec -it perf-diagnostics sh
+
+# 3. Ver procesos dentro del contenedor problemático
+docker exec cpu-stress top -b -n 1
+
+# 4. Matar el stress
+docker exec cpu-stress pkill stress-ng
+```
+
+### Ejemplo: simular OOM killer
+
+```bash
+# 1. Verificar que mem-stress está consumiendo memoria
+docker stats --no-stream mem-stress
+
+# 2. Ver logs de OOM
+docker logs mem-stress 2>&1 | grep -i oom
+
+# 3. Si el contenedor tiene límite de memoria, Docker lo matará
+docker inspect mem-stress | grep -i mem
+```
+
+---
+
+## 7. Cron (`docker-compose.cron.yml`)
+
+Servicio Alpine con múltiples cron jobs que fallan de diferentes formas: script inexistente, permisos incorrectos, PATH roto, MAILTO no configurado.
+
+```bash
+docker compose -f docker-compose.cron.yml up -d
+```
+
+### Jobs configurados
+
+| Job | Hora | Problema |
+|-----|------|----------|
+| `backup` | 02:00 | Ninguno (funciona OK) |
+| `reporte-roto` | 03:00 | Script no existe |
+| `limpieza-sin-permisos` | 04:00 | Sin permisos para borrar |
+| `no-existe.sh` | 05:00 | Ruta inexistente |
+| `notificacion` | 06:00 | Sin MTA configurado |
+
+### Ejemplo: diagnosticar fallos de cron
+
+```bash
+# 1. Ver los jobs configurados
+docker exec cron-lab cat /etc/crontabs/root
+
+# 2. Ver logs de cron
+docker exec cron-lab cat /var/log/messages | grep CRON
+
+# 3. Ver si crond está corriendo
+docker exec cron-lab ps aux | grep crond
+
+# 4. Ver logs de los jobs que fallaron
+docker exec cron-lab cat /var/log/cron-jobs.log
+```
+
+---
+
+## 8. TLS (`docker-compose.tls.yml`)
+
+Nginx con certificado TLS que expiró hace 30 días. Incluye cliente con `curl` y `openssl` para diagnosticar.
+
+```bash
+docker compose -f docker-compose.tls.yml up -d
+```
+
+### Servicios
+
+| Servicio | Puerto | Descripción |
+|----------|--------|-------------|
+| `nginx-tls-expired` | 8443 (HTTPS), 8085 (HTTP) | Nginx con TLS expirado |
+| `tls-client` | — | Cliente con curl + openssl |
+
+### Ejemplo: detectar certificado expirado
+
+```bash
+# 1. Intentar conectar (fallará por certificado expirado)
+docker exec tls-client curl https://nginx-tls-expired
+
+# 2. Ver fechas del certificado
+docker exec tls-client sh -c 'echo | openssl s_client -connect nginx-tls-expired:443 2>/dev/null | openssl x509 -noout -dates'
+
+# 3. Verificar el certificado
+docker exec tls-client openssl s_client -connect nginx-tls-expired:443
+
+# 4. Renovar el certificado
+docker exec nginx-tls-expired sh -c '
+  openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+    -keyout /etc/nginx/ssl/server.key \
+    -out /etc/nginx/ssl/server.crt \
+    -subj "/CN=nginx-tls-expired" &&
+  nginx -s reload
+'
+
+# 5. Verificar que ahora funciona
+docker exec tls-client curl -k https://nginx-tls-expired
+```
+
+---
+
+## Logs de práctica
+
+Archivos de log incluidos para practicar pattern matching con `grep`, `awk`, `sort`:
+
+| Archivo | Contenido | Patrón clave |
+|---------|-----------|--------------|
+| `fork-bomb.log` | Logs de detección de fork bomb | `fork: retry: Resource temporarily unavailable` |
+| `cron.log` | Entradas de cron con fallos variados | `exit 127`, `exit 126`, `exit 1`, `Connection refused` |
+| `auth.log` | Intentos de login SSH | `Failed password`, `Accepted publickey` |
+| `nginx_access.log` | Accesos web con errores | `4xx`, `5xx` |
+| `syslog.log` | Logs del sistema | `error`, `warning`, `kernel` |
+
+### Ejemplo: practicar con fork-bomb.log
+
+```bash
+# Contar errores de fork
+grep -c "fork: retry" labs/fork-bomb.log
+
+# Ver solo las líneas de OOM
+grep "Out of memory" labs/fork-bomb.log
+
+# Extraer PIDs de procesos matados
+grep "Killed process" labs/fork-bomb.log | awk '{print $4, $5}'
+```
+
+### Ejemplo: practicar con cron.log
+
+```bash
+# Ver solo los fallos (exit != 0)
+grep "exit [^0]" labs/cron.log
+
+# Contar fallos por tipo de error
+grep "exit" labs/cron.log | awk '{print $NF}' | sort | uniq -c | sort -rn
+
+# Ver solo los errores de PATH (script no encontrado)
+grep "No such file" labs/cron.log
+```
+
+---
+
 ## Comandos transversales
 
 ### Iniciar terminal interactiva en un contenedor
@@ -459,22 +630,37 @@ labs/
 ├── docker-compose.from-scratch.yml  # Servidores desde cero
 ├── docker-compose.network.yml       # Problemas de red
 ├── docker-compose.security.yml      # Servicios vulnerables
+├── docker-compose.performance.yml   # Stress CPU, mem, I/O, swap
+├── docker-compose.cron.yml          # Cron jobs con fallos
+├── docker-compose.tls.yml           # TLS expirado y renovación
 ├── README.md                        # Este archivo
+├── setup.sh                         # Setup inicial (genera clave SSH)
+├── monitoring.Dockerfile            # Dockerfile para contenedor monitoring
+├── monitoring-ssh-setup.sh          # Script de setup SSH para monitoring
 ├── www/                             # Archivos web de ejemplo
 ├── from-scratch/                    # Dockerfiles para builds custom
 │   ├── ubuntu-bare.Dockerfile
 │   ├── debian-bare.Dockerfile
 │   └── rocky-bare.Dockerfile
-└── broken/                          # Configuraciones rotas
-    ├── nginx-bad.conf
-    ├── nginx-info-leak.conf
-    ├── ssh-permissive-config
-    ├── mysql-bad-grants.sql
-    ├── network-broken.sh
-    └── www-info-leak/               # Archivos con información expuesta
-        ├── index.html
-        ├── db_config.php.bak
-        └── backup.sql
+├── broken/                          # Configuraciones rotas
+│   ├── nginx-bad.conf
+│   ├── nginx-info-leak.conf
+│   ├── ssh-permissive-config
+│   ├── mysql-bad-grants.sql
+│   ├── network-broken.sh
+│   ├── zombie-maker.sh
+│   └── www-info-leak/               # Archivos con información expuesta
+│       ├── index.html
+│       ├── db_config.php.bak
+│       └── backup.sql
+├── tls-setup.sh                     # Script de setup TLS (expirado)
+├── cron-jobs.sh                     # Scripts de cron para el lab
+├── fork-bomb.log                    # Logs de fork bomb (práctica)
+├── cron.log                         # Logs de cron con fallos (práctica)
+├── auth.log                         # Logs de SSH
+├── nginx_access.log                 # Logs de nginx
+├── syslog.log                       # Logs del sistema
+└── (otros archivos de práctica)
 ```
 
 ⬅️ [Volver al README principal](../README.md)

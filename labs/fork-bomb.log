@@ -1,0 +1,69 @@
+# fork-bomb.log — Logs simulados de detección de fork bomb
+# Uso: grep, awk, sort sobre este archivo para practicar detección
+# Patrón clave: explosión exponencial de procesos, mismo nombre, PID creciente
+
+May 28 14:02:01 server kernel: [42341.123] bash[1234]: fork: retry: Resource temporarily unavailable
+May 28 14:02:01 server kernel: [42341.124] bash[1235]: fork: retry: Resource temporarily unavailable
+May 28 14:02:01 server kernel: [42341.125] bash[1236]: fork: retry: Resource temporarily unavailable
+May 28 14:02:01 server kernel: [42341.126] bash[1237]: fork: retry: Resource temporarily unavailable
+May 28 14:02:01 server kernel: [42341.127] bash[1238]: fork: retry: Resource temporarily unavailable
+May 28 14:02:02 server kernel: [42342.001] Out of memory: Kill process 1234 (bash) score 900 or sacrifice child
+May 28 14:02:02 server kernel: [42342.002] Killed process 1234 (bash) total-vm:4096kB, anon-rss:2048kB, file-rss:0kB
+May 28 14:02:02 server kernel: [42342.003] oom_reaper: reaped process 1234 (bash), now anon-rss:0kB, file-rss:0kB
+May 28 14:02:03 server kernel: [42343.045] bash[1500]: fork: retry: Resource temporarily unavailable
+May 28 14:02:03 server kernel: [42343.046] bash[1501]: fork: retry: Resource temporarily unavailable
+May 28 14:02:03 server kernel: [42343.047] bash[1502]: fork: retry: Resource temporarily unavailable
+May 28 14:02:03 server systemd[1]: Failed to fork: Resource temporarily unavailable
+May 28 14:02:03 server systemd[1]: Failed to start session.scope: Resource temporarily unavailable
+May 28 14:02:04 server sshd[2000]: error: fork: Resource temporarily unavailable
+May 28 14:02:04 server sshd[2000]: fatal: fork of unprivileged child failed
+May 28 14:02:04 server sshd[2001]: error: fork: Resource temporarily unavailable
+May 28 14:02:04 server sshd[2001]: fatal: fork of unprivileged child failed
+May 28 14:02:05 server kernel: [42345.100] bash[1800]: fork: retry: Resource temporarily unavailable
+May 28 14:02:05 server kernel: [42345.101] bash[1801]: fork: retry: Resource temporarily unavailable
+May 28 14:02:05 server kernel: [42345.102] bash[1802]: fork: retry: Resource temporarily unavailable
+May 28 14:02:05 server kernel: [42345.103] bash[1803]: fork: retry: Resource temporarily unavailable
+May 28 14:02:05 server kernel: [42345.104] bash[1804]: fork: retry: Resource temporarily unavailable
+May 28 14:02:05 server kernel: [42345.105] bash[1805]: fork: retry: Resource temporarily unavailable
+May 28 14:02:05 server kernel: [42345.106] bash[1806]: fork: retry: Resource temporarily unavailable
+May 28 14:02:05 server kernel: [42345.107] bash[1807]: fork: retry: Resource temporarily unavailable
+May 28 14:02:06 server kernel: [42346.200] Out of memory: Kill process 1500 (bash) score 950 or sacrifice child
+May 28 14:02:06 server kernel: [42346.201] Killed process 1500 (bash) total-vm:4096kB, anon-rss:2048kB, file-rss:0kB
+May 28 14:02:06 server kernel: [42346.202] oom_reaper: reaped process 1500 (bash), now anon-rss:0kB, file-rss:0kB
+May 28 14:02:07 server kernel: [42347.300] bash[1900]: fork: retry: Resource temporarily unavailable
+May 28 14:02:07 server kernel: [42347.301] bash[1901]: fork: retry: Resource temporarily unavailable
+May 28 14:02:07 server kernel: [42347.302] bash[1902]: fork: retry: Resource temporarily unavailable
+May 28 14:02:08 server kernel: [42348.400] Out of memory: Kill process 1800 (bash) score 980 or sacrifice child
+May 28 14:02:08 server kernel: [42348.401] Killed process 1800 (bash) total-vm:4096kB, anon-rss:2048kB, file-rss:0kB
+May 28 14:02:08 server kernel: [42348.402] oom_reaper: reaped process 1800 (bash), now anon-rss:0kB, file-rss:0kB
+May 28 14:02:09 server kernel: [42349.500] bash[2000]: fork: retry: Resource temporarily unavailable
+May 28 14:02:09 server kernel: [42349.501] bash[2001]: fork: retry: Resource temporarily unavailable
+May 28 14:02:09 server kernel: [42349.502] bash[2002]: fork: retry: Resource temporarily unavailable
+May 28 14:02:09 server kernel: [42349.503] bash[2003]: fork: retry: Resource temporarily unavailable
+May 28 14:02:09 server kernel: [42349.504] bash[2004]: fork: retry: Resource temporarily unavailable
+May 28 14:02:09 server kernel: [42349.505] bash[2005]: fork: retry: Resource temporarily unavailable
+May 28 14:02:09 server kernel: [42349.506] bash[2006]: fork: retry: Resource temporarily unavailable
+May 28 14:02:09 server kernel: [42349.507] bash[2007]: fork: retry: Resource temporarily unavailable
+May 28 14:02:09 server kernel: [42349.508] bash[2008]: fork: retry: Resource temporarily unavailable
+May 28 14:02:09 server kernel: [42349.509] bash[2009]: fork: retry: Resource temporarily unavailable
+May 28 14:02:10 server kernel: [42350.600] Out of memory: Kill process 1900 (bash) score 990 or sacrifice child
+May 28 14:02:10 server kernel: [42350.601] Killed process 1900 (bash) total-vm:4096kB, anon-rss:2048kB, file-rss:0kB
+May 28 14:02:10 server kernel: [42350.602] oom_reaper: reaped process 1900 (bash), now anon-rss:0kB, file-rss:0kB
+May 28 14:02:11 server kernel: [42351.700] bash[2100]: fork: retry: Resource temporarily unavailable
+May 28 14:02:11 server kernel: [42351.701] bash[2101]: fork: retry: Resource temporarily unavailable
+May 28 14:02:11 server kernel: [42351.702] bash[2102]: fork: retry: Resource temporarily unavailable
+May 28 14:02:11 server kernel: [42351.703] bash[2103]: fork: retry: Resource temporarily unavailable
+May 28 14:02:11 server kernel: [42351.704] bash[2104]: fork: retry: Resource temporarily unavailable
+May 28 14:02:12 server kernel: [42352.800] Out of memory: Kill process 2000 (bash) score 995 or sacrifice child
+May 28 14:02:12 server kernel: [42352.801] Killed process 2000 (bash) total-vm:4096kB, anon-rss:2048kB, file-rss:0kB
+May 28 14:02:12 server kernel: [42352.802] oom_reaper: reaped process 2000 (bash), now anon-rss:0kB, file-rss:0kB
+May 28 14:02:13 server systemd[1]: Failed to fork: Resource temporarily unavailable
+May 28 14:02:13 server systemd-logind[500]: Failed to start session scope: Resource temporarily unavailable
+May 28 14:02:14 server sshd[2200]: error: fork: Resource temporarily unavailable
+May 28 14:02:14 server sshd[2200]: fatal: fork of unprivileged child failed
+May 28 14:02:15 server kernel: [42355.900] bash[2200]: fork: retry: Resource temporarily unavailable
+May 28 14:02:15 server kernel: [42355.901] bash[2201]: fork: retry: Resource temporarily unavailable
+May 28 14:02:15 server kernel: [42355.902] bash[2202]: fork: retry: Resource temporarily unavailable
+May 28 14:02:16 server kernel: [42356.000] Out of memory: Kill process 2100 (bash) score 998 or sacrifice child
+May 28 14:02:16 server kernel: [42356.001] Killed process 2100 (bash) total-vm:4096kB, anon-rss:2048kB, file-rss:0kB
+May 28 14:02:16 server kernel: [42356.002] oom_reaper: reaped process 2100 (bash), now anon-rss:0kB, file-rss:0kB
