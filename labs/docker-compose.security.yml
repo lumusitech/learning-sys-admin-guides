@@ -116,11 +116,7 @@ services:
     command: >
       sh -c "
         apk add --no-cache net-snmp &&
-        cat > /etc/snmp/snmpd.conf << 'EOF'
-rocommunity public 0.0.0.0/0
-syslocation Lab
-syscontact admin@lab.test
-EOF
+        printf 'rocommunity public 0.0.0.0/0\nsyslocation Lab\nsyscontact admin@lab.test\n' > /etc/snmp/snmpd.conf &&
         snmpd -Lf /var/log/snmpd.log &&
         echo '=== SNMP con community public ===' &&
         echo 'Prueba: snmpwalk -v 2c -c public sec-snmp-public' &&
@@ -141,9 +137,7 @@ EOF
       sh -c "
         apk add --no-cache busybox-inetd &&
         echo 'root:telnet123' | chpasswd &&
-        cat > /etc/inetd.conf << 'EOF'
-23 stream tcp nowait root /usr/sbin/telnetd telnetd
-EOF
+        printf '23 stream tcp nowait root /usr/sbin/telnetd telnetd\n' > /etc/inetd.conf &&
         inetd &&
         echo '=== Telnet activo (sin cifrar) ===' &&
         echo 'Conecta: telnet sec-telnet (usar password telnet123)' &&
