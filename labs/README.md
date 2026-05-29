@@ -54,6 +54,7 @@ docker compose version  # o docker-compose
 | `docker compose -f docker-compose.tls.yml up -d` | TLS expirado y renovación manual |
 | `docker compose -f docker-compose.web-cors.yml up -d` | CORS bloqueado (frontend + API sin headers) |
 | `docker compose -f docker-compose.web-websocket.yml up -d` | WebSocket timeout (proxy sin configuración) |
+| `docker compose -f docker-compose.docker.yml up -d` | Docker crash loop, OOM, resource limits |
 
 > **Importante**: Usa `-f` para elegir el archivo. Si no pones `-f`, usa el `docker-compose.yml` por defecto (el original).
 
@@ -627,6 +628,65 @@ docker exec -it ws-client websocat ws://ws-nginx/ws
 
 ---
 
+## 11. Docker troubleshooting (`docker-compose.docker.yml`)
+
+Contenedores con problemas Docker específicos: crash loops, OOM por resource limits, CPU throttling, y entrypoints rotos.
+
+```bash
+docker compose -f docker-compose.docker.yml up -d
+```
+
+### Servicios
+
+| Servicio | Problema simulado | Escenario relacionado |
+|----------|-------------------|----------------------|
+| `crash-loop` | App falla al arrancar, restart infinito | 14-docker-troubleshooting |
+| `oom-killer` | 32MB limit, app usa 128MB → OOM | 14-docker-troubleshooting |
+| `entrypoint-broken` | Termina inmediatamente con exit 0 | 14-docker-troubleshooting |
+| `cpu-throttled` | 0.5 CPU limit, consume todo | 14-docker-troubleshooting |
+| `healthy-app` | Contenedor sano (referencia) | — |
+
+### Ejemplo: diagnosticar crash loop
+
+```bash
+# 1. Ver qué contenedores están en mal estado
+docker ps -a --format "table {{.Names}}\t{{.Status}}\t{{.State}}"
+
+# 2. Ver logs del contenedor en crash loop
+docker logs --tail 20 crash-loop
+
+# 3. Verificar OOM
+docker inspect oom-killer | grep -i "oom\|exitcode\|restart"
+
+# 4. Ver resource limits
+docker inspect oom-killer | grep -i "memory\|cpu\|nano"
+
+# 5. Ver stats en tiempo real
+docker stats --no-stream --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}"
+
+# 6. Ver historial de reinicios
+docker inspect crash-loop | grep -i "restartcount"
+```
+
+### Ejemplo: arreglar OOM
+
+```bash
+# 1. Verificar que el contenedor es OOM
+docker inspect oom-killer | grep OOMKilled
+# Debería mostrar: "OOMKilled": true
+
+# 2. Aumentar el límite de memoria en docker-compose.yml
+# mem_limit: 32m → mem_limit: 256m
+
+# 3. Recrear el contenedor
+docker compose -f docker-compose.docker.yml up -d oom-killer
+
+# 4. Verificar que ya no se reinicia
+docker ps -a --filter name=oom-killer
+```
+
+---
+
 ## Logs de práctica
 
 Archivos de log incluidos para practicar pattern matching con `grep`, `awk`, `sort`:
@@ -714,6 +774,7 @@ docker compose -f docker-compose.network.yml down -v
 docker compose -f docker-compose.security.yml down -v
 docker compose -f docker-compose.web-cors.yml down -v
 docker compose -f docker-compose.web-websocket.yml down -v
+docker compose -f docker-compose.docker.yml down -v
 ```
 
 ### Ver todos los contenedores activos
@@ -739,6 +800,7 @@ labs/
 ├── docker-compose.tls.yml           # TLS expirado y renovación
 ├── docker-compose.web-cors.yml     # CORS bloqueado (frontend + API)
 ├── docker-compose.web-websocket.yml # WebSocket timeout (proxy)
+├── docker-compose.docker.yml        # Docker crash loop, OOM, resource limits
 ├── cors-setup.sh                    # Script de setup para CORS lab
 ├── ws-setup.sh                      # Script de setup para WebSocket lab
 ├── README.md                        # Este archivo

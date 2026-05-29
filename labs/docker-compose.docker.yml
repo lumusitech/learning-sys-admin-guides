@@ -1,0 +1,101 @@
+# Laboratorio: Docker troubleshooting — Crash loops, OOM, y resource limits
+# Uso: docker compose -f docker-compose.docker.yml up -d
+# Herramientas: docker, docker logs, docker inspect, docker stats
+# Escenarios relacionados: 14-docker-troubleshooting
+
+services:
+
+  # === CRASH LOOP: app falla al arrancar ===
+  # Problema: el contenedor intenta arrancar pero falla inmediatamente
+  # Causa: entrypoint ejecuta comando que termina con error
+  # Tarea: ver logs, entender el error, corregir
+  crash-loop:
+    image: alpine:latest
+    container_name: crash-loop
+    hostname: crash-loop
+    restart: always
+    command: >
+      sh -c "
+        echo '=== Intentando arrancar la app ===' &&
+        echo 'ERROR: falta archivo de configuracion /app/config.yml' &&
+        echo 'ERROR: no se puede conectar a la base de datos db:5432' &&
+        exit 1
+      "
+    networks:
+      - lab-docker
+
+  # === OOM: contenedor excede límite de memoria ===
+  # Problema: app intenta usar más memoria de la asignada
+  # Límite: 32MB, app intenta usar 128MB
+  # Tarea: detectar OOM, entender el patrón, ajustar límite
+  oom-killer:
+    image: alpine:latest
+    container_name: oom-killer
+    hostname: oom-killer
+    restart: always
+    mem_limit: 32m
+    memswap_limit: 32m
+    command: >
+      sh -c "
+        apk add --no-cache stress-ng &&
+        echo '=== Simulando consumo excesivo de memoria (128MB) ===' &&
+        echo 'Límite del contenedor: 32MB' &&
+        echo 'Esperando OOM killer...' &&
+        stress-ng --vm 1 --vm-bytes 128M --vm-keep --timeout 30
+      "
+    networks:
+      - lab-docker
+
+  # === ENTRYPOINT ROTO: termina inmediatamente ===
+  # Problema: el entrypoint termina con código 0 pero no hace nada
+  # Causa: CMD en Dockerfile es echo, no exec
+  # Tarea: entender por qué el contenedor termina
+  entrypoint-broken:
+    image: alpine:latest
+    container_name: entrypoint-broken
+    hostname: entrypoint-broken
+    restart: always
+    command: ["echo", "Contenedor iniciado y terminado"]
+    networks:
+      - lab-docker
+
+  # === RESOURCE LIMITS: CPU throttling ===
+  # Problema: app consume toda la CPU disponible
+  # Límite: 0.5 CPUs
+  # Tarea: detectar throttling, ajustar límite
+  cpu-throttled:
+    image: alpine:latest
+    container_name: cpu-throttled
+    hostname: cpu-throttled
+    restart: unless-stopped
+    cpus: 0.5
+    command: >
+      sh -c "
+        apk add --no-cache bc &&
+        echo '=== Consumiendo CPU (límite: 0.5 cores) ===' &&
+        echo 'Ejecuta: docker stats cpu-throttled' &&
+        while true; do echo 'scale=5000; 4*a(1)' | bc -l >/dev/null; done
+      "
+    networks:
+      - lab-docker
+
+  # === CONTAINER SANO: referencia ===
+  # Contenedor que funciona correctamente (para comparar)
+  healthy-app:
+    image: nginx:alpine
+    container_name: healthy-app
+    hostname: healthy-app
+    ports:
+      - "8087:80"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - lab-docker
+
+networks:
+  lab-docker:
+    driver: bridge
