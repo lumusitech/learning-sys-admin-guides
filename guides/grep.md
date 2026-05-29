@@ -16,7 +16,7 @@ grep "Failed password" labs/auth.log | head -10
 
 ---
 
-## Índice
+## 📑 Índice
 
 1. [¿Qué es grep?](#qué-es-grep)
 2. [Sintaxis básica](#sintaxis-básica)
@@ -36,7 +36,7 @@ grep "Failed password" labs/auth.log | head -10
 
 ---
 
-## ¿Qué es grep?
+## 🧠 ¿Qué es grep?
 
 **grep** (Global Regular Expression Print) busca patrones en archivos o entrada estándar e imprime las líneas que coinciden. Es la herramienta fundamental para filtrar texto en Linux.
 
@@ -44,7 +44,7 @@ El nombre viene del comando `g/re/p` del editor `ed`: Globalmente busca una expr
 
 ---
 
-## Sintaxis básica
+## 📝 Sintaxis básica
 
 ```bash
 grep [opciones] patrón [archivo...]
@@ -107,7 +107,7 @@ grep -P "(?<=ERROR:).*" app.log
 
 ---
 
-## Opciones principales
+## 🎛️ Opciones principales
 
 ### Control de búsqueda
 
@@ -400,7 +400,7 @@ fi
 
 ---
 
-## Combinación con otras herramientas
+## 🛠️ Combinación con otras herramientas
 
 ### grep + cut
 
@@ -657,7 +657,7 @@ ag "error" src/
 
 ---
 
-## Uno-liners imprescindibles
+## 💡 Uno-liners imprescindibles
 
 ```bash
 # Contar todas las líneas no vacías

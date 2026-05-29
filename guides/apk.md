@@ -20,7 +20,7 @@ apk update && apk upgrade
 
 ---
 
-## Índice
+## 📑 Índice
 
 1. [¿Qué es apk?](#qué-es-apk)
 2. [Sintaxis básica](#sintaxis-básica)
@@ -33,7 +33,7 @@ apk update && apk upgrade
 
 ---
 
-## ¿Qué es apk?
+## 🧠 ¿Qué es apk?
 
 **apk** (Alpine Linux Package Manager) es el gestor de paquetes de Alpine Linux. Es minimalista, rápido y usa BusyBox como shell base. A diferencia de `apt` (Debian), `apk` es un solo binario sin separación entre `apt-get` y `apt-cache`.
 
@@ -46,7 +46,7 @@ Se usa para:
 
 ---
 
-## Sintaxis básica
+## 📝 Sintaxis básica
 
 ```bash
 apk <comando> [opciones] [paquete...]
@@ -225,7 +225,7 @@ apk audit --recursive      # Incluir dependencias
 
 ---
 
-## Referencias internas
+## 🔗 Referencias internas
 
 - [`openrc`](../openrc.md) — gestión de servicios en Alpine Linux
 - [`busybox`](../busybox.md) — toolchain mínima de Alpine (commands POSIX incluidos)

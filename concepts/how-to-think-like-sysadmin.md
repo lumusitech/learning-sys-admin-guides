@@ -207,8 +207,8 @@ Un solo error no es problema. Un patrón repetido sí.
 
 ## 🔗 Ver también
 
-- [`guides/systemd_journalctl.md`](../guides/systemd_journalctl.md)
-- [`guides/ip_ss.md`](../guides/ip_ss.md)
-- [`guides/ping_traceroute.md`](../guides/ping_traceroute.md)
-- [`guides/tcpdump.md`](../guides/tcpdump.md)
-- [`scenarios/system/01-top-processes-and-resources.md`](../scenarios/system/01-top-processes-and-resources.md)
+- [`systemd_journalctl`](../guides/systemd_journalctl.md) — logs del sistema con systemd
+- [`ip_ss`](../guides/ip_ss.md) — redes y sockets
+- [`ping_traceroute`](../guides/ping_traceroute.md) — conectividad y latencia
+- [`tcpdump`](../guides/tcpdump.md) — captura de tráfico de red
+- [`scenarios/system/01-top-processes-and-resources.md`](../scenarios/system/01-top-processes-and-resources.md) — diagnóstico inicial de procesos y recursos

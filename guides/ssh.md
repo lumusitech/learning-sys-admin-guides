@@ -16,7 +16,7 @@ ssh -p 2222 admin@localhost
 
 ---
 
-## Índice
+## 📑 Índice
 
 1. [¿Qué es SSH?](#qué-es-ssh)
 2. [Conexión básica](#conexión-básica)
@@ -38,7 +38,7 @@ ssh -p 2222 admin@localhost
 
 ---
 
-## ¿Qué es SSH?
+## 🧠 ¿Qué es SSH?
 
 **SSH** (Secure Shell) es el protocolo estándar para administración remota de servidores. Proporciona:
 
@@ -1199,7 +1199,7 @@ echo "  docker exec -it ssh-weak bash"
 
 ---
 
-## Uno-liners imprescindibles
+## 💡 Uno-liners imprescindibles
 
 ```bash
 # Conectar

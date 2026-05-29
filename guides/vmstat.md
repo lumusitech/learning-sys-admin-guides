@@ -20,7 +20,7 @@ vmstat 1 3
 
 ---
 
-## Índice
+## 📑 Índice
 
 1. [¿Qué es vmstat?](#qué-es-vmstat)
 2. [Sintaxis básica](#sintaxis-básica)
@@ -38,7 +38,7 @@ vmstat 1 3
 
 ---
 
-## ¿Qué es vmstat?
+## 🧠 ¿Qué es vmstat?
 
 **vmstat** (virtual memory statistics) reporta información sobre procesos, memoria, swap, I/O y CPU en una sola vista. Es la navaja suiza del diagnóstico de rendimiento del sistema.
 
@@ -46,7 +46,7 @@ A diferencia de herramientas específicas (`free`, `iostat`, `top`), `vmstat` da
 
 ---
 
-## Modelo mental
+## 🧠 Modelo mental
 
 `vmstat` divide la salida en seis áreas: procesos, memoria, swap, I/O, sistema y CPU. Cada columna es un contador o métrica. La **fila 1** es el promedio desde el arranque; las filas siguientes son diferencias por intervalo.
 
@@ -59,7 +59,7 @@ Cuando hay un problema de rendimiento, `vmstat` te dice:
 
 ---
 
-## Sintaxis básica
+## 📝 Sintaxis básica
 
 ```bash
 vmstat [intervalo] [cantidad]
@@ -75,7 +75,7 @@ vmstat -m         # Estadísticas de slabs (memoria del kernel)
 
 ---
 
-## Salida clave
+## 🔑 Salida clave
 
 ```text
 procs  ----------memory----------  ---swap--  -----io----  -system--  ------cpu-----
@@ -165,7 +165,7 @@ sdb    230474     12  3450292 120934   23401    349   238845  20341     1  15.7
 
 ---
 
-## Patrones de uso
+## 📋 Patrones de uso
 
 ### Diagnóstico rápido de rendimiento
 
@@ -193,7 +193,7 @@ vmstat 2 10 | grep -v '^procs' | awk '{ print strftime("%H:%M:%S"), "si:", $7, "
 
 ---
 
-## Uso en troubleshooting
+## 🔍 Uso en troubleshooting
 
 ### ¿CPU o disco?
 
@@ -224,7 +224,7 @@ vmstat 1 3 | awk 'NR>2 { if ($2 > 0) print "⚠️ Procesos bloqueados en I/O:",
 
 ---
 
-## Combinación con otras herramientas
+## 🛠️ Combinación con otras herramientas
 
 ### vmstat + free: memoria completa
 
@@ -251,7 +251,7 @@ iostat -x 1 3         # Vista por disco
 
 ---
 
-## Uno-liners imprescindibles
+## 💡 Uno-liners imprescindibles
 
 ```bash
 vmstat 1 5                        # Diagnóstico de 5 segundos
@@ -264,7 +264,7 @@ vmstat -Sm 1 3                    # En megabytes (Linux moderno)
 
 ---
 
-## Errores comunes
+## ⚠️ Errores comunes
 
 - **Ignorar la primera línea**. La fila 1 de `vmstat` es el promedio desde el arranque. Las filas siguientes son las relevantes.
 - **Leer `free` como indicador de memoria disponible**. Linux usa memoria libre como caché. `vmstat` no muestra `available` (eso es de `free -h`). Mirar `si/so` para detectar presión real.
@@ -273,7 +273,7 @@ vmstat -Sm 1 3                    # En megabytes (Linux moderno)
 
 ---
 
-## Buenas prácticas
+## ✅ Buenas prácticas
 
 - Siempre tomar al menos 3 muestras: `vmstat 1 3`. La primera es promedio histórico.
 - Para monitoreo continuo, usar `vmstat 5` (cada 5 segundos).
@@ -284,7 +284,7 @@ vmstat -Sm 1 3                    # En megabytes (Linux moderno)
 
 ---
 
-## Referencias internas
+## 🔗 Referencias internas
 
 - [`iostat`](../iostat.md) — estadísticas detalladas por disco
 - [`free`](../free.md) — memoria disponible (columna `available`)

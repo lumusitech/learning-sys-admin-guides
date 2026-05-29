@@ -16,7 +16,7 @@ sed 's/error/ERROR/g' labs/syslog.log | head -10
 
 ---
 
-## Índice
+## 📑 Índice
 
 1. [¿Qué es sed?](#qué-es-sed)
 2. [Sintaxis básica](#sintaxis-básica)
@@ -39,7 +39,7 @@ sed 's/error/ERROR/g' labs/syslog.log | head -10
 
 ---
 
-## ¿Qué es sed?
+## 🧠 ¿Qué es sed?
 
 **sed** (Stream Editor) es un editor de flujos de texto. Procesa texto línea por línea aplicando operaciones como sustitución, eliminación, inserción y transformación. No es interactivo: recibe instrucciones y las aplica automáticamente.
 
@@ -54,7 +54,7 @@ A diferencia de awk, sed se especializa en **transformaciones de texto** (buscar
 
 ---
 
-## Sintaxis básica
+## 📝 Sintaxis básica
 
 ```bash
 sed [opciones] 'comando' archivo
@@ -699,7 +699,7 @@ sed -n '/\.\.\/\|\.\.\\|%2e%2e%2f\|%2e%2e%5c/p' access.log
 
 ---
 
-## Combinación con otras herramientas
+## 🛠️ Combinación con otras herramientas
 
 ### sed + grep
 
@@ -761,7 +761,7 @@ cut -c1-80 archivo.txt | sed 's/[[:space:]]*$//'
 
 ---
 
-## Uno-liners imprescindibles
+## 💡 Uno-liners imprescindibles
 
 ```bash
 # Eliminar líneas en blanco

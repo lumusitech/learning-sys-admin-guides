@@ -16,7 +16,7 @@ ps aux | sort -k3 -rn | head -5
 
 ---
 
-## Índice
+## 📑 Índice
 
 1. [¿Qué es sort?](#qué-es-sort)
 2. [Sintaxis básica](#sintaxis-básica)
@@ -36,7 +36,7 @@ ps aux | sort -k3 -rn | head -5
 
 ---
 
-## ¿Qué es sort?
+## 🧠 ¿Qué es sort?
 
 **sort** ordena las líneas de archivos de texto. Por defecto ordena alfabéticamente por la línea completa. Es una herramienta esencial para análisis de datos, preparación de reportes, y como paso previo a `uniq`.
 
@@ -411,7 +411,7 @@ awk '{ bytes[$1] += $10 } END { for (ip in bytes) print bytes[ip], ip }' access.
 
 ---
 
-## Combinación con otras herramientas
+## 🛠️ Combinación con otras herramientas
 
 ### sort + uniq (tándem clásico)
 
@@ -464,7 +464,7 @@ find . -type f -printf "%T@ %p\n" | sort -rn
 
 ---
 
-## Uno-liners imprescindibles
+## 💡 Uno-liners imprescindibles
 
 ```bash
 # Ordenar archivo numéricamente por primera columna

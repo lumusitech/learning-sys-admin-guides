@@ -16,7 +16,7 @@ iptables -L -v -n | head -10
 
 ---
 
-## Índice
+## 📑 Índice
 
 1. [¿Qué es iptables?](#qué-es-iptables)
 2. [Conceptos fundamentales](#conceptos-fundamentales)
@@ -35,7 +35,7 @@ iptables -L -v -n | head -10
 
 ---
 
-## ¿Qué es iptables?
+## 🧠 ¿Qué es iptables?
 
 **iptables** es el firewall del kernel de Linux (Netfilter). Gestiona **reglas** que determinan qué hacer con los paquetes que entran, salen o pasan por el sistema. Cada regla coincide con paquetes según criterios (IP, puerto, protocolo, interfaz, etc.) y ejecuta una **acción** (aceptar, rechazar, registrar, etc.).
 
@@ -776,7 +776,7 @@ iptables -D INPUT -s 10.0.0.0/24 -j LOG --log-prefix "TEST: "
 
 ---
 
-## Uno-liners imprescindibles
+## 💡 Uno-liners imprescindibles
 
 ```bash
 # Listar reglas

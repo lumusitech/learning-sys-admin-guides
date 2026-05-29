@@ -16,7 +16,7 @@ nginx -t && systemctl reload nginx
 
 ---
 
-## Índice
+## 📑 Índice
 
 1. [¿Qué es nginx?](#qué-es-nginx)
 2. [Instalación](#instalación)
@@ -36,7 +36,7 @@ nginx -t && systemctl reload nginx
 
 ---
 
-## ¿Qué es nginx?
+## 🧠 ¿Qué es nginx?
 
 nginx es un servidor web, proxy inverso, balanceador de carga y caché HTTP de alto rendimiento. Es el más usado globalmente para sitios de alto tráfico.
 

@@ -22,7 +22,7 @@ ps aux --sort=-%cpu | head -15
 
 ---
 
-## Índice
+## 📑 Índice
 
 1. [¿Qué es ps?](#qué-es-ps)
 2. [Sintaxis básica](#sintaxis-básica)
@@ -41,7 +41,7 @@ ps aux --sort=-%cpu | head -15
 
 ---
 
-## ¿Qué es ps?
+## 🧠 ¿Qué es ps?
 
 **ps** (process status) toma una instantánea de los procesos en ejecución. A diferencia de `top` (que es un panel en vivo), `ps` captura el estado en un momento exacto y lo vuelca a stdout.
 
@@ -57,7 +57,7 @@ No necesita instalación en ningún Unix-like.
 
 ---
 
-## Modelo mental
+## 🧠 Modelo mental
 
 `ps` es la **foto del semáforo de procesos**. No muestra tendencia (eso es `top`), muestra el **dónde está cada proceso ahora**.
 
@@ -69,7 +69,7 @@ Cada proceso tiene un PID (identificador) y un PPID (PID del padre). El proceso 
 
 ---
 
-## Sintaxis básica
+## 📝 Sintaxis básica
 
 ```bash
 ps [opciones]
@@ -98,7 +98,7 @@ ps -C <nombre>      # Procesos por nombre de comando
 
 ---
 
-## Salida clave — columnas
+## 🔑 Salida clave — columnas
 
 Salida de `ps aux`:
 
@@ -165,7 +165,7 @@ Z    → Zombie (el padre debe hacer wait())
 
 ---
 
-## Opciones principales
+## 🎛️ Opciones principales
 
 ### Mostrar todos los procesos
 
@@ -292,7 +292,7 @@ La salida muestra la indentación. El proceso más a la izquierda es el ancestro
 
 ---
 
-## Patrones de uso
+## 📋 Patrones de uso
 
 ### Top CPU con columnas legibles
 
@@ -346,7 +346,7 @@ done | sort -rn
 
 ---
 
-## Uso en troubleshooting
+## 🔍 Uso en troubleshooting
 
 ### CPU runaway
 
@@ -399,7 +399,7 @@ Muchos threads puede indicar una aplicación mal configurada o un ataque de cone
 
 ---
 
-## Combinación con otras herramientas
+## 🛠️ Combinación con otras herramientas
 
 ### ps + awk: top memoria por usuario
 
@@ -437,7 +437,7 @@ pstree -p <PID>
 
 ---
 
-## Uno-liners imprescindibles
+## 💡 Uno-liners imprescindibles
 
 ```bash
 # Top 10 CPU
@@ -473,7 +473,7 @@ ps -ejH | head -20
 
 ---
 
-## Errores comunes
+## ⚠️ Errores comunes
 
 - **Confundir `ps aux` con `ps -aux`**. `ps -aux` busca procesos del usuario "x" (porque `-a` es "all with tty", `-u` espera un usuario). Usar `ps aux` sin guión para BSD.
 - **No filtrar `grep` del resultado**. `ps aux | grep nginx` incluye la línea del propio grep. Solución: `ps aux | grep [n]ginx`.
@@ -485,7 +485,7 @@ ps -ejH | head -20
 
 ---
 
-## Buenas prácticas
+## ✅ Buenas prácticas
 
 - Para diagnóstico rápido, `ps aux --sort=-%cpu | head` es suficiente.
 - Para scripts, usar `ps -eo` con columnas explícitas (portable y predecible).
@@ -506,7 +506,7 @@ ps -ejH | head -20
 
 ---
 
-## Referencias internas
+## 🔗 Referencias internas
 
 - [`top`](../top.md) — panel en vivo de procesos (complemento de `ps`)
 - [`grep`](../grep.md) — filtrar por nombre o patrón

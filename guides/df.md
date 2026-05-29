@@ -20,7 +20,7 @@ df -h && df -i | head -20
 
 ---
 
-## Índice
+## 📑 Índice
 
 1. [¿Qué es df?](#qué-es-df)
 2. [Sintaxis básica](#sintaxis-básica)
@@ -37,7 +37,7 @@ df -h && df -i | head -20
 
 ---
 
-## ¿Qué es df?
+## 🧠 ¿Qué es df?
 
 **df** (disk free) reporta el uso de espacio en sistemas de archivos montados. Muestra tamaño total, usado, disponible y porcentaje de ocupación de cada partición o volumen.
 
@@ -49,7 +49,7 @@ Se usa para:
 
 ---
 
-## Modelo mental
+## 🧠 Modelo mental
 
 `df` es el medidor de gasolina del servidor. Así como no dejás que el auto se quede sin combustible, no dejás que un disco se llene al 100% o los servicios empiezan a fallar.
 
@@ -62,7 +62,7 @@ Un disco puede tener espacio libre pero inodes agotados. Cuando eso pasa, no se 
 
 ---
 
-## Sintaxis básica
+## 📝 Sintaxis básica
 
 ```bash
 df [opciones] [ruta]
@@ -77,7 +77,7 @@ df -i            # Uso de inodes
 
 ---
 
-## Salida clave
+## 🔑 Salida clave
 
 ```text
 Sist. archivos     Tipo  Tamaño  Usados  Disponible  Uso%  Montado en
@@ -105,7 +105,7 @@ tmpfs             tmpfs   16G     2.1G       14G    14%   /tmp
 
 ---
 
-## Opciones principales
+## 🎛️ Opciones principales
 
 | Opción | Efecto |
 |--------|--------|
@@ -166,7 +166,7 @@ df -h | grep '^/dev/'
 
 ---
 
-## Patrones de uso
+## 📋 Patrones de uso
 
 ### Discos físicos solamente
 
@@ -200,7 +200,7 @@ df -h /var | awk 'NR==2 { gsub(/%/,"",$5); print 100-$5 "% disponible" }'
 
 ---
 
-## Uso en troubleshooting
+## 🔍 Uso en troubleshooting
 
 ### Disco lleno — encontrar qué ocupa espacio
 
@@ -238,7 +238,7 @@ sudo logrotate -f /etc/logrotate.conf
 
 ---
 
-## Combinación con otras herramientas
+## 🛠️ Combinación con otras herramientas
 
 ### df + du: diagnóstico completo
 
@@ -261,7 +261,7 @@ df -h | mail -s "Reporte de disco" admin@empresa.com
 
 ---
 
-## Uno-liners imprescindibles
+## 💡 Uno-liners imprescindibles
 
 ```bash
 df -h                                    # Resumen general
@@ -275,7 +275,7 @@ df -hT -x tmpfs -x devtmpfs             # Sin filesystems virtuales
 
 ---
 
-## Errores comunes
+## ⚠️ Errores comunes
 
 - **No revisar inodes (`df -i`)**. Un disco con 40% de espacio usado puede tener inodes al 100%. Pasa en colas de correo, cachés de sesión, /var/spool.
 - **Leer `Disponible` como espacio total libre**. El kernel reserva 5% para root (configurable con `tune2fs -m`). En discos de 1 TB, eso son 50 GB que `df` no muestra como disponibles.
@@ -284,7 +284,7 @@ df -hT -x tmpfs -x devtmpfs             # Sin filesystems virtuales
 
 ---
 
-## Buenas prácticas
+## ✅ Buenas prácticas
 
 - Monitorear tanto `df -h` como `df -i`. Un cron diario que alerte si > 85% en cualquiera de los dos.
 - Configurar `logrotate` antes de que los logs llene el disco.
@@ -294,7 +294,7 @@ df -hT -x tmpfs -x devtmpfs             # Sin filesystems virtuales
 
 ---
 
-## Referencias internas
+## 🔗 Referencias internas
 
 - [`du`](../du.md) — espacio usado por directorios específicos
 - [`find`](../find.md) — encontrar archivos grandes o viejos

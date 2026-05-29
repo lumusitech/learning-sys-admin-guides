@@ -16,7 +16,7 @@ ip link add link eth0 name eth0.10 type vlan id 10
 
 ---
 
-## Índice
+## 📑 Índice
 
 1. [Conceptos clave](#conceptos)
 2. [Subnetting por departamento](#subnetting)
@@ -32,7 +32,7 @@ ip link add link eth0 name eth0.10 type vlan id 10
 
 ---
 
-## ¿Qué es segmentación de red?
+## 🧠 ¿Qué es segmentación de red?
 
 La segmentación de red divide una red física en subredes lógicas más pequeñas para controlar el tráfico, aislar departamentos y reducir la superficie de ataque. En Linux se implementa con VLANs (802.1Q), subinterfaces, iptables y bridges.
 

@@ -24,7 +24,7 @@ El comando más básico. Arranca `top` en modo interactivo actualizándose cada 
 
 ---
 
-## Índice
+## 📑 Índice
 
 1. [¿Qué es top?](#qué-es-top)
 2. [Sintaxis básica](#sintaxis-básica)
@@ -40,7 +40,7 @@ El comando más básico. Arranca `top` en modo interactivo actualizándose cada 
 
 ---
 
-## ¿Qué es top?
+## 🧠 ¿Qué es top?
 
 `top` es el visor de procesos en tiempo real del sistema Linux. Muestra una pantalla dividida en dos zonas:
 
@@ -51,7 +51,7 @@ Se usa para diagnosticar en caliente qué está consumiendo recursos del servido
 
 ---
 
-## Modelo mental
+## 🧠 Modelo mental
 
 `top` es el **tablero de instrumentos del servidor en vivo**.
 
@@ -67,7 +67,7 @@ No es una foto (como `ps`), es una ventana que se actualiza sola.
 
 ---
 
-## Sintaxis básica
+## 📝 Sintaxis básica
 
 ```bash
 top [opciones]
@@ -89,7 +89,7 @@ top -p 1234,5678
 
 ---
 
-## Salida clave
+## 🔑 Salida clave
 
 ### Header — Línea 1: uptime y load average
 
@@ -197,7 +197,7 @@ Patrón de alerta:
 
 ---
 
-## Opciones principales
+## 🎛️ Opciones principales
 
 | Opción | Nombre | Qué hace |
 |--------|--------|----------|
@@ -239,7 +239,7 @@ Cuando `top` corre en modo interactivo (sin `-b`), estas teclas actúan al insta
 
 ---
 
-## Patrones de uso
+## 📋 Patrones de uso
 
 ### 1. Encontrar el proceso que más CPU consume
 
@@ -303,7 +303,7 @@ O en interactivo: revisar la columna `S` en busca de `Z`.
 
 ---
 
-## Uso en troubleshooting
+## 🔍 Uso en troubleshooting
 
 `top` es el primer comando que ejecuta un SRE ante cualquier incidente de performance.
 
@@ -327,7 +327,7 @@ Se usa en:
 
 ---
 
-## Combinación con otras herramientas
+## 🛠️ Combinación con otras herramientas
 
 ### top + grep
 
@@ -385,7 +385,7 @@ echo "=== CPU ===" && top -b -n 1 | grep "Cpu(s)" && echo "=== Load ===" && top 
 
 ---
 
-## Uno-liners imprescindibles
+## 💡 Uno-liners imprescindibles
 
 ```bash
 # Top 5 procesos por CPU (modo batch)
@@ -427,7 +427,7 @@ ps axo pid,pcpu,pmem,rss,vsz,comm --sort=-pcpu | head -10
 
 ---
 
-## Errores comunes
+## ⚠️ Errores comunes
 
 ### 1. Confundir VIRT con RES
 
@@ -472,7 +472,7 @@ En servidores con miles de procesos, `top` puede consumir CPU notablemente. Pref
 
 ---
 
-## Buenas prácticas
+## ✅ Buenas prácticas
 
 ### 1. Usar `-o CAMPO` para ordenar en batch
 
@@ -528,7 +528,7 @@ Si siempre querés ver la salida con las mismas columnas y orden, presioná `W` 
 
 ---
 
-## Referencias internas
+## 🔗 Referencias internas
 
 - [`04-high-cpu-runaway-process.md`](../scenarios/system/04-high-cpu-runaway-process.md) — diagnóstico de procesos que saturan CPU
 - [`05-system-memory-issues-oom.md`](../scenarios/system/05-system-memory-issues-oom.md) — memoria agotada y OOM killer

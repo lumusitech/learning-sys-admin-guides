@@ -16,7 +16,7 @@ rsync -avz --delete /etc/ /mnt/backups/etc/
 
 ---
 
-## Índice
+## 📑 Índice
 
 1. [NFS: Sistema de archivos en red](#nfs)
 2. [Samba/CIFS: Compatibilidad con Windows](#samba)
@@ -32,7 +32,7 @@ rsync -avz --delete /etc/ /mnt/backups/etc/
 
 ---
 
-## ¿Qué es almacenamiento y backups?
+## 🧠 ¿Qué es almacenamiento y backups?
 
 El almacenamiento en red (NFS, Samba) permite compartir archivos entre servidores. Los backups garantizan la recuperación de datos ante fallos, errores humanos o desastres. La estrategia recomendada es 3-2-1: 3 copias, 2 soportes distintos, 1 fuera del sitio.
 

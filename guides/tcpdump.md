@@ -16,7 +16,7 @@ sudo tcpdump -i any -c 10 port 80
 
 ---
 
-## Índice
+## 📑 Índice
 
 1. [¿Qué es tcpdump?](#qué-es-tcpdump)
 2. [Sintaxis básica](#sintaxis-básica)
@@ -34,7 +34,7 @@ sudo tcpdump -i any -c 10 port 80
 
 ---
 
-## ¿Qué es tcpdump?
+## 🧠 ¿Qué es tcpdump?
 
 **tcpdump** captura y analiza paquetes de red en la línea de comandos. Imprime el contenido de los paquetes que coinciden con una expresión (filtro BPF). Es la herramienta fundamental para diagnóstico de red, análisis de protocolos, y resolución de problemas de conectividad.
 
@@ -50,7 +50,7 @@ tcpdump --version
 
 ---
 
-## Sintaxis básica
+## 📝 Sintaxis básica
 
 ```bash
 tcpdump [opciones] [expresión_filtro]
@@ -72,7 +72,7 @@ sudo tcpdump -c 10 -i eth0
 
 ---
 
-## Opciones principales
+## 🎛️ Opciones principales
 
 ### Opciones de captura
 
@@ -740,7 +740,7 @@ sudo tcpdump -r captura.pcap -nn 'tcp[tcpflags] & tcp-syn != 0 and tcp[tcpflags]
 
 ---
 
-## Combinación con otras herramientas
+## 🛠️ Combinación con otras herramientas
 
 ### tcpdump + grep
 
@@ -779,7 +779,7 @@ sudo ngrep "password" port 80
 
 ---
 
-## Uno-liners imprescindibles
+## 💡 Uno-liners imprescindibles
 
 ```bash
 # Puertos en uso (escucha)

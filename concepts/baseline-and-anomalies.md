@@ -85,11 +85,7 @@ La latencia interna debe ser estable. Si varía más de 2–3ms en LAN, hay cont
 
 Durante una semana de operación normal, recolectar métricas en intervalos regulares:
 
-```bash
-# CPU, memoria, I/O cada 60 segundos durante 7 días
-vmstat 60 >> /tmp/baseline-cpu.log
-iostat -x 60 >> /tmp/baseline-disk.log
-```
+Recolectar métricas de CPU, memoria e I/O en intervalos regulares (cada 60 segundos) durante al menos una semana de operación normal. Guardar los resultados para análisis posterior.
 
 ### 2. Identificar patrones
 
@@ -155,7 +151,7 @@ No hace falta monitoreo sofisticado: `vmstat`, `iostat` y `sar` guardan historia
 ## 🔗 Ver también
 
 - [`how-to-think-like-sysadmin.md`](how-to-think-like-sysadmin.md) — patrones normales vs anómalos
-- [`guides/vmstat.md`](../guides/vmstat.md) — CPU, memoria, I/O en un comando
-- [`guides/iostat.md`](../guides/iostat.md) — métricas detalladas de disco
-- [`guides/free.md`](../guides/free.md) — memoria y swap
-- [`guides/top.md`](../guides/top.md) — visión general de procesos
+- [`vmstat`](../guides/vmstat.md) — CPU, memoria, I/O en un comando
+- [`iostat`](../guides/iostat.md) — métricas detalladas de disco
+- [`free`](../guides/free.md) — memoria y swap
+- [`top`](../guides/top.md) — visión general de procesos

@@ -16,7 +16,7 @@ ping -c 4 google.com && traceroute google.com
 
 ---
 
-## Índice
+## 📑 Índice
 
 1. [ping — Introducción](#ping--introducción)
 2. [Opciones de ping](#opciones-de-ping)
@@ -31,7 +31,7 @@ ping -c 4 google.com && traceroute google.com
 
 ---
 
-## ¿Qué es ping?
+## 🧠 ¿Qué es ping?
 
 **ping** envía paquetes ICMP ECHO_REQUEST a un host y espera respuestas ICMP ECHO_REPLY. Sirve para verificar conectividad, medir latencia (RTT) y detectar pérdida de paquetes. Es la primera herramienta de diagnóstico de red.
 
@@ -640,7 +640,7 @@ done
 
 ---
 
-## Uno-liners imprescindibles
+## 💡 Uno-liners imprescindibles
 
 ```bash
 # Ping básico (4 paquetes)

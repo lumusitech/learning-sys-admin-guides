@@ -20,7 +20,7 @@ iostat -x 1 3
 
 ---
 
-## Índice
+## 📑 Índice
 
 1. [¿Qué es iostat?](#qué-es-iostat)
 2. [Sintaxis básica](#sintaxis-básica)
@@ -37,7 +37,7 @@ iostat -x 1 3
 
 ---
 
-## ¿Qué es iostat?
+## 🧠 ¿Qué es iostat?
 
 **iostat** (input/output statistics) reporta estadísticas de CPU y de entrada/salida por dispositivo de disco o partición. Es la herramienta estándar para diagnosticar cuellos de botella de I/O.
 
@@ -49,7 +49,7 @@ Se usa para:
 
 ---
 
-## Modelo mental
+## 🧠 Modelo mental
 
 El disco es el componente más lento del servidor (CPU, RAM, disco, en ese orden). Cuando un proceso necesita leer o escribir, el CPU espera. Si el disco está saturado, todo el servidor se frena.
 
@@ -63,7 +63,7 @@ Un disco con `%util > 80%` + `await > 20ms` está saturado.
 
 ---
 
-## Sintaxis básica
+## 📝 Sintaxis básica
 
 ```bash
 iostat [opciones] [intervalo] [cantidad]
@@ -80,7 +80,7 @@ iostat -xh          # Formato humano (Linux moderno)
 
 ---
 
-## Salida clave
+## 🔑 Salida clave
 
 ### Vista básica
 
@@ -174,7 +174,7 @@ iostat -x 1 3 | grep -E '^(Device|sd|nvme|vd|dm-)'
 
 ---
 
-## Patrones de uso
+## 📋 Patrones de uso
 
 ### Diagnóstico rápido de I/O
 
@@ -202,7 +202,7 @@ iostat -x 1 1 | awk '/^sd/ { print $1, "avg I/O size:", $8*512/1024, "KB" }'
 
 ---
 
-## Uso en troubleshooting
+## 🔍 Uso en troubleshooting
 
 ### El servidor está lento. ¿Es el disco?
 
@@ -233,7 +233,7 @@ vmstat 1 3 | awk 'NR>2 { print "wa:", $16, "so:", $8 }'
 
 ---
 
-## Combinación con otras herramientas
+## 🛠️ Combinación con otras herramientas
 
 ### iostat + vmstat: diagnóstico completo
 
@@ -257,7 +257,7 @@ iostat -x 1 | awk '/sd/ && $NF > 80 { print strftime("%H:%M:%S"), $1, "%util:", 
 
 ---
 
-## Uno-liners imprescindibles
+## 💡 Uno-liners imprescindibles
 
 ```bash
 iostat -x 1 3                         # Diagnóstico de 5 segundos
@@ -271,7 +271,7 @@ iostat -x 1 | awk '/sd/ { print $1, "tps:", $2 }'         # Solo IOPS
 
 ---
 
-## Errores comunes
+## ⚠️ Errores comunes
 
 - **Leer `%util` como "usado"**. `%util` no es capacidad usada del disco, es el porcentaje del tiempo que el disco estuvo ocupado sirviendo solicitudes. Puede ser 100% con poca transferencia si las operaciones son pequeñas y aleatorias.
 - **Alarmarse con `await` alto en escrituras**. Las escrituras suelen ser asíncronas. Las lecturas (síncronas) son las que importan. Mirar `r_await`.
@@ -281,7 +281,7 @@ iostat -x 1 | awk '/sd/ { print $1, "tps:", $2 }'         # Solo IOPS
 
 ---
 
-## Buenas prácticas
+## ✅ Buenas prácticas
 
 - Siempre usar `-x` para columnas extendidas. La salida básica no es suficiente.
 - El primer reporte de `iostat` es desde el arranque. El segundo y siguientes son los relevantes.
@@ -291,7 +291,7 @@ iostat -x 1 | awk '/sd/ { print $1, "tps:", $2 }'         # Solo IOPS
 
 ---
 
-## Referencias internas
+## 🔗 Referencias internas
 
 - [`vmstat`](../vmstat.md) — contexto de CPU, memoria y swap
 - [`ps`](../ps.md) — procesos que consumen recursos

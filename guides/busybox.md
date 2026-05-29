@@ -20,7 +20,7 @@ busybox | head -20
 
 ---
 
-## Índice
+## 📑 Índice
 
 1. [¿Qué es BusyBox?](#qué-es-busybox)
 2. [Modelo mental](#modelo-mental)
@@ -36,7 +36,7 @@ busybox | head -20
 
 ---
 
-## ¿Qué es BusyBox?
+## 🧠 ¿Qué es BusyBox?
 
 **BusyBox** es un único binario que implementa cientos de comandos Unix (grep, awk, sed, ps, top, df, du, etc.) en un solo ejecutable de menos de 1 MB. Es el corazón de Alpine Linux y de contenedores Docker mínimos.
 
@@ -46,7 +46,7 @@ No todas las herramientas de BusyBox tienen las mismas opciones que sus versione
 
 ---
 
-## Modelo mental
+## 🧠 Modelo mental
 
 BusyBox es como una navaja suiza: tiene casi todo lo que necesitás, pero cada herramienta es una versión minimalista. Si en Debian usás `ps aux --sort=-%cpu`, en BusyBox tenés que usar `ps aux | sort -k3 -rn`.
 
@@ -54,7 +54,7 @@ La regla: **los comandos POSIX básicos funcionan idéntico; las opciones GNU-on
 
 ---
 
-## Sintaxis básica
+## 📝 Sintaxis básica
 
 ```bash
 busybox <applet> [argumentos]
@@ -169,7 +169,7 @@ rc-service rsyslog start
 
 ---
 
-## Uno-liners imprescindibles
+## 💡 Uno-liners imprescindibles
 
 ```bash
 busybox --list                                   # Qué applets hay
@@ -182,7 +182,7 @@ watch -n 2 'ps aux | sort -k3 -rn | head -10'   # Top CPU (con procps instalado)
 
 ---
 
-## Errores comunes
+## ⚠️ Errores comunes
 
 - **Usar `ps aux --sort=-%cpu`**. En BusyBox, `--sort` no existe. Alternativa: `ps aux | sort -k3 -rn`.
 - **Usar `top -b -n 1`**. En BusyBox, `top` solo es interactivo, no tiene modo batch. Alternativa: `ps aux | sort -k3 -rn | head -10`.
@@ -194,7 +194,7 @@ watch -n 2 'ps aux | sort -k3 -rn | head -10'   # Top CPU (con procps instalado)
 
 ---
 
-## Buenas prácticas
+## ✅ Buenas prácticas
 
 - Antes de escribir un script con opciones GNU, verificar si va a correr en Alpine. Usar alternativas POSIX.
 - Para scripts portables, usar `ps -eo` en vez de `ps aux` con `--sort`.
@@ -205,7 +205,7 @@ watch -n 2 'ps aux | sort -k3 -rn | head -10'   # Top CPU (con procps instalado)
 
 ---
 
-## Referencias internas
+## 🔗 Referencias internas
 
 - [`apk`](../apk.md) — gestor de paquetes de Alpine Linux
 - [`openrc`](../openrc.md) — gestión de servicios en Alpine

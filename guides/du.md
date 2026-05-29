@@ -20,7 +20,7 @@ du -sh /var/* | sort -rh | head -10
 
 ---
 
-## Índice
+## 📑 Índice
 
 1. [¿Qué es du?](#qué-es-du)
 2. [Sintaxis básica](#sintaxis-básica)
@@ -37,7 +37,7 @@ du -sh /var/* | sort -rh | head -10
 
 ---
 
-## ¿Qué es du?
+## 🧠 ¿Qué es du?
 
 **du** (disk usage) estima el espacio usado por archivos y directorios. A diferencia de `df` (que mira el sistema de archivos completo), `du` recorre árboles de directorios y suma el tamaño de cada archivo.
 
@@ -49,7 +49,7 @@ Se usa para:
 
 ---
 
-## Modelo mental
+## 🧠 Modelo mental
 
 `du` es el **detective de espacio**. Mientras `df` dice "el disco /var está al 90%", `du` dice "/var/log pesa 40 GB, /var/lib pesa 30 GB, /var/www pesa 5 GB".
 
@@ -57,7 +57,7 @@ Se usa para:
 
 ---
 
-## Sintaxis básica
+## 📝 Sintaxis básica
 
 ```bash
 du [opciones] [directorio]
@@ -72,7 +72,7 @@ du --max-depth=2 /var  # Hasta 2 niveles de profundidad
 
 ---
 
-## Salida clave
+## 🔑 Salida clave
 
 ```text
 4.0K    /var/log/btmp
@@ -87,7 +87,7 @@ Cada línea muestra el tamaño y la ruta. La primera columna es en KB por defect
 
 ---
 
-## Opciones principales
+## 🎛️ Opciones principales
 
 | Opción | Efecto |
 |--------|--------|
@@ -144,7 +144,7 @@ du -sh --exclude='node_modules' /home # Sin node_modules
 
 ---
 
-## Patrones de uso
+## 📋 Patrones de uso
 
 ### Top directorios por tamaño
 
@@ -178,7 +178,7 @@ du -shc /var/log/* | sort -rh | head -15
 
 ---
 
-## Uso en troubleshooting
+## 🔍 Uso en troubleshooting
 
 ### Encontrar qué llena el disco
 
@@ -220,7 +220,7 @@ du -sh /var/lib/docker/* | sort -rh
 
 ---
 
-## Combinación con otras herramientas
+## 🛠️ Combinación con otras herramientas
 
 ### du + sort: ranking descendente
 
@@ -250,7 +250,7 @@ du -sh /* | sort -rh | head -10   # Vista granular
 
 ---
 
-## Uno-liners imprescindibles
+## 💡 Uno-liners imprescindibles
 
 ```bash
 du -sh /var/log                # Tamaño total de logs
@@ -264,7 +264,7 @@ du -ach /var/log/*.log | sort -rh | head -10  # Archivos .log más grandes
 
 ---
 
-## Errores comunes
+## ⚠️ Errores comunes
 
 - **Ejecutar `du -sh /` sin `-x`**. Termina recorriendo `/proc`, `/sys`, `/dev` y el servidor se congela. Siempre usar `-x` en la raíz.
 - **Confundir `du` con `df`**. `du` mide archivos. `df` mide el sistema de archivos. Pueden diferir (archivos borrados con FD abiertos, metadatos, reserva del 5%).
@@ -274,7 +274,7 @@ du -ach /var/log/*.log | sort -rh | head -10  # Archivos .log más grandes
 
 ---
 
-## Buenas prácticas
+## ✅ Buenas prácticas
 
 - Siempre ordenar con `sort -rh` cuando veas du.
 - Para directorios grandes, limitar profundidad con `--max-depth=2`.
@@ -284,7 +284,7 @@ du -ach /var/log/*.log | sort -rh | head -10  # Archivos .log más grandes
 
 ---
 
-## Referencias internas
+## 🔗 Referencias internas
 
 - [`df`](../df.md) — espacio disponible en sistemas de archivos
 - [`find`](../find.md) — encontrar archivos grandes por tamaño

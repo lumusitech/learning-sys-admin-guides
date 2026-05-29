@@ -9,7 +9,16 @@ No se trata de "operar servidores", sino de **diseñar sistemas que se operen so
 
 ---
 
-## 🎯 Conceptos clave
+## 🎯 ¿Por qué importa?
+
+- permite tomar decisiones basadas en datos, no en intuición
+- define claramente cuándo un servicio está "roto" vs "degradado"
+- el error budget da margen para innovar sin comprometer la confiabilidad
+- separa monitoreo (qué pasa) de observabilidad (por qué pasa)
+
+---
+
+## 📊 Conceptos clave
 
 ### SLI (Service Level Indicator)
 
@@ -157,4 +166,4 @@ SRE no es un rol, es una forma de pensar:
 
 - [`how-to-think-like-sysadmin.md`](how-to-think-like-sysadmin.md) — patrones de diagnóstico
 - [`baseline-and-anomalies.md`](baseline-and-anomalies.md) — cómo establecer una baseline
-- [`reference/troubleshooting-patterns.md`](../reference/troubleshooting-patterns.md) — mapa rápido de diagnóstico
+- [`troubleshooting-patterns`](../reference/troubleshooting-patterns.md) — mapa rápido de diagnóstico
