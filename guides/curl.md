@@ -8,7 +8,7 @@
 
 `curl -sI https://example.com`
 
-## Índice
+## 📑 Índice
 
 1. [¿Qué es curl?](#qué-es-curl)
 2. [Sintaxis básica](#sintaxis-básica)
@@ -29,7 +29,7 @@
 
 ---
 
-## ¿Qué es curl?
+## 🧠 ¿Qué es curl?
 
 **curl** transfiere datos desde o hacia un servidor usando uno de los protocolos soportados (HTTP, HTTPS, FTP, SFTP, SCP, LDAP, SMTP, POP3, IMAP, etc.). Es el "navaja suiza" de las transferencias de red en línea de comandos.
 
@@ -46,7 +46,7 @@ sudo yum install curl    # CentOS/RHEL
 
 ---
 
-## Sintaxis básica
+## 📝 Sintaxis básica
 
 ```bash
 curl [opciones] URL
@@ -749,7 +749,7 @@ curl -vI https://ejemplo.com 2>&1 | grep "TLS handshake"
 
 ---
 
-## Uno-liners imprescindibles
+## 💡 Uno-liners imprescindibles
 
 ```bash
 # GET simple

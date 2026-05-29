@@ -16,7 +16,7 @@ wc -l labs/auth.log
 
 ---
 
-## Índice
+## 📑 Índice
 
 1. [¿Qué es wc?](#qué-es-wc)
 2. [Sintaxis básica](#sintaxis-básica)
@@ -32,13 +32,13 @@ wc -l labs/auth.log
 
 ---
 
-## ¿Qué es wc?
+## 🧠 ¿Qué es wc?
 
 **wc** (word count) cuenta líneas, palabras, caracteres y bytes en archivos o desde la entrada estándar. Es la herramienta fundamental para medir tamaño de archivos de texto en términos de contenido, no de disco.
 
 ---
 
-## Sintaxis básica
+## 📝 Sintaxis básica
 
 ```bash
 wc [opciones] [archivo...]
@@ -283,7 +283,7 @@ git diff --stat | tail -1
 
 ---
 
-## Combinación con otras herramientas
+## 🛠️ Combinación con otras herramientas
 
 ### wc + find
 
@@ -377,7 +377,7 @@ echo "${#mensaje}"             # longitud de string en bash
 
 ---
 
-## Uno-liners imprescindibles
+## 💡 Uno-liners imprescindibles
 
 ```bash
 # Líneas en un archivo

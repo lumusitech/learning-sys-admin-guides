@@ -194,6 +194,7 @@ Usar el siguiente número disponible en el dominio.
 
 ```txt
 [ ] título con emoji 🧩
+[ ] headers con emoji estándar: 🎯, ⚡, ✅, 🧠, 🛠️, 🧯, 🐧, 🔗
 [ ] metadata: Dominio, Nivel, Herramientas, Archivos
 [ ] quick command robusto (inline code o ```bash, útil en incidente)
 [ ] salida esperada con interpretación

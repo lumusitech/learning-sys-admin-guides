@@ -494,7 +494,7 @@ comando práctico para probar rápido con labs o sistema local
 
 ---
 
-## Índice
+## 📑 Índice
 
 1. [¿Qué es <tool>?](#qué-es-tool)
 2. [Sintaxis básica](#sintaxis-básica)
@@ -509,7 +509,7 @@ comando práctico para probar rápido con labs o sistema local
 
 ---
 
-## ¿Qué es <tool>?
+## 🧠 ¿Qué es <tool>?
 
 Definición clara y corta.
 
@@ -522,7 +522,7 @@ Explicar:
 
 ---
 
-## Modelo mental
+## 🧠 Modelo mental
 
 Explicar cómo pensar la herramienta.
 
@@ -536,7 +536,7 @@ Ejemplos:
 
 ---
 
-## Sintaxis básica
+## 📝 Sintaxis básica
 
 ```bash
 comando [opciones] [argumentos]
@@ -546,7 +546,7 @@ Explicación breve.
 
 ---
 
-## Salida clave
+## 🔑 Salida clave
 
 Explicar los campos importantes de la salida.
 
@@ -555,13 +555,13 @@ Explicar lo que sirve para troubleshooting.
 
 ---
 
-## Opciones principales
+## 🎛️ Opciones principales
 
 Tabla o lista breve con las opciones realmente útiles.
 
 ---
 
-## Patrones de uso
+## 📋 Patrones de uso
 
 Casos reales y frecuentes:
 
@@ -575,7 +575,7 @@ Casos reales y frecuentes:
 
 ---
 
-## Uso en troubleshooting
+## 🔍 Uso en troubleshooting
 
 Cómo se usa en incidentes reales.
 
@@ -583,7 +583,7 @@ Conectar con scenarios.
 
 ---
 
-## Combinación con otras herramientas
+## 🛠️ Combinación con otras herramientas
 
 Pipelines reales.
 
@@ -595,7 +595,7 @@ comando | sort | uniq -c
 
 ---
 
-## Uno-liners imprescindibles
+## 💡 Uno-liners imprescindibles
 
 Máximo recomendado: 10–15.
 
@@ -603,7 +603,7 @@ Deben ser memorizables y realmente útiles.
 
 ---
 
-## Errores comunes
+## ⚠️ Errores comunes
 
 - errores de sintaxis;
 - interpretaciones incorrectas;
@@ -612,7 +612,7 @@ Deben ser memorizables y realmente útiles.
 
 ---
 
-## Buenas prácticas
+## ✅ Buenas prácticas
 
 - recomendaciones;
 - cuándo usar;
@@ -621,7 +621,7 @@ Deben ser memorizables y realmente útiles.
 
 ---
 
-## Referencias internas
+## 🔗 Referencias internas
 
 - [`guide`](../../guides/guide.md) — descripción breve
 - [`scenario`](../scenarios/dominio/01-nombre.md) — descripción breve
@@ -1120,7 +1120,7 @@ Antes de aprobar un scenario:
 [ ] Errores comunes
 [ ] Buenas prácticas
 [ ] Referencias en formato: [`name`](../../guides/name.md) — descripción
-[ ] Sin emojis en headers de sección
+[ ] headers con emoji estándar: ⚡, 🧠, 📝, 🔑, 🎛️, 📋, 🔍, 🛠️, 💡, ⚠️, ✅, 🔗
 [ ] pnpm lint:md → 0 errores
 ```
 

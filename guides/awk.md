@@ -16,7 +16,7 @@ awk '{ print $1, $3 }' labs/datos.txt | column -t
 
 ---
 
-## Índice
+## 📑 Índice
 
 1. [¿Qué es awk?](#qué-es-awk)
 2. [Estructura básica](#estructura-básica)
@@ -39,7 +39,7 @@ awk '{ print $1, $3 }' labs/datos.txt | column -t
 
 ---
 
-## ¿Qué es awk?
+## 🧠 ¿Qué es awk?
 
 awk es un lenguaje de procesamiento de texto orientado a registros (líneas) y campos (columnas). Fue diseñado para **escaneo de patrones y procesamiento por campos**. No es un simple comando: es un lenguaje completo con variables, arrays, estructuras de control y funciones.
 
@@ -781,7 +781,7 @@ awk 'NR == FNR { precios[$1] = $2; next }
 
 ---
 
-## Combinación con otras herramientas
+## 🛠️ Combinación con otras herramientas
 
 ### awk + sort
 

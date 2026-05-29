@@ -16,7 +16,7 @@ systemctl status sshd && journalctl -u sshd -b --no-pager | tail -10
 
 ---
 
-## Índice
+## 📑 Índice
 
 1. [¿Qué es systemd?](#qué-es-systemd)
 2. [Unidades (units)](#unidades-units)
@@ -32,7 +32,7 @@ systemctl status sshd && journalctl -u sshd -b --no-pager | tail -10
 
 ---
 
-## ¿Qué es systemd?
+## 🧠 ¿Qué es systemd?
 
 **systemd** es el sistema de inicio (init) y gestor de servicios en la mayoría de distribuciones Linux modernas. Es el **primer proceso** que se ejecuta (PID 1) y se encarga de:
 
@@ -700,7 +700,7 @@ systemctl stop myservice
 
 ---
 
-## Uno-liners imprescindibles
+## 💡 Uno-liners imprescindibles
 
 ```bash
 # Estado de un servicio

@@ -16,7 +16,7 @@ nmap -sS -T4 localhost
 
 ---
 
-## Índice
+## 📑 Índice
 
 1. [¿Qué es nmap?](#qué-es-nmap)
 2. [Tipos de escaneo](#tipos-de-escaneo)
@@ -32,7 +32,7 @@ nmap -sS -T4 localhost
 
 ---
 
-## ¿Qué es nmap?
+## 🧠 ¿Qué es nmap?
 
 **nmap** (Network Mapper) descubre hosts y servicios en una red informática mediante el envío de paquetes y el análisis de las respuestas. Es la herramienta estándar para:
 
@@ -122,7 +122,7 @@ nmap -sn -n 192.168.1.0/24
 
 ---
 
-## Opciones principales
+## 🎛️ Opciones principales
 
 | Opción | Descripción |
 |--------|-------------|
@@ -604,7 +604,7 @@ sudo nmap -sI zombie_ip 192.168.1.1
 
 ---
 
-## Uno-liners imprescindibles
+## 💡 Uno-liners imprescindibles
 
 ```bash
 # Descubrir hosts en la red local

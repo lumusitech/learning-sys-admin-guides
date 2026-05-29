@@ -16,7 +16,7 @@ cut -d: -f1,3 /etc/passwd | head -5
 
 ---
 
-## Índice
+## 📑 Índice
 
 1. [¿Qué es cut?](#qué-es-cut)
 2. [Sintaxis básica](#sintaxis-básica)
@@ -32,7 +32,7 @@ cut -d: -f1,3 /etc/passwd | head -5
 
 ---
 
-## ¿Qué es cut?
+## 🧠 ¿Qué es cut?
 
 **cut** extrae secciones de cada línea de un archivo. Puede seleccionar por:
 
@@ -44,7 +44,7 @@ cut es la herramienta más simple para extraer columnas. Para algo más complejo
 
 ---
 
-## Sintaxis básica
+## 📝 Sintaxis básica
 
 ```bash
 cut [opciones] archivo
@@ -282,7 +282,7 @@ ls -l | tr -s ' ' | cut -d' ' -f5,9
 
 ---
 
-## Combinación con otras herramientas
+## 🛠️ Combinación con otras herramientas
 
 ### cut + sort + uniq
 
@@ -345,7 +345,7 @@ time awk -F: '{ print $1 }' /etc/passwd > /dev/null
 
 ---
 
-## Uno-liners imprescindibles
+## 💡 Uno-liners imprescindibles
 
 ```bash
 # Primer campo (espacio como delimitador)

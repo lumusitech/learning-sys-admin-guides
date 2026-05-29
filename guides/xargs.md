@@ -16,7 +16,7 @@ find /tmp -type f -mtime +7 -print | xargs rm -f
 
 ---
 
-## Índice
+## 📑 Índice
 
 1. [¿Qué es xargs?](#qué-es-xargs)
 2. [Sintaxis básica](#sintaxis-básica)
@@ -33,7 +33,7 @@ find /tmp -type f -mtime +7 -print | xargs rm -f
 
 ---
 
-## ¿Qué es xargs?
+## 🧠 ¿Qué es xargs?
 
 **xargs** construye y ejecuta comandos a partir de la entrada estándar. Toma elementos de stdin y los pasa como argumentos a otro comando. Es el puente entre la salida de un comando y los argumentos de otro.
 
@@ -48,7 +48,7 @@ find . -name "*.tmp" | xargs rm
 
 ---
 
-## Sintaxis básica
+## 📝 Sintaxis básica
 
 ```bash
 comando | xargs [opciones] [comando_a_ejecutar [argumentos_iniciales]]
@@ -339,7 +339,7 @@ comando | tee >(sed 's/^/[LOG] /' > log_con_prefijo.txt)
 
 ---
 
-## Uno-liners imprescindibles
+## 💡 Uno-liners imprescindibles
 
 ```bash
 # Borrar archivos encontrados

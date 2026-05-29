@@ -16,7 +16,7 @@ dig +short google.com && curl -sI https://google.com | head -5
 
 ---
 
-## Índice
+## 📑 Índice
 
 1. [¿Qué es dig?](#qué-es-dig)
 2. [Consultas básicas](#consultas-básicas)
@@ -29,7 +29,7 @@ dig +short google.com && curl -sI https://google.com | head -5
 
 ---
 
-## ¿Qué es dig?
+## 🧠 ¿Qué es dig?
 
 **dig** (Domain Information Groper) es la herramienta por excelencia para consultas DNS. Permite consultar cualquier tipo de registro, especificar servidores DNS, y obtener información detallada de la respuesta.
 
@@ -119,7 +119,7 @@ dig CAA google.com
 
 ---
 
-## Opciones principales
+## 🎛️ Opciones principales
 
 | Opción | Descripción |
 |--------|-------------|
@@ -471,7 +471,7 @@ dig +stats google.com
 
 ---
 
-## Uno-liners imprescindibles
+## 💡 Uno-liners imprescindibles
 
 ```bash
 # Consulta básica

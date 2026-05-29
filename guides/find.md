@@ -16,7 +16,7 @@ find / -type f -name "*.log" -size +100M 2>/dev/null
 
 ---
 
-## Índice
+## 📑 Índice
 
 1. [¿Qué es find?](#qué-es-find)
 2. [Sintaxis básica](#sintaxis-básica)
@@ -37,7 +37,7 @@ find / -type f -name "*.log" -size +100M 2>/dev/null
 
 ---
 
-## ¿Qué es find?
+## 🧠 ¿Qué es find?
 
 **find** busca archivos y directorios en una jerarquía de directorios según criterios como nombre, tipo, tamaño, fecha, permisos, etc. Es la herramienta más potente para localizar archivos en Linux.
 
@@ -45,7 +45,7 @@ A diferencia de `locate` (que usa una base de datos indexada), `find` busca en *
 
 ---
 
-## Sintaxis básica
+## 📝 Sintaxis básica
 
 ```bash
 find [directorio(s)] [expresiones]
@@ -740,7 +740,7 @@ find / -type f -perm 777 -ls
 
 ---
 
-## Combinación con otras herramientas
+## 🛠️ Combinación con otras herramientas
 
 ### find + xargs (la combinación más potente)
 
@@ -808,7 +808,7 @@ watch -n 10 'find /var/log -type f -size +100M -ls'
 
 ---
 
-## Uno-liners imprescindibles
+## 💡 Uno-liners imprescindibles
 
 ```bash
 # Buscar archivos por contenido (más rápido que grep -r en grandes árboles)

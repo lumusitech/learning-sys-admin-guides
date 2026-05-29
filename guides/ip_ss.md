@@ -16,7 +16,7 @@ ip addr show && ss -tuln
 
 ---
 
-## Índice
+## 📑 Índice
 
 1. [¿Qué son ip y ss?](#qué-son-ip-y-ss)
 2. [ip link — Interfaces de red](#ip-link--interfaces-de-red)
@@ -845,7 +845,7 @@ ip route show default | wc -l | awk '$1 > 1'
 
 ---
 
-## Uno-liners imprescindibles
+## 💡 Uno-liners imprescindibles
 
 ```bash
 # Interfaces activas

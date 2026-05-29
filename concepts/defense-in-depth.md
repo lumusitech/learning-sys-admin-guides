@@ -9,7 +9,16 @@ No existe un firewall o antivirus que detenga todo. La seguridad real está en l
 
 ---
 
-## 🎯 Principios rectores
+## 🎯 ¿Por qué importa?
+
+- ninguna capa es invulnerable por sí sola
+- la contención limita el daño cuando una capa falla
+- reduce la superficie de ataque progresivamente
+- permite priorizar esfuerzos según riesgo real
+
+---
+
+## 🧱 Principios rectores
 
 ### Defensa por capas
 
@@ -147,7 +156,7 @@ Si la respuesta es "nada", falta una capa.
 
 ## 🔗 Ver también
 
-- [`reference/troubleshooting-patterns.md`](../reference/troubleshooting-patterns.md) — patrones de diagnóstico en seguridad
+- [`troubleshooting-patterns`](../reference/troubleshooting-patterns.md) — patrones de diagnóstico en seguridad
 - [`scenarios/security/02-suid-audit-and-file-permissions.md`](../scenarios/security/02-suid-audit-and-file-permissions.md) — auditoría de permisos SUID/SGID
 - [`scenarios/networking/03-port-scan-detection.md`](../scenarios/networking/03-port-scan-detection.md) — detección de port scanning
 - [`scenarios/networking/08-firewall-blocked-port.md`](../scenarios/networking/08-firewall-blocked-port.md) — troubleshooting de firewall

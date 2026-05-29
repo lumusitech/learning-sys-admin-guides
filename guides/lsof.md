@@ -20,7 +20,7 @@ lsof -i -P -n | head -20
 
 ---
 
-## Índice
+## 📑 Índice
 
 1. [¿Qué es lsof?](#qué-es-lsof)
 2. [Sintaxis básica](#sintaxis-básica)
@@ -39,7 +39,7 @@ lsof -i -P -n | head -20
 
 ---
 
-## ¿Qué es lsof?
+## 🧠 ¿Qué es lsof?
 
 **lsof** (list open files) lista los archivos abiertos por procesos. En Unix, "todo es un archivo": sockets de red, dispositivos, tuberías, directorios y archivos regulares. `lsof` los muestra a todos.
 
@@ -52,7 +52,7 @@ Se usa para:
 
 ---
 
-## Modelo mental
+## 🧠 Modelo mental
 
 Cuando un programa no puede:
 
@@ -64,7 +64,7 @@ Cuando un programa no puede:
 
 ---
 
-## Sintaxis básica
+## 📝 Sintaxis básica
 
 ```bash
 lsof [opciones]
@@ -80,7 +80,7 @@ lsof +D /var/log              # Archivos abiertos bajo un directorio
 
 ---
 
-## Salida clave
+## 🔑 Salida clave
 
 ```text
 COMMAND     PID   USER   FD   TYPE  DEVICE  SIZE/OFF  NODE  NAME
@@ -116,7 +116,7 @@ sshd       1560  root   3u   IPv4  45678    0t0       TCP   *:22 (LISTEN)
 
 ---
 
-## Opciones principales
+## 🎛️ Opciones principales
 
 | Opción | Efecto |
 |--------|--------|
@@ -212,7 +212,7 @@ Los archivos borrados pero aún abiertos son una causa común de discos llenos: 
 
 ---
 
-## Patrones de uso
+## 📋 Patrones de uso
 
 ### Puerto en escucha
 
@@ -246,7 +246,7 @@ lsof | awk '{print $1}' | sort | uniq -c | sort -rn | head -10
 
 ---
 
-## Uso en troubleshooting
+## 🔍 Uso en troubleshooting
 
 ### "Port already in use"
 
@@ -282,7 +282,7 @@ Si tiene muchas conexiones ESTABLISHED y el proceso está en CPU alta, podría e
 
 ---
 
-## Combinación con otras herramientas
+## 🛠️ Combinación con otras herramientas
 
 ### lsof + ps: ¿qué proceso ocupa el puerto?
 
@@ -304,7 +304,7 @@ watch -n 2 'lsof -i -sTCP:ESTABLISHED -P -n | wc -l'
 
 ---
 
-## Uno-liners imprescindibles
+## 💡 Uno-liners imprescindibles
 
 ```bash
 lsof -i :<puerto> -P -n                      # ¿Quién escucha?
@@ -319,7 +319,7 @@ lsof -t -i :80                              # Solo PID del proceso en puerto 80
 
 ---
 
-## Errores comunes
+## ⚠️ Errores comunes
 
 - **Ejecutar `lsof` sin `-P -n`**. Resuelve nombres de host y puertos, lo que puede tardar minutos en servidores con muchas conexiones. Siempre usar `-P -n` en producción.
 - **No tener permisos**. `lsof` requiere `root` para ver archivos de otros usuarios. Como usuario normal ves solo tus propios procesos.
@@ -329,7 +329,7 @@ lsof -t -i :80                              # Solo PID del proceso en puerto 80
 
 ---
 
-## Buenas prácticas
+## ✅ Buenas prácticas
 
 - Siempre usar `-P -n` en producción para evitar resoluciones lentas.
 - Filtrar por puerto (`:80`) cuando busques el proceso que escucha.
@@ -340,7 +340,7 @@ lsof -t -i :80                              # Solo PID del proceso en puerto 80
 
 ---
 
-## Referencias internas
+## 🔗 Referencias internas
 
 - [`ip_ss`](../ip_ss.md) — conexiones de red con `ss` (alternativa portable a `lsof`)
 - [`ps`](../ps.md) — procesos del sistema

@@ -16,7 +16,7 @@ cut -d' ' -f1 labs/nginx_access.log | sort | uniq -c | sort -rn | head -5
 
 ---
 
-## Índice
+## 📑 Índice
 
 1. [¿Qué es uniq?](#qué-es-uniq)
 2. [Sintaxis básica](#sintaxis-básica)
@@ -32,7 +32,7 @@ cut -d' ' -f1 labs/nginx_access.log | sort | uniq -c | sort -rn | head -5
 
 ---
 
-## ¿Qué es uniq?
+## 🧠 ¿Qué es uniq?
 
 **uniq** detecta y filtra líneas duplicadas **adyacentes** en un archivo ordenado. Puede contar ocurrencias, mostrar solo duplicados, o mostrar solo líneas únicas.
 
@@ -50,7 +50,7 @@ sort archivo.txt | uniq
 
 ---
 
-## Sintaxis básica
+## 📝 Sintaxis básica
 
 ```bash
 uniq [opciones] [archivo_entrada [archivo_salida]]
@@ -274,7 +274,7 @@ awk '!visto[$0]++' archivo.txt
 
 ---
 
-## Combinación con otras herramientas
+## 🛠️ Combinación con otras herramientas
 
 ### uniq + sort (tándem obligatorio)
 
@@ -341,7 +341,7 @@ done < archivo.txt
 
 ---
 
-## Uno-liners imprescindibles
+## 💡 Uno-liners imprescindibles
 
 ```bash
 # Eliminar líneas duplicadas (entrada debe estar ordenada)

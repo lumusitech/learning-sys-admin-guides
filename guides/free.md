@@ -20,7 +20,7 @@ free -h && free -m | awk '/^Mem:/ { printf "Usada: %.0f%%\n", $3/$2*100 }'
 
 ---
 
-## Índice
+## 📑 Índice
 
 1. [¿Qué es free?](#qué-es-free)
 2. [Sintaxis básica](#sintaxis-básica)
@@ -36,7 +36,7 @@ free -h && free -m | awk '/^Mem:/ { printf "Usada: %.0f%%\n", $3/$2*100 }'
 
 ---
 
-## ¿Qué es free?
+## 🧠 ¿Qué es free?
 
 **free** muestra el uso de memoria física (RAM) y swap del sistema, incluyendo buffers y caché. Es la primera herramienta para diagnosticar presión de memoria.
 
@@ -48,7 +48,7 @@ A diferencia del administrador de tareas de escritorio, `free` muestra:
 
 ---
 
-## Modelo mental
+## 🧠 Modelo mental
 
 La memoria en Linux se divide en tres zonas:
 
@@ -60,7 +60,7 @@ La columna que importa es `available`, no `used` ni `free`. `available` estima c
 
 ---
 
-## Sintaxis básica
+## 📝 Sintaxis básica
 
 ```bash
 free [opciones]
@@ -77,7 +77,7 @@ free -t            # Mostrar totales
 
 ---
 
-## Salida clave
+## 🔑 Salida clave
 
 ```text
                total        used        free      shared  buff/cache   available
@@ -112,7 +112,7 @@ No confiar en `free` sola: que "free" sea 0 es normal porque Linux usa la memori
 
 ---
 
-## Opciones principales
+## 🎛️ Opciones principales
 
 | Opción | Efecto |
 |--------|--------|
@@ -149,7 +149,7 @@ free -m | awk '/^Swap:/ { if ($3 > 0) print "⚠️ Swap en uso:", $3, "MB"; els
 
 ---
 
-## Patrones de uso
+## 📋 Patrones de uso
 
 ### Vista rápida cada 2 segundos (mejor que `watch free`)
 
@@ -171,7 +171,7 @@ ps aux --sort=-%mem | head -5
 
 ---
 
-## Uso en troubleshooting
+## 🔍 Uso en troubleshooting
 
 ### ¿Hay suficiente memoria?
 
@@ -198,7 +198,7 @@ Verificar después: `free -h`.
 
 ---
 
-## Combinación con otras herramientas
+## 🛠️ Combinación con otras herramientas
 
 ### free + ps: memoria total usada por procesos
 
@@ -219,7 +219,7 @@ free -h && vmstat 1 3
 
 ---
 
-## Uno-liners imprescindibles
+## 💡 Uno-liners imprescindibles
 
 ```bash
 free -h                                    # Resumen rápido
@@ -231,7 +231,7 @@ free -m | awk '/^Mem:/ { printf "%.0f%%\n", ($3-$6-$7)/$2*100 }'  # % uso real
 
 ---
 
-## Errores comunes
+## ⚠️ Errores comunes
 
 - **Leer `free` en vez de `available`**. `free` puede ser 0 y el sistema funcionar perfectamente. Linux usa la memoria libre como caché.
 - **Preocuparse porque `buff/cache` es alto**. Es normal. El kernel cachea todo lo que no se usa para acelerar accesos a disco. Si una app necesita memoria, el kernel libera caché automáticamente.
@@ -240,7 +240,7 @@ free -m | awk '/^Mem:/ { printf "%.0f%%\n", ($3-$6-$7)/$2*100 }'  # % uso real
 
 ---
 
-## Buenas prácticas
+## ✅ Buenas prácticas
 
 - Siempre usar `free -h` para humanos, `free -m` para scripts.
 - No alarmarse porque `free` es bajo. La columna correcta es `available`.
@@ -250,7 +250,7 @@ free -m | awk '/^Mem:/ { printf "%.0f%%\n", ($3-$6-$7)/$2*100 }'  # % uso real
 
 ---
 
-## Referencias internas
+## 🔗 Referencias internas
 
 - [`vmstat`](../vmstat.md) — contexto completo de memoria, swap y CPU
 - [`ps`](../ps.md) — memoria por proceso (RSS)

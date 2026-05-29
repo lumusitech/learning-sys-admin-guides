@@ -16,7 +16,7 @@ sysctl net.ipv4.tcp_syncookies=1 && ulimit -n 65536
 
 ---
 
-## Índice
+## 📑 Índice
 
 1. [Sysctl tuning del kernel](#sysctl)
 2. [Límites de recursos (ulimits)](#ulimits)
@@ -32,7 +32,7 @@ sysctl net.ipv4.tcp_syncookies=1 && ulimit -n 65536
 
 ---
 
-## ¿Qué es un servidor de producción?
+## 🧠 ¿Qué es un servidor de producción?
 
 Un servidor de producción es el entorno donde corren aplicaciones y servicios que usuarios reales consumen. A diferencia de un entorno de desarrollo, requiere hardening, monitoreo, límites de recursos, backups y tolerancia a fallos.
 

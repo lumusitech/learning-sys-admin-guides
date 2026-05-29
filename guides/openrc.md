@@ -20,7 +20,7 @@ rc-service nginx restart && rc-service nginx status
 
 ---
 
-## Índice
+## 📑 Índice
 
 1. [¿Qué es OpenRC?](#qué-es-openrc)
 2. [Modelo mental](#modelo-mental)
@@ -35,7 +35,7 @@ rc-service nginx restart && rc-service nginx status
 
 ---
 
-## ¿Qué es OpenRC?
+## 🧠 ¿Qué es OpenRC?
 
 **OpenRC** es el sistema de init y gestor de servicios de Alpine Linux (y otras distribuciones que no usan systemd). Es compatible con POSIX, minimalista y basado en scripts shell.
 
@@ -48,7 +48,7 @@ A diferencia de systemd, OpenRC:
 
 ---
 
-## Modelo mental
+## 🧠 Modelo mental
 
 OpenRC separa la funcionalidad en tres comandos:
 
@@ -60,7 +60,7 @@ Los scripts de servicio están en `/etc/init.d/` y se configuran en `/etc/conf.d
 
 ---
 
-## Sintaxis básica
+## 📝 Sintaxis básica
 
 ```bash
 rc-service <servicio> <acción>      # Gestionar un servicio
@@ -198,7 +198,7 @@ rc-update -v show                  # Mostrar dependencias entre servicios
 
 ---
 
-## Uno-liners imprescindibles
+## 💡 Uno-liners imprescindibles
 
 ```bash
 rc-service nginx restart                 # Reiniciar servicio
@@ -211,7 +211,7 @@ rc-service ntpd status && rc-service ntpd start   # Verificar e iniciar
 
 ---
 
-## Referencias internas
+## 🔗 Referencias internas
 
 - [`apk`](../apk.md) — gestor de paquetes de Alpine Linux
 - [`busybox`](../busybox.md) — toolchain mínima de Alpine

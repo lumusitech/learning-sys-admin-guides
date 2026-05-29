@@ -63,7 +63,7 @@ concepts → guides → labs → scenarios
 
 ---
 
-## Relación con guías y escenarios
+## 🔗 Relación con guías y escenarios
 
 - [`guides/`](../guides/) → herramientas específicas
 - [`scenarios/`](../scenarios/) → aplicación práctica
