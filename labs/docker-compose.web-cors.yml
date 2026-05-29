@@ -1,0 +1,76 @@
+# Laboratorio: CORS — API bloqueada por política de origen cruzado
+# Uso: docker compose -f docker-compose.web-cors.yml up -d
+# Herramientas: curl, nginx, browser devtools
+# Escenarios relacionados: 06-cors-errors
+
+services:
+
+  # === FRONTEND QUE HACE REQUESTS CROSS-ORIGIN ===
+  # Nginx sirve una página HTML que hace fetch() a la API
+  # El frontend está en puerto 3000, la API en puerto 8080
+  # El navegador bloquea por CORS (diferente origen)
+  cors-frontend:
+    image: nginx:alpine
+    container_name: cors-frontend
+    hostname: cors-frontend
+    ports:
+      - "3000:80"
+    volumes:
+      - ./cors-setup.sh:/usr/local/bin/cors-setup.sh:ro
+    command: ["sh", "/usr/local/bin/cors-setup.sh", "frontend"]
+    networks:
+      - lab-web-cors
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # === API SIN HEADERS CORS ===
+  # Nginx sirve un endpoint JSON pero SIN headers CORS
+  # El navegador bloquea las requests desde el frontend
+  cors-api:
+    image: nginx:alpine
+    container_name: cors-api
+    hostname: cors-api
+    ports:
+      - "8080:80"
+    volumes:
+      - ./cors-setup.sh:/usr/local/bin/cors-setup.sh:ro
+    command: ["sh", "/usr/local/bin/cors-setup.sh", "api"]
+    networks:
+      - lab-web-cors
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # === CLIENTE PARA DIAGNÓSTICO CLI ===
+  # Alpine con curl para probar headers CORS desde terminal
+  cors-client:
+    image: alpine:latest
+    container_name: cors-client
+    hostname: cors-client
+    command: >
+      sh -c "
+        apk add --no-cache curl &&
+        echo '=== Cliente CORS listo ===' &&
+        echo '' &&
+        echo 'Probar respuesta de la API:' &&
+        echo '  docker exec cors-client curl -s http://cors-api/health' &&
+        echo '' &&
+        echo 'Probar headers CORS (debería fallar desde browser):' &&
+        echo '  docker exec cors-client curl -s -D - -H \"Origin: http://cors-frontend\" http://cors-api/data' &&
+        echo '' &&
+        echo 'Probar preflight OPTIONS:' &&
+        echo '  docker exec cors-client curl -s -D - -X OPTIONS -H \"Origin: http://cors-frontend\" -H \"Access-Control-Request-Method: POST\" http://cors-api/data' &&
+        echo '' &&
+        tail -f /dev/null
+      "
+    networks:
+      - lab-web-cors
+
+networks:
+  lab-web-cors:
+    driver: bridge

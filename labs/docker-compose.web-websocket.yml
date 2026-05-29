@@ -1,0 +1,72 @@
+# Laboratorio: WebSocket — Timeouts y configuración de proxy
+# Uso: docker compose -f docker-compose.web-websocket.yml up -d
+# Herramientas: curl, websocat, nginx, tcpdump
+# Escenarios relacionados: 07-websocket-timeout
+
+services:
+
+  # === NGINX PROXY SIN CONFIGURACIÓN WEBSOCKET ===
+  # Proxy nginx con timeout default (60s) y sin headers de upgrade
+  # Las conexiones WebSocket se caen tras 60s de inactividad
+  ws-nginx:
+    image: nginx:alpine
+    container_name: ws-nginx
+    hostname: ws-nginx
+    ports:
+      - "8086:80"
+    volumes:
+      - ./ws-setup.sh:/usr/local/bin/ws-setup.sh:ro
+    command: ["sh", "/usr/local/bin/ws-setup.sh", "nginx"]
+    networks:
+      - lab-web-ws
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # === WEBSOCKET ECHO SERVER ===
+  # Servidor WebSocket simple que hace echo de mensajes
+  # Usa websocat en modo servidor
+  ws-backend:
+    image: alpine:latest
+    container_name: ws-backend
+    hostname: ws-backend
+    command: >
+      sh -c "
+        apk add --no-cache websocat &&
+        echo '=== WebSocket echo server en puerto 8080 ===' &&
+        echo 'Conecta: websocat ws://ws-backend:8080' &&
+        websocat -t ws-l:0.0.0.0:8080 mirror:
+      "
+    networks:
+      - lab-web-ws
+
+  # === CLIENTE PARA DIAGNÓSTICO ===
+  # Alpine con curl y websocat para probar conexiones WebSocket
+  ws-client:
+    image: alpine:latest
+    container_name: ws-client
+    hostname: ws-client
+    command: >
+      sh -c "
+        apk add --no-cache curl websocat &&
+        echo '=== Cliente WebSocket listo ===' &&
+        echo '' &&
+        echo 'Probar handshake HTTP:' &&
+        echo '  docker exec ws-client curl -s -i -H \"Upgrade: websocket\" -H \"Connection: Upgrade\" -H \"Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==\" -H \"Sec-WebSocket-Version: 13\" http://ws-nginx/ws' &&
+        echo '' &&
+        echo 'Conectar al WebSocket (interactivo):' &&
+        echo '  docker exec -it ws-client websocat ws://ws-nginx/ws' &&
+        echo '' &&
+        echo 'Ver logs de nginx:' &&
+        echo '  docker logs ws-nginx' &&
+        echo '' &&
+        tail -f /dev/null
+      "
+    networks:
+      - lab-web-ws
+
+networks:
+  lab-web-ws:
+    driver: bridge
