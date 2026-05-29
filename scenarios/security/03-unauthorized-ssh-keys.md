@@ -76,7 +76,7 @@ find /home /root -name "authorized_keys" -exec sh -c '
 
 ```bash
 # Si existe un archivo de claves autorizadas:
-diff <(find /home -name "authorized_keys" -exec cat {} \; | sort) /ruta/inventario-claves.txt
+find /home -name "authorized_keys" -exec cat {} \; | sort | diff - /ruta/inventario-claves.txt
 ```
 
 ### 4. Verificar permisos de .ssh y authorized_keys
