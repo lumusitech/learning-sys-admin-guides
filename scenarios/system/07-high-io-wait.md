@@ -147,4 +147,4 @@ Casos comunes:
 ## 🔗 Referencias
 
 - [`top.md`](../../guides/top.md)
-- [system_iostat.md](../../guides/system_iostat.md)
+- [`iostat.md`](../../guides/iostat.md)

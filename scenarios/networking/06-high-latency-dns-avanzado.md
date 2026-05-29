@@ -151,6 +151,6 @@ systemctl restart systemd-resolved   rc-service networking restart
 
 ## 🔗 Referencias
 
-- [`network_dns`](../../guides/network_dns.md)
-- [`network_ping_traceroute`](../../guides/network_ping_traceroute.md)
+- [`dig_curl`](../../guides/dig_curl.md)
+- [`ping_traceroute`](../../guides/ping_traceroute.md)
 - [`openrc`](../../guides/openrc.md) — Alpine Linux: servicios (rc-service, rc-update)
