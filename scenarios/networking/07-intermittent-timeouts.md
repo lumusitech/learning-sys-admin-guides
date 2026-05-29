@@ -152,7 +152,7 @@ journalctl -p err -b | tail -20     logread | grep -i error | tail -20
 
 ## 🔗 Referencias
 
-- [`network_ping_traceroute`](../../guides/network_ping_traceroute.md)
+- [`ping_traceroute`](../../guides/ping_traceroute.md)
 - [`systemd_journalctl`](../../guides/systemd_journalctl.md)
 - [`openrc`](../../guides/openrc.md) — Alpine Linux: servicios (rc-service, rc-update)
 - [`busybox`](../../guides/busybox.md) — Alpine Linux: toolchain mínima (logread, dmesg)

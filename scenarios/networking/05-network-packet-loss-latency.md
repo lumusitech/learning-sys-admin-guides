@@ -150,6 +150,6 @@ systemctl restart NetworkManager    rc-service networking restart
 
 ## 🔗 Referencias
 
-- [`network_ping_traceroute`](../../guides/network_ping_traceroute.md)
+- [`ping_traceroute`](../../guides/ping_traceroute.md)
 - [`ip_ss`](../../guides/ip_ss.md)
 - [`openrc`](../../guides/openrc.md) — Alpine Linux: servicios (rc-service, rc-update)
