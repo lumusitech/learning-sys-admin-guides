@@ -1,0 +1,115 @@
+# Laboratorio: Performance — CPU runaway, memory leak, I/O hammer
+# Uso: docker compose -f docker-compose.performance.yml up -d
+# Herramientas: stress-ng, top, vmstat, iostat, free, ps
+# Escenarios relacionados: 04-high-cpu, 05-oom, 07-io-wait, 10-swap, 12-memory-leak, 13-context-switches
+
+services:
+
+  # === CPU RUNAWAY ===
+  # Simula un proceso que consume 100% de CPU
+  # Escenario: 04-high-cpu-runaway-process
+  cpu-stress:
+    image: alpine:latest
+    container_name: cpu-stress
+    hostname: cpu-stress
+    command: >
+      sh -c "
+        apk add --no-cache stress-ng &&
+        echo '=== CPU stress activo (2 workers, 100% CPU) ===' &&
+        echo 'Desde el host: docker exec cpu-stress top -b -n 1' &&
+        stress-ng --cpu 2 --cpu-method matrixprod --timeout 0
+      "
+    networks:
+      - lab-perf
+
+  # === MEMORY LEAK ===
+  # Simula un proceso que consume memoria progresivamente
+  # Escenario: 05-system-memory-issues-oom, 12-python-memory-leak
+  mem-stress:
+    image: alpine:latest
+    container_name: mem-stress
+    hostname: mem-stress
+    command: >
+      sh -c "
+        apk add --no-cache stress-ng &&
+        echo '=== Memory stress activo (512MB asignados) ===' &&
+        echo 'Desde el host: docker exec mem-stress free -h' &&
+        stress-ng --vm 1 --vm-bytes 512M --vm-method all --timeout 0
+      "
+    networks:
+      - lab-perf
+
+  # === I/O HAMMER ===
+  # Simula un proceso que satura el disco con I/O
+  # Escenario: 07-high-io-wait
+  io-stress:
+    image: alpine:latest
+    container_name: io-stress
+    hostname: io-stress
+    command: >
+      sh -c "
+        apk add --no-cache stress-ng &&
+        echo '=== I/O stress activo (4 workers escribiendo) ===' &&
+        echo 'Desde el host: docker exec io-stress iostat -x 1 3' &&
+        stress-ng --io 4 --hdd 2 --timeout 0
+      "
+    networks:
+      - lab-perf
+
+  # === SWAP PRESSURE ===
+  # Simula presión de swap con memoria limitada
+  # Escenario: 10-swap-exhaustion
+  swap-stress:
+    image: alpine:latest
+    container_name: swap-stress
+    hostname: swap-stress
+    mem_limit: 128m
+    memswap_limit: 256m
+    command: >
+      sh -c "
+        apk add --no-cache stress-ng &&
+        echo '=== Swap pressure activo (límite: 128MB RAM + 128MB swap) ===' &&
+        echo 'Desde el host: docker exec swap-stress free -h' &&
+        stress-ng --vm 2 --vm-bytes 200M --vm-keep --timeout 0
+      "
+    networks:
+      - lab-perf
+
+  # === CONTEXT SWITCH STORM ===
+  # Simula muchos procesos causando context switches
+  # Escenario: 13-high-context-switches
+  ctx-stress:
+    image: alpine:latest
+    container_name: ctx-stress
+    hostname: ctx-stress
+    command: >
+      sh -c "
+        apk add --no-cache stress-ng &&
+        echo '=== Context switch stress activo (512 workers) ===' &&
+        echo 'Desde el host: docker exec ctx-stress vmstat 1 5' &&
+        stress-ng --switch 512 --timeout 0
+      "
+    networks:
+      - lab-perf
+
+  # === CONTENEDOR DE DIAGNÓSTICO ===
+  # Herramientas para diagnosticar los problemas de performance
+  diagnostics:
+    image: alpine:latest
+    container_name: perf-diagnostics
+    hostname: perf-diagnostics
+    command: >
+      sh -c "
+        apk add --no-cache procps sysstat iproute2 htop &&
+        echo '=== Contenedor de diagnóstico ===' &&
+        echo 'Herramientas: top, vmstat, iostat, free, ps, htop' &&
+        echo 'Ejemplo: docker exec perf-diagnostics top -b -n 1' &&
+        echo 'Ejemplo: docker exec perf-diagnostics vmstat 1 5' &&
+        tail -f /dev/null
+      "
+    networks:
+      - lab-perf
+
+networks:
+  lab-perf:
+    driver: bridge
