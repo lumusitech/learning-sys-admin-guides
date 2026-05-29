@@ -17,6 +17,7 @@ Sistema de aprendizaje para **administración de servidores Linux y redes**: gu�
 | 🧪 [Entornos Docker](labs/) | 11 |
 | 🧠 [Conceptos](concepts/) | 4 |
 | 📚 [Referencias rápidas](reference/) | 5 |
+| 🎯 [Proyecto integrador](scenarios/infrastructure/07-integrative-project.md) | 1 |
 
 ---
 
@@ -77,6 +78,12 @@ No los hagas lineales. Hacé espirales de complejidad:
 2. Escenarios 🟡 Intermedio del dominio que más te guste
 3. Escenarios 🔴 Avanzado + labs especializados (TLS, CORS, WebSocket, Docker)
 
+### Fase 4 — Proyecto integrador (4-6 hs)
+
+Poné todo en práctica: construí una PYME con segmentación de red, desplegá una app con Docker + nginx reverse proxy, implementá backup y monitoreo, y resolvé un incidente simulado.
+
+👉 [`scenarios/infrastructure/07-integrative-project.md`](scenarios/infrastructure/07-integrative-project.md)
+
 ---
 
 ## 🔗 Enlaces rápidos
@@ -88,6 +95,7 @@ No los hagas lineales. Hacé espirales de complejidad:
 | [🛠️ guides/](guides/) | Todas las herramientas explicadas |
 | [🧪 labs/](labs/) | Entornos Docker para practicar |
 | [🚨 scenarios/](scenarios/) | 44 problemas reales resueltos |
+| [🎯 Proyecto integrador](scenarios/infrastructure/07-integrative-project.md) | Capstone: 5 fases, 4-6 hs |
 
 ---
 

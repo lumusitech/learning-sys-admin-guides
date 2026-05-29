@@ -1,0 +1,188 @@
+# Laboratorio: Proyecto integrador — PYME con segmentación, app, hardening y backup
+# Uso: docker compose -f docker-compose.integrative.yml up -d --build
+# Escenarios relacionados: 07-integrative-project
+
+services:
+
+  # === ROUTER / FIREWALL ===
+  # Gateway entre segmentos. El estudiante debe configurar iptables
+  # para permitir solo el tráfico necesario entre servicios.
+  router:
+    image: alpine:latest
+    container_name: integrative-router
+    hostname: router
+    cap_add:
+      - NET_ADMIN
+    sysctls:
+      - net.ipv4.ip_forward=0
+    command: >
+      sh -c "
+        apk add --no-cache iptables iproute2 &&
+        echo 0 > /proc/sys/net/ipv4/ip_forward &&
+        echo '=== ROUTER LISTO ===' &&
+        echo 'Interfaces:' &&
+        ip addr show eth0 &&
+        echo '' &&
+        echo 'Tareas del estudiante:' &&
+        echo '  1. echo 1 > /proc/sys/net/ipv4/ip_forward' &&
+        echo '  2. iptables -P FORWARD DROP' &&
+        echo '  3. iptables -A FORWARD ... (permitir trafico necesario)' &&
+        echo '  4. iptables -t nat -A POSTROUTING ... (NAT para salida)' &&
+        tail -f /dev/null
+      "
+    networks:
+      lab-integrative:
+        ipv4_address: 10.77.0.1
+
+  # === NAS / STORAGE ===
+  # Servidor NFS para backups centralizados
+  storage:
+    image: alpine:latest
+    container_name: integrative-storage
+    hostname: storage
+    cap_add:
+      - NET_ADMIN
+    command: >
+      sh -c "
+        apk add --no-cache nfs-utils &&
+        mkdir -p /srv/nfs/backups &&
+        echo '/srv/nfs/backups 10.77.0.0/24(rw,sync,no_subtree_check,no_root_squash)' > /etc/exports &&
+        exportfs -r &&
+        rpcbind &&
+        nfsd --foreground 8 &
+        echo '=== NAS LISTO ===' &&
+        echo 'Punto de montaje: storage:/srv/nfs/backups' &&
+        echo 'Probar desde otro contenedor: mount -t nfs storage:/srv/nfs/backups /mnt' &&
+        tail -f /dev/null
+      "
+    networks:
+      lab-integrative:
+        ipv4_address: 10.77.0.10
+
+  # === NGINX REVERSE PROXY ===
+  # Proxy público que recibe requests y las reenvía a la app
+  # El estudiante debe configurar proxy_pass y SSL
+  web-nginx:
+    image: nginx:alpine
+    container_name: integrative-nginx
+    hostname: web-nginx
+    volumes:
+      - ./integrative/setup.sh:/usr/local/bin/setup.sh:ro
+    command: ["sh", "/usr/local/bin/setup.sh", "nginx"]
+    depends_on:
+      - web-app
+    networks:
+      lab-integrative:
+        ipv4_address: 10.77.0.20
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # === APP (NODE.JS + MYSQL) ===
+  # Aplicación web que debe ser desplegada y puesta en produccion
+  web-app:
+    build: ./integrative/app
+    container_name: integrative-app
+    hostname: web-app
+    environment:
+      - DB_HOST=db-mysql
+      - DB_USER=appuser
+      - DB_PASSWORD=appsecret
+      - DB_NAME=appdb
+      - PORT=3000
+      - MEM_LIMIT_MB=256
+    depends_on:
+      - db-mysql
+    networks:
+      lab-integrative:
+        ipv4_address: 10.77.0.30
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  # === BASE DE DATOS ===
+  # MySQL con datos de ejemplo
+  db-mysql:
+    image: mariadb:latest
+    container_name: integrative-db
+    hostname: db-mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpass
+      - MYSQL_DATABASE=appdb
+      - MYSQL_USER=appuser
+      - MYSQL_PASSWORD=appsecret
+    volumes:
+      - mysql_integrative_data:/var/lib/mysql
+    networks:
+      lab-integrative:
+        ipv4_address: 10.77.0.40
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # === BACKUP ===
+  # Contenedor con restic para backups programados
+  cron-backup:
+    image: alpine:latest
+    container_name: integrative-backup
+    hostname: cron-backup
+    command: >
+      sh -c "
+        apk add --no-cache restic mysql-client curl &&
+        mkdir -p /mnt/backups /scripts &&
+        echo '=== BACKUP LISTO ===' &&
+        echo 'Comandos utiles:' &&
+        echo '  restic init --repo /mnt/backups (si es primera vez)' &&
+        echo '  mysqldump -h db-mysql -u root -prootpass appdb > /tmp/dump.sql' &&
+        echo '  restic -r /mnt/backups backup /tmp/dump.sql' &&
+        tail -f /dev/null
+      "
+    depends_on:
+      - storage
+      - db-mysql
+    networks:
+      lab-integrative:
+        ipv4_address: 10.77.0.50
+
+  # === ATACANTE ===
+  # Contenedor con herramientas de ataque para hardening
+  attacker:
+    image: alpine:latest
+    container_name: integrative-attacker
+    hostname: attacker
+    cap_add:
+      - NET_ADMIN
+    command: >
+      sh -c "
+        apk add --no-cache nmap curl busybox-extras &&
+        echo '=== ATACANTE LISTO ===' &&
+        echo 'Herramientas: nmap, curl, nc' &&
+        echo '' &&
+        echo 'Escaneo rapido:' &&
+        echo '  nmap -sn 10.77.0.0/24' &&
+        echo '  nmap -sV 10.77.0.20' &&
+        echo '  nmap -sV 10.77.0.30' &&
+        echo '  nmap -sV 10.77.0.40' &&
+        echo '  nmap -sV 10.77.0.10' &&
+        tail -f /dev/null
+      "
+    networks:
+      lab-integrative:
+        ipv4_address: 10.77.0.100
+
+networks:
+  lab-integrative:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.77.0.0/24
+
+volumes:
+  mysql_integrative_data:

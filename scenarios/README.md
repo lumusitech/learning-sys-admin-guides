@@ -64,9 +64,9 @@ Rendimiento, errores 5xx, slow SQL, rate limiting, 502 bad gateway, CORS, WebSoc
 
 Niveles: 🟡 Intermedio · 🔴 Avanzado
 
-### [🏗️ infrastructure/](infrastructure/) — 6 escenarios
+### [🏗️ infrastructure/](infrastructure/) — 7 escenarios
 
-Migración a producción, infraestructura PYME, disaster recovery, TLS expirado, NFS stale mount, RAID degradation.
+Migración a producción, infraestructura PYME, disaster recovery, TLS expirado, NFS stale mount, RAID degradation, proyecto integrador.
 
 Niveles: 🟡 Intermedio · 🔴 Avanzado
 
@@ -89,6 +89,7 @@ Usá los entornos Docker en [`labs/`](../labs/) para practicar. Hay **11 entorno
 | `docker-compose.web-cors.yml` | CORS bloqueado (frontend + API) |
 | `docker-compose.web-websocket.yml` | WebSocket timeout |
 | `docker-compose.docker.yml` | Docker crash loop, OOM, resource limits |
+| `docker-compose.integrative.yml` | Proyecto integrador (PYME completa) |
 
 ```bash
 cd labs
