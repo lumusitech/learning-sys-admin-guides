@@ -12,7 +12,7 @@ Sistema de aprendizaje para **administración de servidores Linux y redes**: gu�
 
 | Categoría | Cantidad |
 |-----------|:--------:|
-| 🛠️ [Guías](guides/) | 38 |
+| 🛠️ [Guías](guides/) | 39 |
 | 🚨 [Escenarios](scenarios/) | 44 |
 | 🧪 [Entornos Docker](labs/) | 11 |
 | 🧠 [Conceptos](concepts/) | 4 |
@@ -96,6 +96,14 @@ Poné todo en práctica: construí una PYME con segmentación de red, desplegá 
 | [🧪 labs/](labs/) | Entornos Docker para practicar |
 | [🚨 scenarios/](scenarios/) | 44 problemas reales resueltos |
 | [🎯 Proyecto integrador](scenarios/infrastructure/07-integrative-project.md) | Capstone: 5 fases, 4-6 hs |
+
+---
+
+## 🧰 Herramientas esenciales
+
+Algunas herramientas no aparecen en escenarios pero son imprescindibles en el día a día:
+
+- [`tmux`](guides/tmux.md) — multiplexor de terminales. Sesiones persistentes, división de pantalla, trabajo remoto sin perder estado al desconectarte de SSH.
 
 ---
 
