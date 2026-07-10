@@ -50,6 +50,14 @@ Para ejecutar acciones, ver `guides/`
 | [Defensa en profundidad](defense-in-depth.md) | 🟡 Intermedio | Seguridad por capas, privilegio mínimo, aislamiento, hardening progresivo |
 | [Linux FHS](linux-fhs.md) | 🟢 Básico | `/proc`, `/sys`, `/etc`, `/var/log` — mapa del sistema de archivos para diagnóstico |
 | [Post-mortem blameless](post-mortem-blameless.md) | 🟡 Intermedio | Análisis de incidentes, 5 whys, cultura de mejora continua, acciones correctivas |
+| [TCP/IP modelo en capas](tcp-ip-model.md) | 🟢 Básico | Diagnóstico de red por capas (acceso, internet, transporte, aplicación), embudo diagnóstico |
+| [Idempotencia](idempotency.md) | 🟡 Intermedio | Operaciones seguras y repetibles, scripts que convergen, retries sin efectos laterales |
+| [Stateful vs stateless](stateful-vs-stateless.md) | 🟡 Intermedio | Estado en memoria vs sin estado, escalado horizontal, sticky sessions, contenedores efímeros |
+| [Observabilidad vs monitoreo](observability-vs-monitoring.md) | 🟡 Intermedio | Métricas, logs, traces — los tres pilares para entender sistemas complejos |
+| [Blast radius y change management](blast-radius.md) | 🟡 Intermedio | Radio de explosión de cambios, deploy progresivo, rollback, validación pre-cambio |
+| [Capacidad y carga](capacity-and-load.md) | 🟡 Intermedio | Little's Law, capacity planning, escalado vertical vs horizontal, señales de saturación |
+| [Backpressure](backpressure.md) | 🟡 Intermedio | Control de flujo entre productor y consumidor, rate limiting, TCP flow control |
+| [Race conditions y locks](race-conditions.md) | 🟡 Intermedio | Concurrencia en scripts, lockfiles, flock, mkdir atómico, escritura segura |
 
 ---
 
