@@ -205,3 +205,4 @@ curl -su admin:pass "http://192.168.1.108/cgi-bin/magicBox.cgi?action=reset"
 - [`dahua-discovery.md`](dahua-discovery.md) — cómo encontrar las cámaras
 - [`dahua-mass-config.md`](dahua-mass-config.md) — script para configurar muchas
 - [`dahua-rtsp-stream.md`](dahua-rtsp-stream.md) — diagnóstico de video
+- [`../../labs/docker-compose.dahua.yml`](../../labs/docker-compose.dahua.yml) — laboratorio Docker: `cd labs && docker compose -f docker-compose.dahua.yml up -d`

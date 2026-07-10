@@ -291,3 +291,4 @@ ssh admin@192.168.100.100 "find /mnt/sda/record -name '*.mp4' -mtime 0" | xargs 
 - [`dahua-camera-api.md`](dahua-camera-api.md) — API para configuración
 - [`dahua-troubleshooting.md`](dahua-troubleshooting.md) — diagnóstico de fallas
 - [`../../scenarios/dahua/02-nvr-sin-disco.md`](../../scenarios/dahua/02-nvr-sin-disco.md) — escenario práctico
+- [`../../labs/docker-compose.dahua-broken.yml`](../../labs/docker-compose.dahua-broken.yml) — laboratorio NVR: `cd labs && docker compose -f docker-compose.dahua-broken.yml up -d && ssh root@10.0.200.100`

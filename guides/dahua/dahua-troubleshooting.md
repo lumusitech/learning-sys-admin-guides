@@ -659,3 +659,4 @@ for i in $(seq 10 30); do curl -s -m 2 -u admin:admin "http://192.168.100.$i/cgi
 - [`dahua-camera-api.md`](dahua-camera-api.md) — API completa
 - [`dahua-rtsp-stream.md`](dahua-rtsp-stream.md) — diagnóstico RTSP
 - [`../../scenarios/dahua/`](../../scenarios/dahua/) — escenarios prácticos
+- [`../../labs/docker-compose.dahua-broken.yml`](../../labs/docker-compose.dahua-broken.yml) — laboratorio con fallas: `cd labs && docker compose -f docker-compose.dahua-broken.yml up -d`
