@@ -1144,3 +1144,45 @@ ls -la $(which awk)
 # Instalar gawk si no está
 sudo apt install gawk
 ```
+
+### Detectar la implementación en runtime con PROCINFO
+
+`PROCINFO` es un array asociativo exclusivo de gawk que expone información interna del intérprete:
+
+```bash
+# Detectar versión y implementación
+awk 'BEGIN { print PROCINFO["version"] }'
+# Salida: 5.2.1 (versión de gawk)
+
+# Si PROCINFO no existe, no estás en gawk
+awk 'BEGIN { if ("version" in PROCINFO) print "gawk"; else print "mawk/nawk" }'
+
+# PID del proceso awk
+awk 'BEGIN { print PROCINFO["pid"] }'
+
+# Argumentos de la línea de comandos
+awk 'BEGIN { for (i in PROCINFO["argv"]) print i, PROCINFO["argv"][i] }'
+```
+
+> **Portabilidad**: `PROCINFO` solo existe en gawk. En mawk y nawk no está disponible. Si necesitas scripts portables, no dependas de `PROCINFO`.
+
+### gawk --sandbox (entornos restringidos)
+
+`--sandbox` desactiva funciones que acceden al sistema externo. Útil cuando ejecutas scripts awk de fuentes no confiables:
+
+```bash
+# En sandbox, estas funciones fallan:
+# - system()           → ejecución de comandos
+# - getline < "file"   → lectura de archivos
+# - print > "file"     → escritura de archivos
+# - cmd | getline      → pipes a comandos externos
+# - extension          → cargar extensiones dinámicas
+
+gawk --sandbox '{ print $0 }' datos.txt
+# OK: solo procesa stdin/archivos pasados como argumento
+
+gawk --sandbox 'BEGIN { system("ls") }' datos.txt
+# ERROR: system() desactivado en sandbox
+```
+
+> **Uso**: ideal para CGI, procesamiento de datos en servidores expuestos, o cualquier entorno donde un script awk podría ejecutar comandos arbitrarios.
