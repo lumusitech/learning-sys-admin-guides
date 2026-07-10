@@ -54,9 +54,13 @@ entender → aprender → practicar → aplicar
 - PR #57: 🧑‍🏫 Modo docente en todos los escenarios
 - PR #58: `guides/cron.md` (nueva guía)
 - PR #59: `.skills/` → `.opencode/skills/` (skills invocables con `skill()`)
-- `.opencode/instructions.md` creado (init prompt de sesión)
-- Contadores: 49 → 50 guías
-- Pendientes bajos para próxima sesión (ver TODO.md)
+- PR #60: docs/session-state (pendientes registrados)
+- PR #61: `concepts/linux-fhs.md` (Linux FHS)
+- PR #62: `guides/kubectl.md` (diagnóstico de clusters)
+- PR #63: `scenarios/infrastructure/08-prometheus-grafana.md` (monitoreo)
+- PR #64: `concepts/post-mortem-blameless.md` (post-mortem)
+- Contadores: 50 → 51 guías, 48 → 49 escenarios, 5 → 7 conceptos, 12 → 14 labs
+- Auditoría completa del repo registrada en TODO.md (5 sprints priorizados)
 
 ---
 

@@ -80,7 +80,7 @@ Niveles: 🟡 Intermedio · 🔴 Avanzado
 
 ## 🧪 Laboratorio Docker
 
-Usá los entornos Docker en [`labs/`](../labs/) para practicar. Hay **12 entornos** según el tipo de práctica:
+Usá los entornos Docker en [`labs/`](../labs/) para practicar. Hay **14 entornos** según el tipo de práctica:
 
 | Archivo | Para qué |
 |---------|----------|
