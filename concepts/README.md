@@ -48,6 +48,7 @@ Para ejecutar acciones, ver `guides/`
 | [Baseline y detección de anomalías](baseline-and-anomalies.md) | 🟢 Básico | Cómo establecer una baseline, métricas de referencia (CPU, memoria, disco, red), detección de desvíos |
 | [Fundamentos SRE](sre-fundamentals.md) | 🟡 Intermedio | SLI, SLO, error budget, monitoreo vs observabilidad, postmortem, modelos USE/RED |
 | [Defensa en profundidad](defense-in-depth.md) | 🟡 Intermedio | Seguridad por capas, privilegio mínimo, aislamiento, hardening progresivo |
+| [Linux FHS](linux-fhs.md) | 🟢 Básico | `/proc`, `/sys`, `/etc`, `/var/log` — mapa del sistema de archivos para diagnóstico |
 
 ---
 
