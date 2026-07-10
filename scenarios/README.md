@@ -12,7 +12,7 @@
 
 # 🧪 Escenarios prácticos
 
-49 escenarios reales que combinan herramientas de las guías para resolver problemas concretos de administración de servidores Linux y redes.
+57 escenarios reales que combinan herramientas de las guías para resolver problemas concretos de administración de servidores Linux y redes.
 
 ---
 
@@ -46,33 +46,33 @@ Cámaras IP, NVR, configuración masiva.
 
 Niveles: 🟡 Intermedio · 🔴 Avanzado
 
-### [🖥️ system/](system/) — 14 escenarios
+### [🖥️ system/](system/) — 15 escenarios
 
-Procesos, memoria, disco, I/O, logs, cron, provisioning, context switches, fork bombs, zombies, Docker troubleshooting.
-
-Niveles: 🟢 Básico · 🟡 Intermedio · 🔴 Avanzado
-
-### [🌐 networking/](networking/) — 11 escenarios
-
-SSH brute force, port scans, DNS, latencia, timeouts, firewalls, ARP spoofing, DHCP exhaustion, MTU fragmentation.
+Procesos, memoria, disco, I/O, logs, cron, provisioning, context switches, fork bombs, zombies, Docker troubleshooting, config drift.
 
 Niveles: 🟢 Básico · 🟡 Intermedio · 🔴 Avanzado
 
-### [🔒 security/](security/) — 6 escenarios
+### [🌐 networking/](networking/) — 12 escenarios
 
-IPs maliciosas, SUID/permisos, claves SSH no autorizadas, cron sospechoso, procesos anómalos, manipulación de logs.
+SSH brute force, port scans, DNS, latencia, timeouts, firewalls, ARP spoofing, DHCP exhaustion, MTU fragmentation, ruta asimétrica.
+
+Niveles: 🟢 Básico · 🟡 Intermedio · 🔴 Avanzado
+
+### [🔒 security/](security/) — 7 escenarios
+
+IPs maliciosas, SUID/permisos, claves SSH no autorizadas, cron sospechoso, procesos anómalos, manipulación de logs, intento de escalación.
 
 Niveles: 🟡 Intermedio · 🔴 Avanzado
 
-### [🌍 web/](web/) — 7 escenarios
+### [🌍 web/](web/) — 10 escenarios
 
-Rendimiento, errores 5xx, slow SQL, rate limiting, 502 bad gateway, CORS, WebSocket timeout.
+Rendimiento, errores 5xx, slow SQL, rate limiting, 502 bad gateway, CORS, WebSocket timeout, TLS handshake, sticky sessions, PHP-FPM.
 
 Niveles: 🟡 Intermedio · 🔴 Avanzado
 
-### [🏗️ infrastructure/](infrastructure/) — 8 escenarios
+### [🏗️ infrastructure/](infrastructure/) — 10 escenarios
 
-Migración a producción, infraestructura PYME, disaster recovery, TLS expirado, NFS stale mount, RAID degradation, proyecto integrador, monitoreo con Prometheus y Grafana.
+Migración a producción, infraestructura PYME, disaster recovery, TLS expirado, NFS stale mount, RAID degradation, proyecto integrador, monitoreo Prometheus, rotación de certificados, drill de restauración.
 
 Niveles: 🟡 Intermedio · 🔴 Avanzado
 
