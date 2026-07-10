@@ -417,6 +417,24 @@ Fase 16 (labs Dahua) → depende de Fase 7
 
 ---
 
+## 🟢 Sesión actual — completado en jul-2026
+
+| # | Acción | Estado | PR |
+|---|--------|--------|----|
+| 1 | lychee en CI (detección automática de links rotos) | ✅ | #56 |
+| 2 | 🧑‍🏫 Modo docente en los 48 escenarios (preguntas + ejercicio + criterios) | ✅ | #57 |
+| 3 | `guides/cron.md` — guía dedicada de cron | ✅ | #58 |
+| 4 | Migrar `.skills/` → `.opencode/skills/` (skills invocables con `skill()`) | ✅ | #59 |
+
+## 🔵 Pendientes para próxima sesión
+
+| Prioridad | Acción | Esfuerzo | Impacto |
+|-----------|--------|----------|---------|
+| 🔵 Baja | Concepto: Linux FHS (`/proc`, `/sys`, `/etc`, `/var/log`) | 1 hr | Medio — fundacional |
+| 🔵 Baja | Guía `kubectl.md` (diagnóstico de clusters, no desarrollo) | 2 hrs | Medio — 2026 reality |
+| 🔵 Baja | Escenario Prometheus + node_exporter + Grafana (cierra SLI/SLO) | 3 hrs | Medio — práctica SRE |
+| 🔵 Baja | Concepto: post-mortem blameless + 5 whys | 1 hr | Medio — madurez |
+
 ## Comandos de validación
 
 ```bash

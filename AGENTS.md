@@ -48,6 +48,16 @@ entender → aprender → practicar → aplicar
 | Referencias rápidas | 6 |
 | Proyecto integrador | 1 |
 
+## 🔄 Última sesión (jul-2026)
+
+- PR #56: lychee en CI
+- PR #57: 🧑‍🏫 Modo docente en todos los escenarios
+- PR #58: `guides/cron.md` (nueva guía)
+- PR #59: `.skills/` → `.opencode/skills/` (skills invocables con `skill()`)
+- `.opencode/instructions.md` creado (init prompt de sesión)
+- Contadores: 49 → 50 guías
+- Pendientes bajos para próxima sesión (ver TODO.md)
+
 ---
 
 ## 🛠️ Comandos de desarrollo
@@ -392,6 +402,12 @@ Cada archivo debe responder:
 
 `scenarios/infrastructure/07-integrative-project.md` — 5 fases, 4-6 horas.
 Entorno Docker: `labs/docker-compose.integrative.yml` (7 servicios).
+
+---
+
+## 📋 Regla de cierre de sesión
+
+**Siempre** mostrar al final de la sesión el cuadro de prioridades actualizado después de hacer un PR o completar una tarea, para que el usuario decida qué sigue. Si hay pendientes, mostrar tabla priorizada. Si no hay más pendientes, decirlo.
 
 ---
 
