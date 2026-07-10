@@ -42,8 +42,8 @@ entender → aprender → practicar → aplicar
 | Categoría | Cantidad |
 |-----------|:--------:|
 | Guías | 51 |
-| Escenarios | 48 |
-| Entornos Docker (labs) | 12 |
+| Escenarios | 49 |
+| Entornos Docker (labs) | 14 |
 | Conceptos | 6 |
 | Referencias rápidas | 6 |
 | Proyecto integrador | 1 |
