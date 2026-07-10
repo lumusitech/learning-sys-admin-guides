@@ -153,6 +153,16 @@ Casos comunes:
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Qué indicación de ataque es que dos IPs tengan la misma MAC en la tabla ARP? ¿Cómo capturás paquetes ARP con tcpdump? ¿Cómo mitigás un ataque ARP activo?
+
+**Ejercicio:** Detectar una entrada ARP duplicada, capturar tráfico ARP con tcpdump, aplicar mitigación con arptables.
+
+**Evaluación:** detección correcta de anomalía ARP, captura e interpretación de paquetes, mitigación sin perder conectividad.
+
+---
+
 ## 🔗 Referencias
 
 - [`ip_ss`](../../guides/ip_ss.md) — redes y sockets

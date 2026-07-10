@@ -348,6 +348,16 @@ O directamente en `/etc/sysctl.conf` si se prefiere un solo archivo.
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Cuál es el orden correcto de hardening antes de desplegar una aplicación? ¿Cómo hacés rollback de una migresión? ¿Por qué no conviene usar root para deploy?
+
+**Ejercicio:** Planificar una migración paso a paso: hardening, deploy, verificación, rollback. Documentar cada paso.
+
+**Evaluación:** orden lógico de hardening, estrategia de rollback documentada, usuario de deploy no-root.
+
+---
+
 ## 🔗 Referencias
 
 - [`nginx`](../../guides/nginx.md)

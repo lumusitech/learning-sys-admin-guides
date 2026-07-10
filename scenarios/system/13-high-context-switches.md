@@ -174,6 +174,16 @@ systemctl restart <servicio>        rc-service <servicio> restart
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Qué columna de vmstat indica context switching? ¿A partir de qué valor se considera alto? ¿Qué herramientas usás para identificar qué proceso los causa?
+
+**Ejercicio:** Detectar context switching alto con vmstat, identificar los procesos responsables con pidstat, proponer solución.
+
+**Evaluación:** interpretación correcta de la columna cs, identificación del proceso con pidstat, propuesta de mitigación viable.
+
+---
+
 ## 🔗 Referencias
 
 - [`vmstat`](../../guides/vmstat.md) — CPU, memoria, I/O y context switches

@@ -168,6 +168,16 @@ journalctl -u nginx --since "1h"   logread | grep nginx | tail -20
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Cómo correlacionás tiempos entre nginx y la base de datos? ¿Qué columnas del access.log de nginx analizás? ¿Qué herramienta de red usás para capturar queries lentas?
+
+**Ejercicio:** Identificar una request lenta en nginx, correlacionar con query lenta en DB logs, proponer optimización.
+
+**Evaluación:** identificación de la request problemática, correlación nginx-DB, propuesta de índice o refactor de query.
+
+---
+
 ## 🔗 Referencias
 
 - [`nginx`](../../guides/nginx.md) — configuración y logs de nginx

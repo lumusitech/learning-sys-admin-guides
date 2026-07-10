@@ -161,6 +161,16 @@ journalctl -u nginx --since "1h"   logread | grep nginx | tail -20
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Cuál es la causa más común de timeouts en conexiones WebSocket detrás de nginx? ¿Qué directiva de nginx controla el timeout de lectura? ¿Qué headers son necesarios para upgrade a WebSocket?
+
+**Ejercicio:** Diagnosticar desconexiones WebSocket, revisar proxy_read_timeout, configurar headers Upgrade/Connection, verificar conexión persistente.
+
+**Evaluación:** identificación del timeout como causa, ajuste correcto de directivas nginx, verificación de conexión estable.
+
+---
+
 ## 🔗 Referencias
 
 - [`nginx`](../../guides/nginx.md) — configuración y logs de nginx

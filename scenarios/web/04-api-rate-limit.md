@@ -167,6 +167,16 @@ journalctl -u nginx --since "1h"   logread | grep nginx | tail -20
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Cómo distinguís rate limiting de otro tipo de error HTTP? ¿Qué header revela la IP real del cliente detrás de un proxy? ¿Cómo ajustás burst sin abrir el throttle?
+
+**Ejercicio:** Diagnosticar rate limiting en nginx, ajustar limit_req_zone para cliente legítimo, verificar con ab.
+
+**Evaluación:** identificación del rate limit en logs, ajuste correcto de rate/burst, verificación con carga controlada.
+
+---
+
 ## 🔗 Referencias
 
 - [`nginx`](../../guides/nginx.md) — configuración y logs de nginx

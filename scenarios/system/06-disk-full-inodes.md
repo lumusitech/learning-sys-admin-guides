@@ -153,6 +153,16 @@ systemctl restart <svc>             rc-service <svc> restart
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Cuál es la diferencia entre `df -h` y `df -i`? ¿Qué comando usás para encontrar los archivos más grandes? ¿Cómo liberás inodes cuando no hay archivos grandes visibles?
+
+**Ejercicio:** Determinar si el problema es espacio o inodes, encontrar los archivos/directorios responsables, liberar recursos.
+
+**Evaluación:** diagnóstico diferencial correcto, uso de find/du para localizar, limpieza sin afectar datos críticos.
+
+---
+
 ## 🔗 Referencias
 
 - [`du`](../../guides/du.md)

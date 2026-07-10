@@ -162,6 +162,16 @@ swapon /swapfile                    swapon /swapfile
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Qué indica que el sistema esté usando swap? ¿Dónde se ven los logs del OOM killer? ¿Cómo agregás swap de emergencia sin reiniciar?
+
+**Ejercicio:** Diagnosticar presión de memoria con free/vmstat, encontrar el proceso con más RSS, leer logs de OOM en dmesg, agregar swap temporal.
+
+**Evaluación:** diagnóstico correcto (swap como indicador de presión), identificación del proceso leak, mitigación funcional.
+
+---
+
 ## 🔗 Referencias
 
 - [`top`](../../guides/top.md)

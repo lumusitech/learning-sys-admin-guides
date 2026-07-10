@@ -160,6 +160,16 @@ Casos comunes:
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Qué estado de proceso indica un mount NFS colgado? ¿Cómo forzás un desmontaje? ¿Qué opción de montaje previene cuelgues permanentes?
+
+**Ejercicio:** Diagnosticar un stale mount, identificar procesos colgados con lsof, forzar umount, re-montar con opciones soft.
+
+**Evaluación:** identificación de stale mount, desmontaje forzado exitoso, montaje con opciones soft y timeo configurado.
+
+---
+
 ## 🔗 Referencias
 
 - [`du`](../../guides/du.md) — uso de disco

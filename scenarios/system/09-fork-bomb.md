@@ -169,6 +169,16 @@ En Alpine, los límites de procesos se configuran en `/etc/conf.d/` o directamen
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Por qué SIGSTOP es mejor que SIGKILL para contener una fork bomb? ¿Cómo evitás que vuelva a ocurrir? ¿Qué hace exactamente ulimit -u?
+
+**Ejercicio:** Contener una fork bomb con SIGSTOP, matar los procesos de forma controlada, configurar ulimit permanente.
+
+**Evaluación:** contención segura (SIGSTOP primero), limpieza controlada, límite permanente configurado y verificado.
+
+---
+
 ## 🔗 Referencias
 
 - [`ps`](../../guides/ps.md) — visualización de procesos

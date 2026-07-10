@@ -155,6 +155,16 @@ Casos comunes:
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Qué flag de ping usás para descubrir la MTU del path? ¿Qué mensaje ICMP esperás si hay MTU mismatch? ¿Dónde configurarías la reducción de MTU?
+
+**Ejercicio:** Encontrar la MTU real del path con ping -M do, detectar ICMP "Fragmentation Needed" con tcpdump, aplicar MSS clamping.
+
+**Evaluación:** uso correcto de ping con DF flag, interpretación de mensajes ICMP, solución aplicada correctamente.
+
+---
+
 ## 🔗 Referencias
 
 - [`ping_traceroute`](../../guides/ping_traceroute.md) — ping, traceroute y mtr

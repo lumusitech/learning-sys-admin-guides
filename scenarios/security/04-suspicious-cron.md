@@ -184,6 +184,16 @@ Casos comunes:
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Qué indicadores delatan una entrada cron maliciosa? ¿Por qué ejecutar scripts desde /tmp es sospechoso? ¿Cómo verificás que la entrada no reaparezca tras eliminarla?
+
+**Ejercicio:** Analizar crontab de todos los usuarios, identificar entrada maliciosa, eliminar y verificar que no se regenera.
+
+**Evaluación:** detección de patrones sospechosos, eliminación completa, verificación de persistencia.
+
+---
+
 ## 🔗 Referencias
 
 - [`find`](../../guides/find.md) — búsqueda de archivos

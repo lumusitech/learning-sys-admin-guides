@@ -151,6 +151,16 @@ systemctl restart systemd-resolved   rc-service networking restart
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Cómo verificás si un problema es de DNS o de red? ¿Qué diferencia hay entre NXDOMAIN y timeout? ¿Para qué sirve el argumento @8.8.8.8 en dig?
+
+**Ejercicio:** Diagnosticar por qué un nombre no resuelve: probar con dig, comparar contra resolver externo, revisar /etc/resolv.conf.
+
+**Evaluación:** diagnóstico en capas (local vs externo), interpretación correcta de códigos de respuesta DNS.
+
+---
+
 ## 🔗 Referencias
 
 - [`dig_curl`](../../guides/dig_curl.md)

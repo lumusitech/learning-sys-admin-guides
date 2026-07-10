@@ -144,6 +144,16 @@ Casos comunes:
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Qué significa el valor `%wa` en top? ¿Cómo identificás qué proceso causa alta I/O? ¿Cómo reducís el impacto de un proceso con alta I/O?
+
+**Ejercicio:** Detectar alta I/O wait con top/vmstat, encontrar el proceso culpable con iotop, mitigar con ionice.
+
+**Evaluación:** identificación correcta de iowait, proceso culpable encontrado, mitigación aplicada con ionice.
+
+---
+
 ## 🔗 Referencias
 
 - [`top.md`](../../guides/top.md)

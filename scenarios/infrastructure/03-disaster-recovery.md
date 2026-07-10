@@ -382,6 +382,16 @@ journalctl -p err -b --no-pager     logread | grep -i error
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Qué verificás primero después de restaurar un backup? ¿Cómo medís si estás cumpliendo el RTO? ¿Qué documentación dejás para el próximo simulacro?
+
+**Ejercicio:** Simular un DR completo: restaurar desde backup, verificar integridad, medir tiempo vs RTO, documentar lecciones.
+
+**Evaluación:** verificación de integridad post-restauración, cumplimiento de RTO, documentación de lecciones aprendidas.
+
+---
+
 ## 🔗 Referencias
 
 - [`storage_backup`](../../guides/storage_backup.md)

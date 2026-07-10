@@ -350,6 +350,16 @@ Ver [laboratorio completo →](../../labs/docker-compose.dahua.yml)
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Cómo evitás dejar una cámara inaccesible tras cambiar la contraseña? ¿Qué endpoint de la API usás para cambiar credenciales? ¿Cómo verificás que el cambio se aplicó?
+
+**Ejercicio:** Escribir un script que cambie contraseñas en 3 cámaras, con verificación post-cambio y rollback.
+
+**Evaluación:** script idempotente, verificación post-cambio, plan de rollback documentado.
+
+---
+
 ## 🔗 Referencias
 
 - [`guides/dahua/dahua-mass-config.md`](../../guides/dahua/dahua-mass-config.md) — scripting masivo

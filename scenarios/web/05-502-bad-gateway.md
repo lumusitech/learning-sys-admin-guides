@@ -168,6 +168,16 @@ journalctl -u php-fpm --since "1h" logread | grep php-fpm | tail -20
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Qué significa exactamente 502 Bad Gateway? ¿Cómo verificás que el upstream (PHP-FPM, Gunicorn, etc.) está corriendo? ¿Dónde mirás logs del backend?
+
+**Ejercicio:** Diagnosticar un 502: verificar si el upstream está vivo, revisar configuración de proxy_pass, revisar logs del backend.
+
+**Evaluación:** diagnóstico metódico (upstream -> config -> logs), identificación de la causa raíz, restauración del servicio.
+
+---
+
 ## 🔗 Referencias
 
 - [`nginx`](../../guides/nginx.md) — configuración y logs de nginx

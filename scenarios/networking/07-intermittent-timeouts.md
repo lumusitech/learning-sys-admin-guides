@@ -150,6 +150,16 @@ journalctl -p err -b | tail -20     logread | grep -i error | tail -20
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Cómo reproducís un error intermitente de forma controlada? ¿Qué significa que ping funcione pero curl falle? ¿Qué capa de red descartás si dig funciona?
+
+**Ejercicio:** Usar un loop de curl para reproducir timeouts, aplicar diagnóstico en capas, leer logs del sistema.
+
+**Evaluación:** reproducción metódica del error, diagnóstico en capas correcto, uso de logs para confirmar causa raíz.
+
+---
+
 ## 🔗 Referencias
 
 - [`ping_traceroute`](../../guides/ping_traceroute.md)

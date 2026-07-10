@@ -184,6 +184,16 @@ En Alpine, el servicio se llama `crond` (no `cron`). Los logs van a `/var/log/me
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Cuáles son las 3 causas más comunes de fallo silencioso en cron? ¿Cómo debugueás el PATH de una tarea cron? ¿Qué servicio hay que verificar si cron no ejecuta nada?
+
+**Ejercicio:** Diagnosticar por qué un script no se ejecuta en cron: verificar servicio crond, permisos del script, PATH, y logs.
+
+**Evaluación:** diagnóstico metódico (servicio -> permisos -> PATH -> logs), corrección aplicada, verificación de que la tarea se ejecuta.
+
+---
+
 ## 🔗 Referencias
 
 - [`grep`](../../guides/grep.md) — filtrar logs de cron

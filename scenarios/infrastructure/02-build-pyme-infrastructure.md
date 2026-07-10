@@ -426,6 +426,16 @@ apk add util-linux
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Cómo segmentás red con iptables FORWARD? ¿Qué servicio combiná DHCP + DNS en una PYME? ¿Cómo aplicás la regla 3-2-1 con restic?
+
+**Ejercicio:** Diseñar la segmentación de red, configurar dnsmasq, implementar backup con restic siguiendo regla 3-2-1.
+
+**Evaluación:** diseño de segmentación funcional, DHCP+DNS operativo, backup 3-2-1 implementado.
+
+---
+
 ## 🔗 Referencias
 
 - [`network_segmentation`](../../guides/network_segmentation.md)

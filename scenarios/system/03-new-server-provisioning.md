@@ -295,6 +295,16 @@ timedatectl set-ntp true                 apk add chrony && rc-update add chronyd
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Por qué deshabilitar root login por SSH? ¿Qué función cumple fail2ban? ¿Cómo verificás que un servicio está corriendo y habilitado en systemd?
+
+**Ejercicio:** Hardenear un servidor limpio paso a paso: SSH, firewall, fail2ban, NTP. Verificar cada paso con los comandos del escenario.
+
+**Evaluación:** hardening completo, verificación funcional, rollback preparado para cada cambio.
+
+---
+
 ## 🔗 Referencias
 
 - [`ssh`](../../guides/ssh.md) — hardening SSH detallado
