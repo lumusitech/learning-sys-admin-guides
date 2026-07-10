@@ -342,6 +342,6 @@ lsof -t -i :80                              # Solo PID del proceso en puerto 80
 
 ## 🔗 Referencias internas
 
-- [`ip_ss`](../ip_ss.md) — conexiones de red con `ss` (alternativa portable a `lsof`)
-- [`ps`](../ps.md) — procesos del sistema
-- [`fuser`](../fuser.md) — identificar proceso por puerto (rango de root)
+- [`ip_ss`](ip_ss.md) — conexiones de red con `ss` (alternativa portable a `lsof`)
+- [`ps`](ps.md) — procesos del sistema
+- [`fuser`](fuser.md) — identificar proceso por puerto (rango de root)

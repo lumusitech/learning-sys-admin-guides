@@ -207,6 +207,6 @@ watch -n 2 'ps aux | sort -k3 -rn | head -10'   # Top CPU (con procps instalado)
 
 ## 🔗 Referencias internas
 
-- [`apk`](../apk.md) — gestor de paquetes de Alpine Linux
-- [`openrc`](../openrc.md) — gestión de servicios en Alpine
-- [`systemd_journalctl`](../systemd_journalctl.md) — sistema de init alternativo (Debian/Ubuntu)
+- [`apk`](apk.md) — gestor de paquetes de Alpine Linux
+- [`openrc`](openrc.md) — gestión de servicios en Alpine
+- [`systemd_journalctl`](systemd_journalctl.md) — sistema de init alternativo (Debian/Ubuntu)

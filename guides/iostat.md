@@ -293,7 +293,7 @@ iostat -x 1 | awk '/sd/ { print $1, "tps:", $2 }'         # Solo IOPS
 
 ## 🔗 Referencias internas
 
-- [`vmstat`](../vmstat.md) — contexto de CPU, memoria y swap
-- [`ps`](../ps.md) — procesos que consumen recursos
-- [`top`](../top.md) — vista en vivo de procesos y recursos
-- [`production_server`](../production_server.md) — monitoreo básico del servidor
+- [`vmstat`](vmstat.md) — contexto de CPU, memoria y swap
+- [`ps`](ps.md) — procesos que consumen recursos
+- [`top`](top.md) — vista en vivo de procesos y recursos
+- [`production_server`](production_server.md) — monitoreo básico del servidor

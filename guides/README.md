@@ -12,7 +12,7 @@
 
 # 🐧 sys-admin-guides
 
-Colección completa de guías de referencia para administración de servidores Linux y redes. **37 guías** que cubren cada herramienta desde lo más básico hasta escenarios profesionales, explicando cada opción y la interpretación de salidas en contextos de éxito, falla y ataque.
+Colección completa de guías de referencia para administración de servidores Linux y redes. **49 guías** que cubren cada herramienta desde lo más básico hasta escenarios profesionales, explicando cada opción y la interpretación de salidas en contextos de éxito, falla y ataque.
 
 ---
 
@@ -53,6 +53,7 @@ entender → aprender → practicar → aplicar
 | [`wc.md`](wc.md) | 🟢 Básico | Conteo de líneas, palabras, caracteres y bytes |
 | [`find.md`](find.md) | 🟡 Intermedio | Búsqueda de archivos por nombre, tipo, tamaño, fecha, permisos, contenido |
 | [`xargs.md`](xargs.md) | 🟡 Intermedio | Construcción de comandos desde stdin. Paralelismo, seguridad con `-0` |
+| [`redirections.md`](redirections.md) | 🟢 Básico | Redirección de flujos stdin/stdout/stderr, pipes, here-docs, tee |
 
 ### Redes y conectividad
 
@@ -66,6 +67,7 @@ entender → aprender → practicar → aplicar
 | [`nmap.md`](nmap.md) | 🔴 Avanzado | Escaneo de puertos y servicios. NSE, detección de SO, evasión de firewalls |
 | [`iptables.md`](iptables.md) | 🔴 Avanzado | Firewall Netfilter. Reglas, NAT, mitigación de ataques, rate limiting |
 | [`network_segmentation.md`](network_segmentation.md) | 🔴 Avanzado | VLANs, subnetting, router Linux, ACLs con iptables, DHCP por segmento, bridges |
+| [`nftables.md`](nftables.md) | 🔴 Avanzado | Firewall nftables. Tablas, cadenas, sets, mapas, NAT, migración desde iptables |
 
 ### Sistema y monitoreo
 
@@ -85,6 +87,11 @@ entender → aprender → practicar → aplicar
 | [`strace.md`](strace.md) | 🔴 Avanzado | Trazado de llamadas al sistema. Syscalls, señales, errores, seguimiento de procesos |
 | [`systemd_journalctl.md`](systemd_journalctl.md) | 🟡 Intermedio | Gestión de servicios (systemctl) y logs (journalctl). Análisis de arranque, filtros |
 | [`ssh.md`](ssh.md) | 🟡 Intermedio | Administración remota, hardening, claves, túneles, ProxyJump, automatización |
+| [`systemd.md`](systemd.md) | 🟡 Intermedio | Sistema de init systemd. Unidades, targets, timers, resource control, análisis de arranque |
+| [`docker.md`](docker.md) | 🟡 Intermedio | Diagnóstico de contenedores Docker. Crash loops, OOM, resource limits, networking |
+| [`tmux.md`](tmux.md) | 🟢 Básico | Multiplexor de terminales. Sesiones, ventanas, paneles, persistencia SSH |
+| [`kill.md`](kill.md) | 🟢 Básico | Envío de señales a procesos. SIGTERM, SIGKILL, señales comunes, matar por nombre/PID |
+| [`fuser.md`](fuser.md) | 🟡 Intermedio | Identificar procesos por puerto o archivo. Alternativa a lsof en sistemas mínimos |
 
 ### Infraestructura y producción
 
@@ -93,6 +100,22 @@ entender → aprender → practicar → aplicar
 | [`nginx.md`](nginx.md) | 🟡 Intermedio | Servidor web. Virtual hosts, proxy reverso, SSL, rate limiting, geo, load balancing, caché |
 | [`storage_backup.md`](storage_backup.md) | 🟡 Intermedio | NFS, Samba, rsync, rclone, restic, 3-2-1, rotación, monitoreo |
 | [`production_server.md`](production_server.md) | 🔴 Avanzado | Sysctl, ulimits, swap, logrotate, systemd resource control, Docker en producción, fail2ban |
+
+### Infraestructura de red
+
+| Guía | Nivel | Descripción |
+|------|-------|-------------|
+| [`access_points_enterprise.md`](access_points_enterprise.md) | 🔴 Avanzado | Puntos de acceso empresariales. Controladoras, VLANs por SSID, PoE, roaming, QoS |
+| [`access_points_consumer.md`](access_points_consumer.md) | 🟢 Básico | Puntos de acceso domésticos/SOHO. Configuración, canales, seguridad, diagnóstico |
+| [`poe_switches_managed.md`](poe_switches_managed.md) | 🟡 Intermedio | Switches PoE gestionables. VLANs, STP, link aggregation, PoE budgeting, monitoreo |
+| [`poe_injectors.md`](poe_injectors.md) | 🟢 Básico | Inyectores PoE. Estándares 802.3af/at/bt, cálculo de presupuesto, resolución de fallas |
+| [`cable_diagnostics.md`](cable_diagnostics.md) | 🟡 Intermedio | Diagnóstico de cableado de red. TDR, pares rotos, atenuación, certificación, herramientas |
+
+### Dahua (cámaras IP y NVR)
+
+| Guía | Nivel | Descripción |
+|------|-------|-------------|
+| [`dahua/README.md`](dahua/README.md) | 🟡 Intermedio | Índice de 8 guías especializadas para administración de cámaras IP, NVR y DVR Dahua |
 
 ### Alpine Linux
 

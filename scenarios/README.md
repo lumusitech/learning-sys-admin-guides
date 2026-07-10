@@ -12,7 +12,7 @@
 
 # 🧪 Escenarios prácticos
 
-44 escenarios reales que combinan herramientas de las guías para resolver problemas concretos de administración de servidores Linux y redes.
+48 escenarios reales que combinan herramientas de las guías para resolver problemas concretos de administración de servidores Linux y redes.
 
 ---
 
@@ -39,6 +39,12 @@ entender → aprender → practicar → aplicar
 ---
 
 ## 📂 Escenarios por dominio
+
+### [📹 dahua/](dahua/) — 3 escenarios
+
+Cámaras IP, NVR, configuración masiva.
+
+Niveles: 🟡 Intermedio · 🔴 Avanzado
 
 ### [🖥️ system/](system/) — 14 escenarios
 
@@ -74,7 +80,7 @@ Niveles: 🟡 Intermedio · 🔴 Avanzado
 
 ## 🧪 Laboratorio Docker
 
-Usá los entornos Docker en [`labs/`](../labs/) para practicar. Hay **11 entornos** según el tipo de práctica:
+Usá los entornos Docker en [`labs/`](../labs/) para practicar. Hay **12 entornos** según el tipo de práctica:
 
 | Archivo | Para qué |
 |---------|----------|
@@ -89,6 +95,7 @@ Usá los entornos Docker en [`labs/`](../labs/) para practicar. Hay **11 entorno
 | `docker-compose.web-cors.yml` | CORS bloqueado (frontend + API) |
 | `docker-compose.web-websocket.yml` | WebSocket timeout |
 | `docker-compose.docker.yml` | Docker crash loop, OOM, resource limits |
+| `docker-compose.dahua.yml` | Cámaras Dahua simuladas (API CGI, RTSP, NVR) |
 | `docker-compose.integrative.yml` | Proyecto integrador (PYME completa) |
 
 ```bash

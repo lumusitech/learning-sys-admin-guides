@@ -252,7 +252,7 @@ free -m | awk '/^Mem:/ { printf "%.0f%%\n", ($3-$6-$7)/$2*100 }'  # % uso real
 
 ## 🔗 Referencias internas
 
-- [`vmstat`](../vmstat.md) — contexto completo de memoria, swap y CPU
-- [`ps`](../ps.md) — memoria por proceso (RSS)
-- [`top`](../top.md) — panel de memoria en vivo
-- [`systemd_journalctl`](../systemd_journalctl.md) — logs de OOM killer
+- [`vmstat`](vmstat.md) — contexto completo de memoria, swap y CPU
+- [`ps`](ps.md) — memoria por proceso (RSS)
+- [`top`](top.md) — panel de memoria en vivo
+- [`systemd_journalctl`](systemd_journalctl.md) — logs de OOM killer

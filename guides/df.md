@@ -296,6 +296,6 @@ df -hT -x tmpfs -x devtmpfs             # Sin filesystems virtuales
 
 ## 🔗 Referencias internas
 
-- [`du`](../du.md) — espacio usado por directorios específicos
-- [`find`](../find.md) — encontrar archivos grandes o viejos
-- [`storage_backup`](../storage_backup.md) — backup y rotación
+- [`du`](du.md) — espacio usado por directorios específicos
+- [`find`](find.md) — encontrar archivos grandes o viejos
+- [`storage_backup`](storage_backup.md) — backup y rotación
