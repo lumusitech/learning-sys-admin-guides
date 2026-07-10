@@ -21,6 +21,7 @@ Sistema de aprendizaje práctico para administración de servidores Linux y rede
 │   ├── networking/    # SSH brute force, DNS, latencia, firewalls, ARP, DHCP, MTU
 │   ├── security/      # IPs maliciosas, SUID, claves SSH, cron sospechoso, logs
 │   ├── web/           # Rendimiento, 5xx, slow SQL, rate limit, CORS, WebSocket
+│   ├── dahua/         # Cámaras IP, NVR, configuración masiva
 │   └── infrastructure/# Migración, PYME, DR, TLS, NFS, RAID, proyecto integrador
 ├── reference/         # Tablas y mapas de consulta rápida (ayuda memoria)
 ├── scripts/           # Scripts de validación
@@ -44,23 +45,19 @@ entender → aprender → practicar → aplicar
 | Guías | 59 |
 | Escenarios | 57 |
 | Entornos Docker (labs) | 14 |
-| Conceptos | 15 |
+| Conceptos | 14 |
 | Referencias rápidas | 12 |
 | Proyecto integrador | 1 |
 
 ## 🔄 Última sesión (jul-2026)
 
-- PR #56: lychee en CI
-- PR #57: 🧑‍🏫 Modo docente en todos los escenarios
-- PR #58: `guides/cron.md` (nueva guía)
-- PR #59: `.skills/` → `.opencode/skills/` (skills invocables con `skill()`)
-- PR #60: docs/session-state (pendientes registrados)
-- PR #61: `concepts/linux-fhs.md` (Linux FHS)
-- PR #62: `guides/kubectl.md` (diagnóstico de clusters)
-- PR #63: `scenarios/infrastructure/08-prometheus-grafana.md` (monitoreo)
-- PR #64: `concepts/post-mortem-blameless.md` (post-mortem)
-- Contadores: 50 → 51 guías, 48 → 49 escenarios, 5 → 7 conceptos, 12 → 14 labs
-- Auditoría completa del repo registrada en TODO.md (5 sprints priorizados)
+- PR #66: Sprint 1 — Correcciones urgentes (sync counters, validate_sre.sh extendido, validate:links)
+- PR #67: Sprint 2 — 8 conceptos nuevos (TCP/IP, idempotency, stateful/stateless, observability, blast radius, capacity, backpressure, race conditions)
+- PR #68: Sprint 3 — 8 guías nuevas (jq, openssl, nc, rsync, stat, wget, tar, tr)
+- PR #69: Sprint 4 — 8 escenarios nuevos (TLS handshake, cert rotation, backup drill, asymmetric routing, privilege escalation, config drift, sticky sessions, PHP-FPM)
+- PR #70: Sprint 5 (parte 1) — CONTRIBUTING.md, CODE_OF_CONDUCT.md, CHANGELOG.md
+- PR #71: Sprint 5 (parte 2) — 6 referencias rápidas nuevas (boot process, disk layout, port numbers, FD, cgroups, package managers)
+- Contadores finales: 59 guías, 57 escenarios, 14 conceptos, 14 labs, 12 referencias (post PR#71)
 
 ---
 

@@ -21,6 +21,24 @@ Todas las versiones notables de sys-admin-guides.
 
 ---
 
+## v0.13.0 — 2026-07-10
+
+### Sprint 5 — Crecimiento y referencias
+
+- `CONTRIBUTING.md` — guía para colaboradores
+- `CODE_OF_CONDUCT.md` — Contributor Covenant v2.1
+- `CHANGELOG.md` — historial de versiones
+- `reference/boot-process.md` — etapas de boot Linux
+- `reference/disk-layout.md` — filesystem hierarchy
+- `reference/port-numbers.md` — 40+ puertos TCP/UDP
+- `reference/file-descriptors.md` — FDs, ulimit, fugas
+- `reference/cgroups.md` — control groups v1/v2
+- `reference/package-managers.md` — apt/apk/yum/dnf equivalencias
+
+**Stats:** 59 guías · 57 escenarios · 14 conceptos · 14 labs · 12 referencias
+
+---
+
 ## v0.11.0 — 2026-07-09
 
 ### Sprint 3 — 8 nuevas guías

@@ -431,7 +431,7 @@ Fase 16 (labs Dahua) → depende de Fase 7
 
 Revisión completa del proyecto: estado muy bueno, con problemas urgentes y oportunidades de mejora estructuradas en 5 sprints.
 
-### Sprint 1 — Correcciones urgentes (1-2 hrs)
+### Sprint 1 — Correcciones urgentes (1-2 hrs) ✅ COMPLETADA
 
 | Prioridad | Acción | Esfuerzo |
 |-----------|--------|----------|
@@ -442,7 +442,9 @@ Revisión completa del proyecto: estado muy bueno, con problemas urgentes y opor
 | 🔴 Crítica | Extender `scripts/validate_sre.sh` para detectar `sed -r`, `sort -V`, `[[ ]]`, arrays bash, `${!var}`, `local`, backticks | 30 min |
 | 🟡 Alta | Agregar script `pnpm validate:links` que ejecute lychee localmente (hoy solo se ejecuta en CI) | 20 min |
 
-### Sprint 2 — Refuerzos conceptuales (1 día)
+> ⚠️ validate_sre.sh falta detección de `local` y backticks (baja prioridad)
+
+### Sprint 2 — Refuerzos conceptuales (1 día) ✅ COMPLETADA
 
 | Prioridad | Acción | Esfuerzo |
 |-----------|--------|----------|
@@ -455,7 +457,7 @@ Revisión completa del proyecto: estado muy bueno, con problemas urgentes y opor
 | 🟢 Media | Concepto: **Backpressure** (productor > consumidor, buffers, colas) | 1 hr |
 | 🟢 Media | Concepto: **Race conditions y locks** (concurrencia en scripts, tmp files) | 1 hr |
 
-### Sprint 3 — Guías críticas faltantes (1 día)
+### Sprint 3 — Guías críticas faltantes (1 día) ✅ COMPLETADA
 
 | Prioridad | Acción | Esfuerzo |
 |-----------|--------|----------|
@@ -468,7 +470,7 @@ Revisión completa del proyecto: estado muy bueno, con problemas urgentes y opor
 | 🟢 Media | `guides/tar.md` — archivado y compresión | 1 hr |
 | 🟢 Media | `guides/tr.md` — transformación de caracteres | 1 hr |
 
-### Sprint 4 — Escenarios faltantes (1 día)
+### Sprint 4 — Escenarios faltantes (1 día) ✅ COMPLETADA
 
 | Prioridad | Acción | Esfuerzo |
 |-----------|--------|----------|
@@ -481,17 +483,17 @@ Revisión completa del proyecto: estado muy bueno, con problemas urgentes y opor
 | 🟢 Media | `scenarios/web/09-load-balancer-sticky-session.md` — session persistence rota | 2 hrs |
 | 🟢 Media | `scenarios/web/10-php-fpm-crashed.md` — app server caído (502 proxy error) | 2 hrs |
 
-### Sprint 5 — Crecimiento (opcional, 1-2 días)
+### Sprint 5 — Crecimiento (opcional, 1-2 días) ✅ COMPLETADA
 
 | Prioridad | Acción | Esfuerzo |
 |-----------|--------|----------|
 | 🟢 Media | `CONTRIBUTING.md` — guía para colaboradores | 30 min |
 | 🟢 Media | `CODE_OF_CONDUCT.md` | 15 min |
 | 🟢 Media | `CHANGELOG.md` — versiones del proyecto | 30 min |
-| 🟢 Baja | Workflow para generar PDF/EPUB con Pandoc/MkDocs | 2 hrs |
-| 🟢 Baja | Smoke tests para labs (sanity check de cada docker-compose) | 2 hrs |
+| 🟢 Baja | 🔵 POSTERGADO — Workflow para generar PDF/EPUB con Pandoc/MkDocs | 2 hrs |
+| 🟢 Baja | 🔵 POSTERGADO — Smoke tests para labs (sanity check de cada docker-compose) | 2 hrs |
 | 🟢 Baja | 6 nuevas referencias rápidas: boot process, disk layout, port numbers, FD, cgroups, package managers | 3 hrs |
-| 🔵 Baja | Traducción al inglés de conceptos (alt.a) | 3 hrs |
+| 🔵 Baja | 🔵 POSTERGADO — Traducción al inglés de conceptos (alt.a) | 3 hrs |
 
 ## Comandos de validación
 
