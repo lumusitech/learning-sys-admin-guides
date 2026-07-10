@@ -12,7 +12,7 @@
 
 # 🐧 sys-admin-guides
 
-Colección completa de guías de referencia para administración de servidores Linux y redes. **49 guías** que cubren cada herramienta desde lo más básico hasta escenarios profesionales, explicando cada opción y la interpretación de salidas en contextos de éxito, falla y ataque.
+Colección completa de guías de referencia para administración de servidores Linux y redes. **50 guías** que cubren cada herramienta desde lo más básico hasta escenarios profesionales, explicando cada opción y la interpretación de salidas en contextos de éxito, falla y ataque.
 
 ---
 
@@ -90,6 +90,7 @@ entender → aprender → practicar → aplicar
 | [`systemd.md`](systemd.md) | 🟡 Intermedio | Sistema de init systemd. Unidades, targets, timers, resource control, análisis de arranque |
 | [`docker.md`](docker.md) | 🟡 Intermedio | Diagnóstico de contenedores Docker. Crash loops, OOM, resource limits, networking |
 | [`tmux.md`](tmux.md) | 🟢 Básico | Multiplexor de terminales. Sesiones, ventanas, paneles, persistencia SSH |
+| [`cron.md`](cron.md) | 🟡 Intermedio | Planificador de tareas. Crontab, logs, troubleshooting, systemd timers vs cron |
 | [`kill.md`](kill.md) | 🟢 Básico | Envío de señales a procesos. SIGTERM, SIGKILL, señales comunes, matar por nombre/PID |
 | [`fuser.md`](fuser.md) | 🟡 Intermedio | Identificar procesos por puerto o archivo. Alternativa a lsof en sistemas mínimos |
 
