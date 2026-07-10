@@ -98,6 +98,74 @@ ipcalc 10.0.10.0/24
 ipcalc 10.0.0.0/16 -s 10.0.0.0/24 10.0.10.0/24 10.0.20.0/24
 ```
 
+---
+
+## VLANs para cámaras IP por pisos
+
+### Esquema típico de segmentación por pisos
+
+| Ubicación | VLAN | Subred | Uso |
+|-----------|------|--------|-----|
+| Piso 1 | 100 | 10.0.100.0/24 | Cámaras internas |
+| Piso 2 | 110 | 10.0.110.0/24 | Cámaras internas |
+| Piso 3 | 120 | 10.0.120.0/24 | Cámaras internas |
+| Exterior | 130 | 10.0.130.0/24 | Cámaras perimetrales |
+| WiFi APs | 140 | 10.0.140.0/24 | Access Points |
+| NVR | 150 | 10.0.150.0/24 | Grabadores |
+
+### Crear VLANs para cámaras
+
+```bash
+# Crear subinterfaces VLAN
+ip link add link eth0 name eth0.100 type vlan id 100
+ip link add link eth0 name eth0.110 type vlan id 110
+ip link add link eth0 name eth0.120 type vlan id 120
+ip link add link eth0 name eth0.130 type vlan id 130
+ip link add link eth0 name eth0.140 type vlan id 140
+ip link add link eth0 name eth0.150 type vlan id 150
+
+# Asignar IPs
+ip addr add 10.0.100.1/24 dev eth0.100
+ip addr add 10.0.110.1/24 dev eth0.110
+ip addr add 10.0.120.1/24 dev eth0.120
+ip addr add 10.0.130.1/24 dev eth0.130
+ip addr add 10.0.140.1/24 dev eth0.140
+ip addr add 10.0.150.1/24 dev eth0.150
+
+# Activar interfaces
+ip link set eth0.100 up
+ip link set eth0.110 up
+ip link set eth0.120 up
+ip link set eth0.130 up
+ip link set eth0.140 up
+ip link set eth0.150 up
+```
+
+### ACLs para aislar tráfico de cámaras
+
+```bash
+# Permitir que NVR acceda a todas las VLANs de cámaras
+iptables -A FORWARD -i eth0.150 -o eth0.100 -j ACCEPT
+iptables -A FORWARD -i eth0.150 -o eth0.110 -j ACCEPT
+iptables -A FORWARD -i eth0.150 -o eth0.120 -j ACCEPT
+iptables -A FORWARD -i eth0.150 -o eth0.130 -j ACCEPT
+
+# Bloquear acceso desde otras VLANs a las cámaras
+iptables -A FORWARD -i eth0.10 -o eth0.100 -j DROP
+iptables -A FORWARD -i eth0.20 -o eth0.100 -j DROP
+
+# Permitir solo RTSP (554) y Dahua (37777) entre VLANs
+iptables -A FORWARD -i eth0.150 -o eth0.100 -p tcp --dport 554 -j ACCEPT
+iptables -A FORWARD -i eth0.150 -o eth0.100 -p tcp --dport 37777 -j ACCEPT
+```
+
+### Ver también
+
+- [`guides/dahua/dahua-discovery.md`](dahua/dahua-discovery.md) — descubrir cámaras Dahua
+- [`guides/dahua/dahua-troubleshooting.md`](dahua/dahua-troubleshooting.md) — troubleshooting de cámaras
+
+---
+
 ### Crear interfaces virtuales por segmento
 
 ```bash

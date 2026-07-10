@@ -113,6 +113,75 @@ ip -s -s link show eth0 | grep -E "error|drop|overrun|TX|RX"
 | `carrier` | Pérdidas de señal/portadora |
 | `missed` | Paquetes perdidos por hardware |
 
+---
+
+## Diagnóstico de link físico y PoE
+
+### Verificar estado del enlace con ethtool
+
+```bash
+# Ver velocidad, duplex y estado del link
+ethtool eth0 | grep -E "Speed|Duplex|Link"
+
+# Salida esperada:
+# Speed: 1000Mb/s
+# Duplex: Full
+# Link detected: yes
+
+# Ver información completa
+ethtool eth0
+
+# Ver capacidades del enlace
+ethtool eth0 | grep -A 10 "Supported link modes"
+```
+
+### Diagnóstico de PoE (Power over Ethernet)
+
+```bash
+# Verificar si la interfaz recibe energía PoE
+# (requiere switch managed con SNMP o CLI)
+
+# Con ethtool (si el switch lo soporta)
+ethtool --show-eee eth0
+
+# Con SNMP (si el switch lo soporta)
+snmpwalk -v2c -c public switch_ip 1.3.6.1.2.1.105.1.3.1
+
+# Ver consumo de energía por puerto (switch Ubiquiti)
+ssh admin@switch "show poe detail"
+
+# Ver consumo de energía por puerto (switch Cisco)
+ssh admin@switch "show power inline"
+```
+
+### Diagnóstico de cables
+
+```bash
+# Ver errores de TX/RX (posible cable defectuoso)
+ip -s link show eth0 | grep -A 5 "RX:\|TX:"
+
+# Si hay errores crescentes, el cable puede estar defectuoso
+watch -n 5 'ip -s link show eth0 | grep -E "errors|drop"'
+
+# Ver mensajes del kernel sobre la interfaz
+dmesg | grep eth0 | tail -20
+
+# Verificar auto-negotiation
+ethtool eth0 | grep -A 5 "Auto-negotiation"
+```
+
+### Problemas comunes de link
+
+| Síntoma | Causa probable | Solución |
+|---------|----------------|----------|
+| Link down | Cable desconectado | Reconectar cable |
+| Link up pero sin tráfico | Cable defectuoso | Reemplazar cable |
+| Velocidad baja (100Mbps en vez de 1Gbps) | Cable Cat5 o inferior | Usar cable Cat5e o superior |
+| Errores de CRC crescentes | Interferencia o cable dañado | Reemplazar cable, alejar de fuentes EMI |
+| PoE no detectado | Injector defectuoso o cable largo | Verificar injector, cable <100m |
+
+---
+
 #### Interpretación de errores
 
 | Síntoma | Posible causa |

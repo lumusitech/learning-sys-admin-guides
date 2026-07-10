@@ -297,6 +297,28 @@ sudo tcpdump -i eth0 -e 'vlan'
 # La opción -e muestra las cabeceras de capa de enlace incluyendo el tag 802.1Q
 ```
 
+### Capturar tráfico de cámaras en VLAN específica
+
+```bash
+# Capturar tráfico RTSP en VLAN de cámaras
+sudo tcpdump -i eth0 'vlan 100 and port 554'
+
+# Capturar tráfico Dahua (protocolo propietario)
+sudo tcpdump -i eth0 'vlan 100 and port 37777'
+
+# Capturar tráfico ONVIF
+sudo tcpdump -i eth0 'vlan 100 and port 3702'
+
+# Capturar tráfico HTTP de cámaras (interfaz web)
+sudo tcpdump -i eth0 'vlan 100 and port 80'
+
+# Capturar todo el tráfico de una cámara específica
+sudo tcpdump -i eth0 'vlan 100 and host 192.168.100.108'
+
+# Capturar tráfico entre NVR y cámaras
+sudo tcpdump -i eth0 'vlan 100 or vlan 150' | grep -E "192.168.100|192.168.150"
+```
+
 ### Filtros por tamaño de paquete
 
 ```bash

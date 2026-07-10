@@ -694,3 +694,55 @@ traceroute -n 8.8.8.8 2>/dev/null | tail -1 | awk '{print $1}'
 # Ping a broadcast para descubrir hosts en la LAN
 ping -b -c 3 192.168.1.255
 ```
+
+---
+
+## Verificación masiva de cámaras IP
+
+### Ping sweep para verificar conectividad de cámaras
+
+```bash
+# Verificar cámaras en un rango de IPs
+for ip in $(seq 10 30); do
+  ping -c 1 -W 1 "192.168.100.$ip" >/dev/null 2>&1 && \
+    echo "✅ 192.168.100.$ip OK" || \
+    echo "❌ 192.168.100.$ip DOWN"
+done
+
+# Guardar resultados en archivo
+for ip in $(seq 10 30); do
+  ping -c 1 -W 1 "192.168.100.$ip" >/dev/null 2>&1 && \
+    echo "192.168.100.$ip" >> /tmp/camaras_ok.txt
+done
+
+# Contar cámaras activas
+wc -l /tmp/camaras_ok.txt
+```
+
+### Verificación con timeout ajustado
+
+```bash
+# Ping rápido con timeout de 1 segundo
+for ip in $(cat /tmp/camaras.txt); do
+  if ping -c 1 -W 1 "$ip" >/dev/null 2>&1; then
+    echo "✅ $ip responde ($(ping -c 1 -W 1 $ip | grep 'time=' | sed 's/.*time=\([^ ]*\).*/\1/'))"
+  else
+    echo "❌ $ip no responde"
+  fi
+done
+```
+
+### Diagnóstico de latencia a cámaras
+
+```bash
+# Ver latencia promedio a todas las cámaras
+for ip in $(cat /tmp/camaras_ok.txt); do
+  AVG=$(ping -c 10 "$ip" | tail -1 | awk '{print $4}' | cut -d/ -f2)
+  echo "$ip: ${AVG}ms"
+done | sort -t: -k2 -n
+```
+
+### Ver también
+
+- [`guides/dahua/dahua-discovery.md`](dahua/dahua-discovery.md) — descubrimiento avanzado de cámaras Dahua
+- [`guides/dahua/dahua-troubleshooting.md`](dahua/dahua-troubleshooting.md) — troubleshooting de cámaras
