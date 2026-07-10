@@ -49,6 +49,7 @@ Para ejecutar acciones, ver `guides/`
 | [Fundamentos SRE](sre-fundamentals.md) | 🟡 Intermedio | SLI, SLO, error budget, monitoreo vs observabilidad, postmortem, modelos USE/RED |
 | [Defensa en profundidad](defense-in-depth.md) | 🟡 Intermedio | Seguridad por capas, privilegio mínimo, aislamiento, hardening progresivo |
 | [Linux FHS](linux-fhs.md) | 🟢 Básico | `/proc`, `/sys`, `/etc`, `/var/log` — mapa del sistema de archivos para diagnóstico |
+| [Post-mortem blameless](post-mortem-blameless.md) | 🟡 Intermedio | Análisis de incidentes, 5 whys, cultura de mejora continua, acciones correctivas |
 
 ---
 
