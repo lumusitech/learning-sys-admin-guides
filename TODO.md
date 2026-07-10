@@ -95,9 +95,9 @@ Plan basado en la revisión externa del repositorio. Organizado en fases atómic
 
 ---
 
-## Fase 3 — Nueva guía: `guides/nftables.md`
+## Fase 3 — Nueva guía: `guides/nftables.md` ✅ COMPLETADA
 
-> Esfuerzo: ~3 hrs | Prioridad: 🟡 Alta
+> Esfuerzo: ~3 hrs | Prioridad: 🟡 Alta | **PR: #50**
 
 - Guía completa de `nftables` siguiendo la plantilla del skill `sysadmin-guides-skill.md`.
 - Tabla de migración `iptables` → `nftables` por tipo de regla.
@@ -108,9 +108,9 @@ Plan basado en la revisión externa del repositorio. Organizado en fases atómic
 
 ---
 
-## Fase 4 — Nueva guía: `guides/docker.md`
+## Fase 4 — Nueva guía: `guides/docker.md` ✅ COMPLETADA
 
-> Esfuerzo: ~3 hrs | Prioridad: 🟡 Alta
+> Esfuerzo: ~3 hrs | Prioridad: 🟡 Alta | **PR: #51**
 
 - Guía de Docker para sysadmin (no desarrollo).
 - Enfoque: diagnóstico de contenedores, no construcción de imágenes.
@@ -122,22 +122,26 @@ Plan basado en la revisión externa del repositorio. Organizado en fases atómic
 
 ---
 
-## Fase 5 — Expandir systemd (decisión)
+## Fase 5 — Nueva guía: `guides/systemd.md` (separada de systemd_journalctl.md)
 
-> Esfuerzo: ~2 hrs | Prioridad: 🟢 Media
+> Esfuerzo: ~2 hrs | Prioridad: 🟢 Media | **Decisión: crear archivo nuevo**
 
-**Opción A**: Expandir `guides/systemd_journalctl.md` existente:
+**Decisión tomada**: Crear `guides/systemd.md` nuevo en vez de expandir `systemd_journalctl.md`.
 
-- Renombrar a `guides/systemd.md`.
-- Añadir: unidades, timers, targets, resource control (`CPUQuota`, `MemoryMax`).
-- Mover contenido de journalctl a sección "Logs con systemd".
+**Razón**: `systemd_journalctl.md` está enfocado en gestión de logs con journalctl. Systemd como init system merece su propia guía completa.
 
-**Opción B**: Crear `guides/systemd.md` nuevo:
+**Contenido de `guides/systemd.md`**:
 
-- Dejar `systemd_journalctl.md` enfocado en journalctl.
-- `systemd.md` cubre `systemctl`, unidades, timers, targets, resource control.
-
-> **Decisión requerida.**
+- Unidades: service, socket, device, mount, automount, timer, path, slice
+- Comandos: systemctl (start, stop, restart, enable, disable, status)
+- Estados de unidades: active, inactive, failed, activating
+- Targets: multi-user.target, graphical.target, rescue.target
+- Timers: reemplazo moderno de cron
+- Resource control: CPUQuota, MemoryMax, IOWeight
+- Dependencias entre unidades: Requires, Wants, After, Before
+- Override de configuración: systemctl edit, drop-in files
+- Análisis de arranque: systemd-analyze, blame
+- Journalctl integrado: logs por unidad
 
 ---
 
@@ -159,7 +163,7 @@ Fase 1 (quick wins) → sin dependencias, paralelizable con Fase 0, 2
 Fase 2 (scenarios) → sin dependencias
 Fase 3 (nftables) → ideal después de Fase 1.5 (iptables mejorada)
 Fase 4 (docker) → sin dependencias
-Fase 5 (systemd) → requiere decisión
+Fase 5 (systemd) → sin dependencias, archivo nuevo
 Fase 6 (postergado) → sin fecha
 ```
 
