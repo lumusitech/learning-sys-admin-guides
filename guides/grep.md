@@ -176,6 +176,9 @@ grep -r --include="*.log" "timeout" /var/log/
 
 # Excluir directorios
 grep -r --exclude-dir=".git" "TODO" .
+
+# Excluir múltiples directorios (proyectos Node.js, Python, etc.)
+grep -r --exclude-dir={node_modules,.git,__pycache__,.venv} "password" .
 ```
 
 ---
@@ -347,7 +350,7 @@ grep -L "root" /etc/*
 | `-o` | Muestra solo la parte que coincide (no toda la línea) |
 | `-c` | Solo cuenta de líneas coincidentes |
 | `--color` | Colorea las coincidencias (auto/always/never) |
-| `-T` | Añade tabulaciones entre separadores |
+| `-T` | `--initial-tab`: alinea contenido con tab entre filename:número:línea |
 
 ```bash
 # Mostrar número de línea
@@ -361,6 +364,12 @@ grep --color=auto "error" app.log
 
 # Pasar a otro comando: desactivar color
 grep --color=never "error" app.log | wc -l
+
+# -T: alinea columnas con tab (útil para copiar a spreadsheet)
+grep -T -n "error" *.log
+# archivo1.log:42:error: conexión rechazada
+# archivo2.log:17:error: timeout
+# (el tab entre filename:número:contenido alinea las columnas)
 ```
 
 ### -o con entorno PCRE: extracción de datos
@@ -723,8 +732,12 @@ grep -F "texto literal" archivo.txt
 # Limitar tamaño de archivo con find
 find . -name "*.log" -size -10M -exec grep -l "error" {} \;
 
-# Usar LC_ALL=C para acelerar (evita procesamiento de locale)
+# ⚡ LANG=C: acelera búsquedas 3-10x en archivos grandes
+# Evita procesamiento de locale (UTF-8 multi-byte → byte simple)
 LC_ALL=C grep "error" archivo.txt
+
+# Combinación máxima velocidad: -F + LC_ALL=C
+LC_ALL=C grep -F "texto literal" archivo_grande.log
 
 # Descartar salida si solo necesitas código
 grep -q "patron" archivo.txt && echo "encontrado"
@@ -737,6 +750,7 @@ grep -q "patron" archivo.txt && echo "encontrado"
 - Archivos muy grandes (>1GB): considera `rg`, `ag` o `LC_ALL=C grep`
 - Patrones regex muy complejos con backtracking excesivo
 - Buscar en archivos binarios: usa `-a` (tratar como texto) o evítalos con `-I`
+- Locale UTF-8 en archivos ASCII: `LC_ALL=C` fuerza byte-simple y acelera drásticamente
 
 ---
 

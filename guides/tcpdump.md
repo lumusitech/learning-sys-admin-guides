@@ -280,6 +280,23 @@ sudo tcpdump 'ip[7] != 0'
 sudo tcpdump 'tcp[13] & 2 != 0 and tcp[13] & 16 == 0 and tcp[((tcp[12:1] & 0xf0) >> 2):4] = 0'
 ```
 
+### Filtros por VLAN
+
+```bash
+# Capturar tráfico de una VLAN específica (802.1Q)
+sudo tcpdump -i eth0 'vlan 100'
+
+# Capturar tráfico de VLAN 100 en puerto 80
+sudo tcpdump -i eth0 'vlan 100 and port 80'
+
+# Capturar tráfico de múltiples VLANs
+sudo tcpdump -i eth0 'vlan 100 or vlan 200'
+
+# Ver el tag VLAN en cada paquete
+sudo tcpdump -i eth0 -e 'vlan'
+# La opción -e muestra las cabeceras de capa de enlace incluyendo el tag 802.1Q
+```
+
 ### Filtros por tamaño de paquete
 
 ```bash
@@ -389,6 +406,13 @@ sudo tcpdump -w captura_%Y-%m-%d_%H:%M:%S.pcap -G 3600 -i eth0
 
 # Capturar N paquetes y guardar
 sudo tcpdump -c 1000 -w captura.pcap -i eth0
+
+# Rotar + comprimir con gzip (ahorra disco en capturas largas)
+sudo tcpdump -w captura.pcap -C 100 -W 10 -z gzip -i eth0
+# Genera: captura.pcap, captura.pcap1.gz, captura.pcap2.gz, ...
+# -C 100: rota cada 100MB
+# -W 10: máximo 10 archivos (el más viejo se sobrescribe)
+# -z gzip: comprime los archivos rotados
 ```
 
 ### Captura con buffer grande
@@ -765,10 +789,21 @@ sudo tcpdump -i eth0 -nn -c 1000 -t 2>/dev/null | awk '{print $5}' | cut -d: -f2
 ### tcpdump + tshark (Wireshark CLI)
 
 ```bash
-# tshark tiene mejor soporte de decodificación de protocolos
+# tcpdump captura, tshark decodifica protocolos complejos
 sudo tcpdump -w captura.pcap -i eth0
 tshark -r captura.pcap -Y "http.request" -T fields -e http.host -e http.request.uri
+
+# Extraer todos los hosts HTTP visitados
+tshark -r captura.pcap -Y "http.request" -T fields -e http.host | sort -u
+
+# Decodificar DNS queries con nombres legibles
+tshark -r captura.pcap -Y "dns.qry.name" -T fields -e dns.qry.name | sort -u
+
+# Exportar objetos HTTP (archivos descargados)
+tshark -r captura.pcap --export-objects http,/tmp/http_objects
 ```
+
+> **Cuándo usar tshark en vez de tcpdump**: tcpdump es ideal para captura en vivo y filtros BPF. tshark brilla en decodificación de protocolos de aplicación (HTTP, DNS, TLS, SMB) y exportación de objetos. Para análisis forense de pcap, tshark es superior.
 
 ### tcpdump + ngrep (grep de red)
 

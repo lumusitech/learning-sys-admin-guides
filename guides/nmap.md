@@ -220,6 +220,51 @@ sudo nmap -sV --version-intensity 0 192.168.1.1
 sudo nmap -sV --version-light 192.168.1.1
 ```
 
+### --version-intensity (control de agresividad)
+
+`--version-intensity <0-9>` controla cuántas pruebas de versión envía nmap. Por defecto es 7.
+
+| Intensidad | Uso | Cuándo |
+|:----------:|-----|--------|
+| 0 | Solo la prueba más probable por puerto | Escaneo rápido, redes grandes |
+| 1-3 | Pruebas comunes | Redes internas, tiempo limitado |
+| 7 | **Por defecto** — equilibrio velocidad/precisión | Escaneo estándar |
+| 9 | Todas las pruebas posibles | Auditoría completa, un solo host |
+
+```bash
+# Auditoría rápida de red completa (intensidad baja)
+sudo nmap -sV --version-intensity 3 192.168.1.0/24
+
+# Auditoría exhaustiva de un servidor crítico
+sudo nmap -sV --version-intensity 9 10.0.0.1
+```
+
+### Escaneo estándar de auditoría (-sV -sC -O)
+
+Combinación recomendada para un escaneo completo de un host:
+
+```bash
+# Auditoría estándar: versiones + scripts default + OS detection
+sudo nmap -sV -sC -O 192.168.1.1
+
+# Con --reason para ver por qué clasificó cada puerto
+sudo nmap -sV -sC -O --reason 192.168.1.1
+
+# Con timing agresivo para redes rápidas
+sudo nmap -sV -sC -O -T4 --reason 192.168.1.1
+```
+
+Salida típica:
+
+```text
+PORT     STATE SERVICE  VERSION              REASON
+22/tcp   open  ssh      OpenSSH 8.9p1        syn-ack
+80/tcp   open  http     Apache 2.4.57        syn-ack
+443/tcp  open  ssl/http nginx 1.24.0         syn-ack
+3306/tcp open  mysql    MySQL 8.0.35         syn-ack
+No exact OS matches for host (test conditions: 1 open, 0 closed).
+```
+
 Salida típica:
 
 ```text
@@ -395,6 +440,35 @@ nmap -oG escaneo.gnmap 192.168.1.1
 
 # Todos los formatos
 nmap -oA escaneo 192.168.1.1
+```
+
+### Parsear salida grepable (-oG) con grep/awk
+
+El formato `-oG` es ideal para scripting. Cada línea tiene la estructura: `Host: IP () Status: Up/Down Ports: ...`
+
+```bash
+# Extraer solo IPs vivas
+grep "Status: Up" escaneo.gnmap | awk '{print $2}'
+
+# Extraer IPs con puerto 22 abierto
+grep "22/open" escaneo.gnmap | awk '{print $2}'
+
+# Extraer IPs con puerto 80 abierto
+grep "/open" escaneo.gnmap | grep "80/open" | awk '{print $2}'
+
+# Listar todos los puertos abiertos por IP
+grep "Ports:" escaneo.gnmap | awk '{
+  ip=$2;
+  for(i=1;i<=NF;i++) if($i ~ /\/open/) print ip, $i
+}'
+
+# Contar hosts con cada servicio
+grep "Ports:" escaneo.gnmap | grep -oP '\d+/open/[^/]+' | \
+  awk -F/ '{print $3}' | sort | uniq -c | sort -rn
+
+# Comparar dos escaneos (puertos nuevos)
+diff <(grep "Ports:" antes.gnmap | awk '{print $2, $NF}' | sort) \
+     <(grep "Ports:" despues.gnmap | awk '{print $2, $NF}' | sort)
 ```
 
 ### -v (verboso), -d (debug)
@@ -601,6 +675,32 @@ sudo nmap -sI zombie_ip 192.168.1.1
 | `unfiltered` | Accesible (solo en ACK scan) pero no se sabe si abierto/cerrado |
 | `open\|filtered` | No se puede determinar si está abierto o filtrado (común en UDP) |
 | `closed\|filtered` | No se puede determinar si está cerrado o filtrado (IP ID idle) |
+
+### --reason: entender por qué nmap clasificó un puerto
+
+```bash
+# Mostrar la razón de cada clasificación
+sudo nmap --reason 192.168.1.1
+```
+
+Salida con `--reason`:
+
+```text
+PORT     STATE SERVICE  REASON
+22/tcp   open  ssh      syn-ack
+80/tcp   open  http     syn-ack
+443/tcp  open  https    syn-ack
+3306/tcp filtered mysql  no-response
+```
+
+| Reason | Interpretación |
+|--------|----------------|
+| `syn-ack` | Puerto abierto: el host respondió con SYN-ACK |
+| `reset` | Puerto cerrado: el host respondió con RST |
+| `no-response` | Filtrado: no hubo respuesta (firewall DROP) |
+| `conn-refused` | Puerto cerrado: conexión rechazada (firewall REJECT) |
+| `host-up` | Host vivo (respondió a ping) |
+| `no-response` (en ping) | Host no responde (puede estar offline o bloquear ICMP) |
 
 ---
 

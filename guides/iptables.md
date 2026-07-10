@@ -763,6 +763,59 @@ iptables -t nat -L -n -v >> /tmp/iptables-dump.txt
 sudo iptables-apply /etc/iptables/rules.v4
 ```
 
+### iptables-apply (aplicar reglas con rollback automático)
+
+`iptables-apply` aplica un archivo de reglas y espera confirmación. Si no respondes en el timeout (por defecto 40s), revierte automáticamente. **Esencial en producción para no quedar bloqueado.**
+
+```bash
+# Aplicar reglas con timeout de 60 segundos
+sudo iptables-apply -t 60 /etc/iptables/rules.v4
+# Si respondes "y" → se mantienen
+# Si no respondes o respondes "n" → revierte a las reglas anteriores
+
+# Modo write-back: si confirmas, guarda las reglas automáticamente
+sudo iptables-apply -w /etc/iptables/rules.v4
+
+# Workflow seguro en producción:
+# 1. Editar reglas
+iptables-save > /tmp/nuevas-reglas.v4
+# 2. Modificar el archivo
+# 3. Aplicar con rollback automático
+sudo iptables-apply -t 60 -w /etc/iptables/rules.v4 /tmp/nuevas-reglas.v4
+```
+
+> **Regla de oro**: nunca apliques reglas de firewall remotamente sin `iptables-apply`. Si bloqueas SSH por error, `iptables-apply` revierte en 40s. Sin él, necesitas acceso físico o consola.
+
+### ipset (listas de IPs eficientes)
+
+Cuando necesitas bloquear/permitir cientos o miles de IPs, una regla por IP es ineficiente. `ipset` crea listas indexadas que el kernel consulta en O(1):
+
+```bash
+# Crear un set de IPs
+sudo ipset create blocklist hash:ip
+
+# Añadir IPs al set
+sudo ipset add blocklist 10.0.0.1
+sudo ipset add blocklist 10.0.0.2
+sudo ipset add blocklist 192.168.1.0/24  # soporta rangos CIDR
+
+# Usar el set en una regla iptables (una sola regla para todo el set)
+sudo iptables -A INPUT -m set --match-set blocklist src -j DROP
+
+# Listar contenido del set
+sudo ipset list blocklist
+
+# Crear set con timeout (las IPs expiran automáticamente)
+sudo ipset create temporary-block hash:ip timeout 3600
+sudo ipset add temporary-block 10.0.0.5  # bloqueada por 1 hora
+
+# Persistir sets
+sudo ipset save > /etc/ipset/rules.conf
+sudo ipset restore < /etc/ipset/rules.conf
+```
+
+> **Rendimiento**: `ipset` con 10.000 IPs es más rápido que 10.000 reglas iptables individuales. El kernel busca en hash, no recorre reglas linealmente.
+
 ### Ver tráfico que coincide con reglas
 
 ```bash
