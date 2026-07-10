@@ -143,7 +143,7 @@ ss -tan state close-wait | wc -l
 ## 🔗 Ver también
 
 - [`guides/lsof.md`](../guides/lsof.md) — listar archivos y sockets abiertos
-- [`guides/ss.md`](../guides/ss.md) — conexiones y estado de sockets
+- [`guides/ip_ss.md`](../guides/ip_ss.md) — conexiones y estado de sockets
 - [`guides/ps.md`](../guides/ps.md) — procesos y PIDs
 - [`reference/tcp-connection-states.md`](tcp-connection-states.md) — estados TCP
 - [`reference/cgroups.md`](cgroups.md) — control groups y límites de recursos

@@ -80,11 +80,11 @@ lsof -i :22                 # qué proceso usa el puerto 22
 
 ## 🔗 Ver también
 
-- [`guides/ss.md`](../guides/ss.md) — socket statistics
+- [`guides/ip_ss.md`](../guides/ip_ss.md) — socket statistics
 - [`guides/nc.md`](../guides/nc.md) — netcat para testeo de puertos
 - [`guides/curl.md`](../guides/curl.md) — HTTP client y testeo de endpoints
 - [`guides/nmap.md`](../guides/nmap.md) — escaneo de puertos
 - [`guides/lsof.md`](../guides/lsof.md) — listar archivos abiertos y puertos
 - [`reference/tcp-connection-states.md`](tcp-connection-states.md) — estados de conexiones TCP
-- [`scenarios/networking/01-ssh-brute-force.md`](../scenarios/networking/01-ssh-brute-force.md) — SSH brute force
-- [`scenarios/security/01-malicious-ip-block.md`](../scenarios/security/01-malicious-ip-block.md) — bloqueo de IPs maliciosas
+- [`scenarios/networking/01-detect-ssh-brute-force.md`](../scenarios/networking/01-detect-ssh-brute-force.md) — SSH brute force
+- [`scenarios/security/01-detect-and-block-malicious-ips.md`](../scenarios/security/01-detect-and-block-malicious-ips.md) — bloqueo de IPs maliciosas
