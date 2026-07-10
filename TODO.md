@@ -442,7 +442,7 @@ Revisión completa del proyecto: estado muy bueno, con problemas urgentes y opor
 | 🔴 Crítica | Extender `scripts/validate_sre.sh` para detectar `sed -r`, `sort -V`, `[[ ]]`, arrays bash, `${!var}`, `local`, backticks | 30 min |
 | 🟡 Alta | Agregar script `pnpm validate:links` que ejecute lychee localmente (hoy solo se ejecuta en CI) | 20 min |
 
-> ⚠️ validate_sre.sh falta detección de `local` y backticks (baja prioridad)
+> ✅ validate_sre.sh: `local` detection added (jul-2026). Backticks intentionally excluded — they are valid POSIX (deprecated but legal), and false-positive risk in markdown is too high.
 
 ### Sprint 2 — Refuerzos conceptuales (1 día) ✅ COMPLETADA
 
