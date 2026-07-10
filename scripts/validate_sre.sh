@@ -79,6 +79,13 @@ if [ -n "$matches" ]; then
   show_matches "$matches"
 fi
 
+# local — not POSIX (bash/dash/zsh extension)
+matches=$(grep -R -n -E '(^|[[:space:];])local[[:space:]]+[a-zA-Z_][a-zA-Z0-9_]*[[:space:]]*[=(]' $TARGETS 2>/dev/null || true)
+if [ -n "$matches" ]; then
+  fail "keyword 'local' encontrado (bashismo, no POSIX)"
+  show_matches "$matches"
+fi
+
 if [ "$ERRORS" -gt 0 ]; then
   echo "❌ Validación SRE: $ERRORS error(es) encontrado(s)"
   exit 1
