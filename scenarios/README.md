@@ -12,7 +12,7 @@
 
 # 🧪 Escenarios prácticos
 
-48 escenarios reales que combinan herramientas de las guías para resolver problemas concretos de administración de servidores Linux y redes.
+49 escenarios reales que combinan herramientas de las guías para resolver problemas concretos de administración de servidores Linux y redes.
 
 ---
 
@@ -70,9 +70,9 @@ Rendimiento, errores 5xx, slow SQL, rate limiting, 502 bad gateway, CORS, WebSoc
 
 Niveles: 🟡 Intermedio · 🔴 Avanzado
 
-### [🏗️ infrastructure/](infrastructure/) — 7 escenarios
+### [🏗️ infrastructure/](infrastructure/) — 8 escenarios
 
-Migración a producción, infraestructura PYME, disaster recovery, TLS expirado, NFS stale mount, RAID degradation, proyecto integrador.
+Migración a producción, infraestructura PYME, disaster recovery, TLS expirado, NFS stale mount, RAID degradation, proyecto integrador, monitoreo con Prometheus y Grafana.
 
 Niveles: 🟡 Intermedio · 🔴 Avanzado
 
@@ -97,6 +97,7 @@ Usá los entornos Docker en [`labs/`](../labs/) para practicar. Hay **12 entorno
 | `docker-compose.docker.yml` | Docker crash loop, OOM, resource limits |
 | `docker-compose.dahua.yml` | Cámaras Dahua simuladas (API CGI, RTSP, NVR) |
 | `docker-compose.integrative.yml` | Proyecto integrador (PYME completa) |
+| `docker-compose.monitoring.yml` | Prometheus + node_exporter + Grafana para monitoreo |
 
 ```bash
 cd labs
