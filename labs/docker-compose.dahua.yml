@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  # Simulador de cámara Dahua con API CGI y RTSP
+  dahua-camera-sim:
+    image: nginx:alpine
+    container_name: dahua-camera-sim
+    ports:
+      - "8080:80"     # HTTP (API CGI)
+      - "554:554"     # RTSP (simulado)
+    volumes:
+      - ./dahua/nginx-cgi-fake.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./dahua/cgi-bin:/usr/share/nginx/html/cgi-bin:ro
+    networks:
+      dahua-net:
+        ipv4_address: 10.0.100.108
+    restart: unless-stopped
+
+  # Simulador de NVR Dahua con SSH
+  dahua-nvr-sim:
+    image: alpine:latest
+    container_name: dahua-nvr-sim
+    ports:
+      - "2222:22"     # SSH
+      - "8081:80"     # HTTP (interfaz web)
+    volumes:
+      - ./dahua/nvr-sim.sh:/nvr-sim.sh:ro
+      - nvr-storage:/mnt/sda
+    command: ["/bin/sh", "-c", "apk add --no-cache openssh-server nginx && /nvr-sim.sh"]
+    networks:
+      dahua-net:
+        ipv4_address: 10.0.100.100
+    restart: unless-stopped
+
+  # Cliente para diagnóstico
+  dahua-client:
+    image: alpine:latest
+    container_name: dahua-client
+    volumes:
+      - ./dahua/client-tools.sh:/client-tools.sh:ro
+    command: ["/bin/sh", "-c", "apk add --no-cache curl nmap ffmpeg nmap-scripts && sleep infinity"]
+    networks:
+      dahua-net:
+        ipv4_address: 10.0.100.200
+    restart: unless-stopped
+
+networks:
+  dahua-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.100.0/24
+          gateway: 10.0.100.1
+
+volumes:
+  nvr-storage:
+    driver: local
