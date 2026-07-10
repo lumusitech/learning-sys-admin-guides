@@ -122,9 +122,9 @@ Plan basado en la revisión externa del repositorio. Organizado en fases atómic
 
 ---
 
-## Fase 5 — Nueva guía: `guides/systemd.md` (separada de systemd_journalctl.md)
+## Fase 5 — Nueva guía: `guides/systemd.md` ✅ COMPLETADA
 
-> Esfuerzo: ~2 hrs | Prioridad: 🟢 Media | **Decisión: crear archivo nuevo**
+> Esfuerzo: ~2 hrs | Prioridad: 🟢 Media | **PR: #52**
 
 **Decisión tomada**: Crear `guides/systemd.md` nuevo en vez de expandir `systemd_journalctl.md`.
 
