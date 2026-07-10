@@ -253,7 +253,7 @@ server {
 
 | Directiva | Descripción |
 |-----------|-------------|
-| `proxy_pass` | URL del backend (http://ip:puerto o unix socket) |
+| `proxy_pass` | URL del backend (`ip:puerto` o unix socket) |
 | `proxy_set_header Host $host` | Pasar el Host original al backend |
 | `X-Real-IP` | IP real del cliente (no la de nginx) |
 | `X-Forwarded-For` | Cadena con IPs por las que pasó la petición |

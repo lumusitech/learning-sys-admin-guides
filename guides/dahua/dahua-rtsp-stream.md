@@ -175,4 +175,4 @@ ffprobe -v quiet rtsp://admin:pass@192.168.1.108:554/Streaming/Channels/101 2>&1
 
 - [`dahua-camera-api.md`](dahua-camera-api.md) — cambiar configuración de video por API
 - [`../tcpdump.md`](../tcpdump.md) — captura de paquetes para diagnóstico avanzado
-- [`../../labs/docker-compose.dahua-broken.yml`](../../labs/docker-compose.dahua-broken.yml) — laboratorio con pérdida de paquetes: `cd labs && docker compose -f docker-compose.dahua-broken.yml up -d`
+- [`../../labs/docker-compose.dahua.yml`](../../labs/docker-compose.dahua.yml) — laboratorio Dahua: `cd labs && docker compose -f docker-compose.dahua.yml up -d`

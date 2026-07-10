@@ -24,3 +24,9 @@ jobs:
           cache: 'pnpm'
       - run: pnpm install
       - run: pnpm validate
+      - name: Check broken links
+        uses: lycheeverse/lychee-action@v2
+        with:
+          fail: true
+          jobSummary: true
+          args: --config .lychee.toml .
