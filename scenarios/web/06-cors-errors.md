@@ -167,6 +167,16 @@ journalctl -u nginx --since "1h"   logread | grep nginx | tail -20
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Por qué los errores CORS no se detectan con curl? ¿Qué header HTTP habilita CORS? ¿Qué método HTTP usa el preflight?
+
+**Ejercicio:** Simular petición cross-origin con curl, identificar headers faltantes, configurar CORS en nginx, verificar con preflight OPTIONS.
+
+**Evaluación:** comprensión de por qué curl no reproduce el error, configuración correcta de headers CORS, manejo del preflight.
+
+---
+
 ## 🔗 Referencias
 
 - [`nginx`](../../guides/nginx.md) — configuración y logs de nginx

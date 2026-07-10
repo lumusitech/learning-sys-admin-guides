@@ -168,6 +168,16 @@ Casos comunes:
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Dónde se almacenan las claves autorizadas por usuario? ¿Cómo detectás una clave no documentada en el sistema? ¿Cómo revocás acceso de forma segura?
+
+**Ejercicio:** Hacer inventario de claves SSH en todos los usuarios, comparar contra baseline, eliminar claves no autorizadas.
+
+**Evaluación:** auditoría completa de authorized_keys, identificación de claves sospechosas, revocación sin afectar accesos legítimos.
+
+---
+
 ## 🔗 Referencias
 
 - [`ssh`](../../guides/ssh.md) — configuración y hardening SSH

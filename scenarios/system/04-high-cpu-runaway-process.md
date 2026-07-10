@@ -135,6 +135,16 @@ systemctl restart <svc>             rc-service <svc> restart
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Cómo diferenciás un proceso runaway de uno con alta CPU legítima? ¿Qué señal enviarías para matarlo? ¿Cómo verificás que el proceso no resucita automáticamente?
+
+**Ejercicio:** Identificar el proceso runaway con ps/top, matarlo con la señal adecuada, verificar que no reaparece.
+
+**Evaluación:** identificación correcta del proceso culpable, señal apropiada, verificación post-mortem.
+
+---
+
 ## 🔗 Referencias
 
 - [`top`](../../guides/top.md)

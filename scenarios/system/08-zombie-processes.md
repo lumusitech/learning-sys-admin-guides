@@ -143,6 +143,16 @@ Casos comunes:
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Por qué no podés matar un proceso zombie con kill -9? ¿Qué proceso es el verdadero responsable? ¿Cuándo un zombie es señal de problema mayor?
+
+**Ejercicio:** Encontrar procesos zombie con ps, identificar el padre con pstree, determinar si el padre necesita reinicio.
+
+**Evaluación:** comprensión del ciclo de vida de procesos, identificación del padre, decisión correcta de mitigación.
+
+---
+
 ## 🔗 Referencias
 
 - [systemd_journalctl.md](../../guides/systemd_journalctl.md)

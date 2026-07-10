@@ -169,6 +169,16 @@ journalctl -u nginx --since "1h"   logread | grep nginx | tail -20
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Con qué comando de openssl verificás la fecha de expiración de un certificado? ¿Cómo renovás con certbot sin downtime? ¿Cómo automatizás la renovación?
+
+**Ejercicio:** Verificar expiración con openssl s_client, renovar con certbot, configurar cron o timer de systemd para renovación automática.
+
+**Evaluación:** diagnóstico correcto de expiración, renovación exitosa, automatización configurada y verificada.
+
+---
+
 ## 🔗 Referencias
 
 - [`nginx`](../../guides/nginx.md) — configuración y logs de nginx

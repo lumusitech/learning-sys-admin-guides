@@ -272,6 +272,16 @@ Usá el [laboratorio Docker Dahua](../../labs/docker-compose.dahua.yml) para sim
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Qué puertos verificás en una cámara Dahua? ¿Cómo probás el stream RTSP con ffprobe? ¿Qué endpoint de la API HTTP usás para obtener información del sistema?
+
+**Ejercicio:** Diagnosticar una cámara que no transmite: verificar conectividad RTSP, consultar API HTTP, revisar logs de la cámara.
+
+**Evaluación:** diagnóstico capa por capa (red -> puertos -> API -> RTSP), identificación correcta del problema.
+
+---
+
 ## 🔗 Referencias
 
 - [`guides/dahua/dahua-discovery.md`](../../guides/dahua/dahua-discovery.md) — descubrir cámaras

@@ -265,6 +265,16 @@ Usá el [laboratorio Docker Dahua](../../labs/docker-compose.dahua.yml) para sim
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Qué comando muestra si el NVR detecta el disco físicamente? ¿Qué métrica SMART indica fallo inminente? ¿Cómo forzás un formateo del disco?
+
+**Ejercicio:** Diagnosticar NVR sin disco: verificar detección con lsblk, revisar SMART con smartctl, formatear el disco.
+
+**Evaluación:** diagnóstico de detección física, interpretación de SMART, formateo y verificación del nuevo mount.
+
+---
+
 ## 🔗 Referencias
 
 - [`guides/dahua/dahua-nvr-ssh.md`](../../guides/dahua/dahua-nvr-ssh.md) — SSH a NVR

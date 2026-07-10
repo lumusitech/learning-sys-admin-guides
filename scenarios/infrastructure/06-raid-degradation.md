@@ -166,6 +166,16 @@ Casos comunes:
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Qué indica [UU_] en /proc/mdstat? ¿Cómo identificás el disco fallado? ¿Cómo iniciás la reconstrucción del array?
+
+**Ejercicio:** Detectar RAID degradado en mdstat, identificar disco fallado con smartctl, marcar fallido y agregar reemplazo.
+
+**Evaluación:** detección correcta de degradación, identificación del disco fallido, reconstrucción iniciada sin pérdida de datos.
+
+---
+
 ## 🔗 Referencias
 
 - [`du`](../../guides/du.md) — uso de disco

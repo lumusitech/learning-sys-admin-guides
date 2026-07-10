@@ -148,6 +148,16 @@ systemctl restart NetworkManager    rc-service networking restart
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Cómo medís pérdida de paquetes con ping? ¿Qué herramienta combina ping y traceroute? ¿Cómo distinguís latencia estructural de jitter?
+
+**Ejercicio:** Medir latencia y pérdida a un host remoto, identificar el hop problemático con mtr, documentar hallazgos.
+
+**Evaluación:** uso correcto de flags de ping (-c, -i), interpretación de mtr, conclusión sobre tipo de latencia.
+
+---
+
 ## 🔗 Referencias
 
 - [`ping_traceroute`](../../guides/ping_traceroute.md)

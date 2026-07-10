@@ -149,6 +149,16 @@ journalctl -u <svc> --no-pager      logread | grep <svc>
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Cuál es la diferencia entre 502 Bad Gateway y 504 Gateway Timeout? ¿Dónde mirás primero cuando hay errores 5xx? ¿Cómo verificás si el backend está corriendo y escuchando?
+
+**Ejercicio:** Diagnosticar un error 5xx en nginx: revisar access.log y error.log, verificar backend con curl local, revisar upstream en configuración.
+
+**Evaluación:** correlación correcta entre error HTTP y logs de nginx, verificación del backend, propuesta de fix.
+
+---
+
 ## 🔗 Referencias
 
 - [`nginx`](../../guides/nginx.md)

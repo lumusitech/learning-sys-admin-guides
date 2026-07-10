@@ -171,6 +171,16 @@ Casos comunes:
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Cómo averiguás de dónde se ejecuta un binario usando /proc? ¿Qué conexiones de red revisás con ss? ¿Por qué /tmp y /dev/shm son ubicaciones sospechosas para un binario?
+
+**Ejercicio:** Dado un PID sospechoso: determinar su binario (exe), conexiones de red, usuario, y árbol de procesos.
+
+**Evaluación:** uso correcto de /proc/PID/exe, análisis de conexiones de red con ss, identificación de comportamiento anómalo.
+
+---
+
 ## 🔗 Referencias
 
 - [`ps`](../../guides/ps.md) — listado y filtrado de procesos

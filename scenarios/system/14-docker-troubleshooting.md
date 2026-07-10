@@ -167,6 +167,16 @@ Casos comunes:
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Qué significa exit code 137 en Docker? ¿Cómo verificás si un contenedor fue matado por OOM? ¿Qué comando usás para ver logs de un contenedor que ya no corre?
+
+**Ejercicio:** Diagnosticar un contenedor en crash loop: ver logs con docker logs, revisar exit code, ajustar memory limits si es OOM.
+
+**Evaluación:** interpretación correcta de exit codes, uso de docker logs e inspect, ajuste de resource limits.
+
+---
+
 ## 🔗 Referencias
 
 - [`systemd_journalctl`](../../guides/systemd_journalctl.md) — logs del sistema (para diagnóstico fuera del contenedor)

@@ -149,6 +149,16 @@ systemctl restart systemd-resolved   rc-service networking restart
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Qué campo de dig +stats muestra el tiempo de respuesta? ¿Cómo comparás rendimiento entre dos resolvers? ¿Cómo verificás si el problema es el resolver local o la red?
+
+**Ejercicio:** Medir latencia DNS a diferentes resolvers, identificar si el problema es el servidor DNS o la red, proponer cambio de resolver.
+
+**Evaluación:** uso correcto de dig +stats, comparación metodológica entre resolvers, diagnóstico diferencial.
+
+---
+
 ## 🔗 Referencias
 
 - [`dig_curl`](../../guides/dig_curl.md)

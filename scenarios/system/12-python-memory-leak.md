@@ -170,6 +170,16 @@ En Alpine, los límites de memoria se configuran con `ulimit` o directamente en 
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Cómo medís el crecimiento de RSS a lo largo del tiempo? ¿Qué configuración de systemd limita la memoria de un proceso? ¿Qué comando usás para monitorear en tiempo real?
+
+**Ejercicio:** Monitorear RSS de un proceso con watch + ps, aplicar MemoryMax en systemd, reiniciar el servicio.
+
+**Evaluación:** detección del leak por crecimiento sostenido de RSS, mitigación con systemd, verificación post-reinicio.
+
+---
+
 ## 🔗 Referencias
 
 - [`ps`](../../guides/ps.md) — visualización de procesos

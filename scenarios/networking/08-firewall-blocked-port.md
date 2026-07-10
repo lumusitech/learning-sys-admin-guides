@@ -160,6 +160,16 @@ sudo ufw status                     iptables -L -v -n
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Cómo verificás que un servicio está escuchando en un puerto? ¿Qué comando probás primero para testear conectividad local? ¿Cómo listás las reglas de iptables activas?
+
+**Ejercicio:** Verificar si un puerto está bloqueado por firewall: test local con nc, test remoto, listar reglas iptables.
+
+**Evaluación:** diagnóstico metódico (local -> remoto -> firewall), identificación de la regla bloqueante, propuesta de apertura controlada.
+
+---
+
 ## 🔗 Referencias
 
 - [`ip_ss`](../../guides/ip_ss.md)

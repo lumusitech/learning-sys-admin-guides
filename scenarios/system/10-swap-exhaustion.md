@@ -162,6 +162,16 @@ Casos comunes:
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Qué columnas de vmstat indican thrashing de swap? ¿Qué ajuste de sysctl alivia la presión de swap? ¿Cómo identificás el proceso que está haciendo swap?
+
+**Ejercicio:** Detectar thrashing con vmstat (si/so), reducir vm.swappiness, identificar y matar el proceso causante.
+
+**Evaluación:** detección correcta de thrashing por vmstat, ajuste de sysctl, identificación del proceso leak.
+
+---
+
 ## 🔗 Referencias
 
 - [`free`](../../guides/free.md) — memoria y swap

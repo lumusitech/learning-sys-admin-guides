@@ -142,6 +142,16 @@ docker exec sec-attacker nmap -sS 10.99.0.0/24
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Cómo diferenciás un escaneo horizontal de uno vertical? ¿Qué campo del log de iptables indica el puerto destino? ¿Cómo bloquearías la IP atacante?
+
+**Ejercicio:** Analizar logs de iptables para detectar un IP escaneando múltiples puertos, clasificar el ataque, bloquear la IP.
+
+**Evaluación:** identificación correcta del patrón de escaneo, clasificación del tipo, bloqueo efectivo con iptables.
+
+---
+
 ## 🔗 Ver también
 
 - ../../guides/awk.md

@@ -183,6 +183,16 @@ journalctl -b -1                              logread | grep -c "last"
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Cómo detectás que un archivo de log fue truncado o modificado? ¿Qué diferencia hay entre Modify time y Change time en stat? ¿Cómo protegés logs contra manipulación?
+
+**Ejercicio:** Inspeccionar logs con stat para detectar manipulación, aplicar chattr +a a logs críticos, configurar rotación segura.
+
+**Evaluación:** detección de manipulación por timestamps, protección con atributos extendidos, propuesta de logging remoto.
+
+---
+
 ## 🔗 Referencias
 
 - [`grep`](../../guides/grep.md) — filtrado de logs

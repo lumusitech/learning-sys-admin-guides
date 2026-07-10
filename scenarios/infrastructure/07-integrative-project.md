@@ -409,6 +409,16 @@ Completar el checklist:
 
 ---
 
+## 🧑‍🏫 Modo docente
+
+**Preguntas:** ¿Cómo integrás segmentación de red, deploy, hardening, backup y respuesta a incidentes en un solo proyecto? ¿Qué verificás en cada fase antes de pasar a la siguiente?
+
+**Ejercicio:** Completar las 5 fases del proyecto integrador, documentar decisiones arquitectónicas, presentar resumen ejecutivo.
+
+**Evaluación:** todas las fases completadas, decisiones justificadas, resumen ejecutivo claro, sin regresiones entre fases.
+
+---
+
 ## 🔗 Referencias
 
 - [`iptables`](../../guides/iptables.md) — firewall y NAT
