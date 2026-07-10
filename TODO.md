@@ -4,9 +4,9 @@ Plan basado en la revisión externa del repositorio. Organizado en fases atómic
 
 ---
 
-## Fase 0 — Links rotos y correcciones urgentes
+## Fase 0 — Links rotos y correcciones urgentes ✅ COMPLETADA
 
-> Esfuerzo: ~30 min | Prioridad: 🔴 Crítica
+> Esfuerzo: ~30 min | Prioridad: 🔴 Crítica | **PR: pendiente**
 
 ### 0.1 — Links con `../` incorrecto en guías hermanas
 
@@ -395,7 +395,7 @@ Fase 16 (labs Dahua) → depende de Fase 7
 
 | Fase | Descripción | Estado | Esfuerzo |
 |------|-------------|--------|----------|
-| 0 | Links rotos | Pendiente | 30 min |
+| 0 | Links rotos | ✅ Completada | 30 min |
 | 1 | Quick wins en guías | ✅ Completada | 2 hrs |
 | 2 | Mejoras en scenarios | ✅ Completada | 2 hrs |
 | 3 | nftables.md | ✅ Completada | 3 hrs |

@@ -227,6 +227,6 @@ apk audit --recursive      # Incluir dependencias
 
 ## 🔗 Referencias internas
 
-- [`openrc`](../openrc.md) — gestión de servicios en Alpine Linux
-- [`busybox`](../busybox.md) — toolchain mínima de Alpine (commands POSIX incluidos)
-- [`production_server`](../production_server.md) — hardening y configuración de servidor
+- [`openrc`](openrc.md) — gestión de servicios en Alpine Linux
+- [`busybox`](busybox.md) — toolchain mínima de Alpine (commands POSIX incluidos)
+- [`production_server`](production_server.md) — hardening y configuración de servidor

@@ -213,6 +213,6 @@ rc-service ntpd status && rc-service ntpd start   # Verificar e iniciar
 
 ## 🔗 Referencias internas
 
-- [`apk`](../apk.md) — gestor de paquetes de Alpine Linux
-- [`busybox`](../busybox.md) — toolchain mínima de Alpine
-- [`systemd_journalctl`](../systemd_journalctl.md) — sistema de init alternativo (Debian/Ubuntu)
+- [`apk`](apk.md) — gestor de paquetes de Alpine Linux
+- [`busybox`](busybox.md) — toolchain mínima de Alpine
+- [`systemd_journalctl`](systemd_journalctl.md) — sistema de init alternativo (Debian/Ubuntu)

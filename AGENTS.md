@@ -41,14 +41,12 @@ entender → aprender → practicar → aplicar
 
 | Categoría | Cantidad |
 |-----------|:--------:|
-| Guías | 39 |
-| Escenarios | 44 |
+| Guías | 49 |
+| Escenarios | 48 |
 | Entornos Docker (labs) | 12 |
-| Conceptos | 4 |
-| Referencias rápidas | 5 |
+| Conceptos | 5 |
+| Referencias rápidas | 6 |
 | Proyecto integrador | 1 |
-
-> **Nota:** `guides/README.md` dice "37 guías" — desactualizado. Son 39. Faltan `tmux.md` y `redirections.md` en el índice.
 
 ---
 
@@ -381,24 +379,9 @@ Cada archivo debe responder:
 
 ## 🐞 Links rotos conocidos
 
-### `../` incorrecto en guías hermanas (35 ocurrencias)
+✅ **Links corregidos en PR:** `../` → `./` en 10 guías. `fuser.md` y `kill.md` creados. `tmux.md` referencia corregida a `01-migrate-to-production.md`.
 
-Los siguientes archivos en `guides/` usan `../filename.md` para referenciar guías en el mismo directorio. `../` resuelve a la raíz del repo, no a `guides/`. Corregir a `./filename.md` o `filename.md`:
-
-`apk.md`, `busybox.md`, `df.md`, `du.md`, `free.md`, `iostat.md`, `lsof.md`, `openrc.md`, `ps.md`, `vmstat.md`
-
-### Links a archivos inexistentes
-
-- `guides/lsof.md` → `fuser.md` (no existe)
-- `guides/ps.md` → `kill.md` (no existe)
-- `guides/tmux.md` → `scenarios/infrastructure/03-new-server-provisioning.md` (no existe, debería ser `01-migrate-to-production.md`)
-
----
-
-## 📋 Guías faltantes en `guides/README.md`
-
-- `tmux.md` — multiplexor de terminales (existe, no está en el índice)
-- `redirections.md` — redirección de flujos (existe, no está en el índice)
+✅ **Índice actualizado en PR:** `guides/README.md` ahora lista las 49 guías, incluyendo `tmux.md`, `redirections.md`, `kill.md`, `fuser.md` y las secciones de infraestructura de red y Dahua.
 
 ---
 

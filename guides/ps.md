@@ -508,9 +508,9 @@ ps -ejH | head -20
 
 ## 🔗 Referencias internas
 
-- [`top`](../top.md) — panel en vivo de procesos (complemento de `ps`)
-- [`grep`](../grep.md) — filtrar por nombre o patrón
-- [`awk`](../awk.md) — extraer y procesar columnas
-- [`sort`](../sort.md) — ordenar por campo
-- [`kill`](../kill.md) — enviar señales a procesos
-- [`systemd_journalctl`](../systemd_journalctl.md) — logs de servicios
+- [`top`](top.md) — panel en vivo de procesos (complemento de `ps`)
+- [`grep`](grep.md) — filtrar por nombre o patrón
+- [`awk`](awk.md) — extraer y procesar columnas
+- [`sort`](sort.md) — ordenar por campo
+- [`kill`](kill.md) — enviar señales a procesos
+- [`systemd_journalctl`](systemd_journalctl.md) — logs de servicios

@@ -286,6 +286,6 @@ du -ach /var/log/*.log | sort -rh | head -10  # Archivos .log más grandes
 
 ## 🔗 Referencias internas
 
-- [`df`](../df.md) — espacio disponible en sistemas de archivos
-- [`find`](../find.md) — encontrar archivos grandes por tamaño
-- [`storage_backup`](../storage_backup.md) — backup y limpieza de discos
+- [`df`](df.md) — espacio disponible en sistemas de archivos
+- [`find`](find.md) — encontrar archivos grandes por tamaño
+- [`storage_backup`](storage_backup.md) — backup y limpieza de discos

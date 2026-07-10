@@ -286,7 +286,7 @@ vmstat -Sm 1 3                    # En megabytes (Linux moderno)
 
 ## 🔗 Referencias internas
 
-- [`iostat`](../iostat.md) — estadísticas detalladas por disco
-- [`free`](../free.md) — memoria disponible (columna `available`)
-- [`ps`](../ps.md) — procesos que consumen recursos
-- [`top`](../top.md) — vista en vivo de procesos y recursos
+- [`iostat`](iostat.md) — estadísticas detalladas por disco
+- [`free`](free.md) — memoria disponible (columna `available`)
+- [`ps`](ps.md) — procesos que consumen recursos
+- [`top`](top.md) — vista en vivo de procesos y recursos

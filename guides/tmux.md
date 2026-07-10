@@ -2,7 +2,7 @@
 
 **Nivel:** 🟢 Básico
 **Archivos de práctica:** Sistema en vivo
-**Ver escenarios relacionados:** [`system/04-high-cpu-runaway-process.md`](../scenarios/system/04-high-cpu-runaway-process.md), [`infrastructure/03-new-server-provisioning.md`](../scenarios/infrastructure/03-new-server-provisioning.md)
+**Ver escenarios relacionados:** [`system/04-high-cpu-runaway-process.md`](../scenarios/system/04-high-cpu-runaway-process.md), [`infrastructure/01-migrate-to-production.md`](../scenarios/infrastructure/01-migrate-to-production.md)
 
 ---
 
