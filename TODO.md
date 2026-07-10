@@ -131,6 +131,7 @@ Plan basado en la revisión externa del repositorio. Organizado en fases atómic
 **Razón**: `systemd_journalctl.md` está enfocado en gestión de logs con journalctl. Systemd como init system merece su propia guía completa.
 
 **Contenido de `guides/systemd.md`**:
+
 - Unidades: service, socket, device, mount, automount, timer, path, slice
 - Comandos: systemctl (start, stop, restart, enable, disable, status)
 - Estados de unidades: active, inactive, failed, activating
