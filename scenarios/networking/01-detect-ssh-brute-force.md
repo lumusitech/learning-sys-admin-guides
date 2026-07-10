@@ -119,6 +119,41 @@ sudo tail -f /var/log/auth.log \
 
 > Nota: el conteo en tiempo real con `sort | uniq -c` es limitado porque `uniq` requiere entradas agrupadas; para "real-time" robusto conviene agregar una ventana/refresh (ej. ejecutar cada X segundos con un script). Aun así, te sirve para confirmar rápidamente si hay intentos y qué IP aparece.
 
+### Alternativa robusta con awk puro (ventana deslizante)
+
+Para monitoreo en tiempo real sin las limitaciones de `sort | uniq -c`:
+
+```bash
+sudo tail -f /var/log/auth.log \
+  | grep --line-buffered "Failed password" \
+  | awk '{
+      for (i=1; i<=NF; i++) {
+        if ($i=="from") {
+          ip=$(i+1);
+          intentos[ip]++;
+          total++;
+          printf "\033[2J\033[H";  # limpiar pantalla
+          printf "=== SSH Brute Force Monitor ===\n";
+          printf "Total intentos: %d\n\n", total;
+          printf "%-15s %s\n", "IP", "Intentos";
+          printf "%-15s %s\n", "----", "--------";
+          for (k in intentos) printf "%-15s %d\n", k, intentos[k];
+          fflush();
+          break;
+        }
+      }
+    }'
+```
+
+Este script awk:
+
+- Mantiene un contador por IP en memoria (array asociativo)
+- Limpia la pantalla en cada actualización (ANSI escape codes)
+- Muestra tabla actualizada sin necesidad de `sort | uniq`
+- Funciona en tiempo real con `tail -f`
+
+> **Ventaja**: no requiere agrupar datos, actualiza en vivo, y funciona en cualquier sistema con awk (incluyendo BusyBox).
+
 ---
 
 ## 🧯 Mitigación (producción) — segura y reversible
@@ -152,6 +187,46 @@ Si te equivocaste:
 ```bash
 iptables-restore < /root/iptables.backup.rules
 ```
+
+### 3. Mitigación automatizada con fail2ban
+
+Para protección continua, `fail2ban` monitorea logs y bloquea IPs automáticamente:
+
+```bash
+# Instalar fail2ban
+sudo apt install fail2ban    # Debian/Ubuntu
+sudo apk add fail2ban        # Alpine
+
+# Configurar para SSH (crear /etc/fail2ban/jail.local)
+cat > /etc/fail2ban/jail.local << 'EOF'
+[sshd]
+enabled = true
+port = ssh
+filter = sshd
+logpath = /var/log/auth.log
+maxretry = 5
+bantime = 3600
+findtime = 600
+EOF
+
+# Reiniciar fail2ban
+sudo systemctl restart fail2ban
+
+# Ver estado y IPs baneadas
+sudo fail2ban-client status sshd
+
+# Desbanear una IP específica
+sudo fail2ban-client set sshd unbanip 192.168.1.200
+```
+
+**Ventajas sobre iptables manual:**
+
+- Automático: no necesitas ejecutar scripts
+- Temporal: las IPs se desbanean después de `bantime`
+- Adaptable: ajusta `maxretry`, `findtime`, `bantime` según necesidad
+- Logging: registra baneos en `/var/log/fail2ban.log`
+
+> **Regla**: fail2ban es complementario, no reemplaza hardening SSH (claves, deshabilitar root, etc.).
 
 ---
 
@@ -229,6 +304,26 @@ docker logs ssh-weak 2>&1 | awk '/Failed password/ ...'
 
 ---
 
+## 🐧 Variante Alpine (OpenRC)
+
+Este escenario asume systemd (Debian/Ubuntu). En Alpine Linux:
+
+```bash
+# Debian:                          # Alpine:
+systemctl restart fail2ban          rc-service fail2ban restart
+systemctl restart sshd              rc-service sshd restart
+```
+
+fail2ban en Alpine:
+
+```bash
+apk add fail2ban
+rc-service fail2ban start
+rc-update add fail2ban default
+```
+
+---
+
 ## 🔗 Referencias (guías del repo)
 
 - [`guides/grep.md`](../../guides/grep.md) — filtros y extracción
@@ -236,3 +331,4 @@ docker logs ssh-weak 2>&1 | awk '/Failed password/ ...'
 - [`guides/sort.md`](../../guides/sort.md) + [`guides/uniq.md`](../../guides/uniq.md) — agregación por frecuencia
 - [`guides/iptables.md`](../../guides/iptables.md) — bloqueo/mitigación
 - [`guides/ssh.md`](../../guides/ssh.md) — hardening SSH y auditoría
+- [`guides/production_server.md`](../../guides/production_server.md) — fail2ban y hardening de servidor
