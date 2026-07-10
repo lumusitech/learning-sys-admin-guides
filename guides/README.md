@@ -12,7 +12,7 @@
 
 # 🐧 sys-admin-guides
 
-Colección completa de guías de referencia para administración de servidores Linux y redes. **51 guías** que cubren cada herramienta desde lo más básico hasta escenarios profesionales, explicando cada opción y la interpretación de salidas en contextos de éxito, falla y ataque.
+Colección completa de guías de referencia para administración de servidores Linux y redes. **59 guías** que cubren cada herramienta desde lo más básico hasta escenarios profesionales, explicando cada opción y la interpretación de salidas en contextos de éxito, falla y ataque.
 
 ---
 
@@ -54,6 +54,8 @@ entender → aprender → practicar → aplicar
 | [`find.md`](find.md) | 🟡 Intermedio | Búsqueda de archivos por nombre, tipo, tamaño, fecha, permisos, contenido |
 | [`xargs.md`](xargs.md) | 🟡 Intermedio | Construcción de comandos desde stdin. Paralelismo, seguridad con `-0` |
 | [`redirections.md`](redirections.md) | 🟢 Básico | Redirección de flujos stdin/stdout/stderr, pipes, here-docs, tee |
+| [`tr.md`](tr.md) | 🟢 Básico | Transformación de caracteres. Clases POSIX, rangos, delete, squeeze, limpieza de output |
+| [`jq.md`](jq.md) | 🟡 Intermedio | Procesamiento JSON en shell. Filtros, transformaciones, APIs, kubectl -o json |
 
 ### Redes y conectividad
 
@@ -68,6 +70,9 @@ entender → aprender → practicar → aplicar
 | [`iptables.md`](iptables.md) | 🔴 Avanzado | Firewall Netfilter. Reglas, NAT, mitigación de ataques, rate limiting |
 | [`network_segmentation.md`](network_segmentation.md) | 🔴 Avanzado | VLANs, subnetting, router Linux, ACLs con iptables, DHCP por segmento, bridges |
 | [`nftables.md`](nftables.md) | 🔴 Avanzado | Firewall nftables. Tablas, cadenas, sets, mapas, NAT, migración desde iptables |
+| [`nc.md`](nc.md) | 🟢 Básico | Diagnóstico de conectividad TCP/UDP. Banner grabbing, verificación de puertos, transferencias |
+| [`openssl.md`](openssl.md) | 🟡 Intermedio | Diagnóstico TLS. Verificación de certificados, ciphers, handshake, generación de CSRs |
+| [`wget.md`](wget.md) | 🟢 Básico | Descarga y mirroring HTTP/HTTPS. Reintentos, recursividad, health checks |
 
 ### Sistema y monitoreo
 
@@ -79,6 +84,7 @@ entender → aprender → practicar → aplicar
 | [`free.md`](free.md) | 🟢 Básico | Memoria RAM y swap. buffers/cache, disponible vs libre, interpretación |
 | [`df.md`](df.md) | 🟢 Básico | Espacio en disco por filesystem. Tipos, montajes, inodos |
 | [`du.md`](du.md) | 🟡 Intermedio | Uso de disco por directorio. Sumarizar, excluir, ordenar por tamaño |
+| [`stat.md`](stat.md) | 🟢 Básico | Metadatos de archivos. Tamaño real, timestamps, inodo, permisos en octal, propietario |
 | [`vmstat.md`](vmstat.md) | 🟡 Intermedio | Estadísticas de sistema: procesos, memoria, swap, I/O, CPU |
 | [`iostat.md`](iostat.md) | 🔴 Avanzado | Estadísticas de I/O de dispositivos y CPU. Latencia, throughput, await, svctm |
 | [`dmesg.md`](dmesg.md) | 🟡 Intermedio | Ring buffer del kernel. Hardware, drivers, errores de dispositivo, OOM |
@@ -102,6 +108,8 @@ entender → aprender → practicar → aplicar
 | [`nginx.md`](nginx.md) | 🟡 Intermedio | Servidor web. Virtual hosts, proxy reverso, SSL, rate limiting, geo, load balancing, caché |
 | [`storage_backup.md`](storage_backup.md) | 🟡 Intermedio | NFS, Samba, rsync, rclone, restic, 3-2-1, rotación, monitoreo |
 | [`production_server.md`](production_server.md) | 🔴 Avanzado | Sysctl, ulimits, swap, logrotate, systemd resource control, Docker en producción, fail2ban |
+| [`rsync.md`](rsync.md) | 🟡 Intermedio | Sincronización y backup incremental. Transferencia delta, mirroring, exclusiones |
+| [`tar.md`](tar.md) | 🟢 Básico | Archivado y compresión. gzip, bzip2, xz; pipes con SSH, restauración selectiva |
 
 ### Infraestructura de red
 
