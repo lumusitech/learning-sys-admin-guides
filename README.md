@@ -12,10 +12,10 @@ Sistema de aprendizaje para **administración de servidores Linux y redes**: gu�
 
 | Categoría | Cantidad |
 |-----------|:--------:|
-| 🛠️ [Guías](guides/) | 50 |
-| 🚨 [Escenarios](scenarios/) | 48 |
-| 🧪 [Entornos Docker](labs/) | 12 |
-| 🧠 [Conceptos](concepts/) | 5 |
+| 🛠️ [Guías](guides/) | 51 |
+| 🚨 [Escenarios](scenarios/) | 49 |
+| 🧪 [Entornos Docker](labs/) | 14 |
+| 🧠 [Conceptos](concepts/) | 7 |
 | 📚 [Referencias rápidas](reference/) | 6 |
 | 🎯 [Proyecto integrador](scenarios/infrastructure/07-integrative-project.md) | 1 |
 
@@ -94,7 +94,7 @@ Poné todo en práctica: construí una PYME con segmentación de red, desplegá 
 | [📚 reference/](reference/) | Mapas rápidos para troubleshooting |
 | [🛠️ guides/](guides/) | Todas las herramientas explicadas |
 | [🧪 labs/](labs/) | Entornos Docker para practicar |
-| [🚨 scenarios/](scenarios/) | 44 problemas reales resueltos |
+| [🚨 scenarios/](scenarios/) | 49 problemas reales resueltos |
 | [🎯 Proyecto integrador](scenarios/infrastructure/07-integrative-project.md) | Capstone: 5 fases, 4-6 hs |
 
 ---
