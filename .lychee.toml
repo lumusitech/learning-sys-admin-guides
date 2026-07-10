@@ -1,0 +1,32 @@
+verbose = "warn"
+format = "detailed"
+mode = "emoji"
+no_progress = false
+
+threads = 4
+max_concurrency = 10
+max_redirects = 5
+max_retries = 1
+timeout = 15
+retry_wait_time = 2
+
+extensions = ["md"]
+exclude_path = ["node_modules", ".git", "labs", "_TEMPLATE\\.md"]
+default_extension = "md"
+
+include_verbatim = false
+
+exclude_all_private = true
+exclude_private = true
+exclude_link_local = true
+exclude_loopback = true
+
+exclude = [
+  "example\\.com",
+  "example\\.org",
+  "onvif\\.org",
+  "#qu%C3%A9-es-tool",
+  "#modelo-mental",
+]
+
+accept = ["200..299", "301", "302", "307", "308"]

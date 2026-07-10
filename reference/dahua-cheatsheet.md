@@ -138,7 +138,7 @@ curl -s -u admin:pass "http://192.168.1.108/cgi-bin/magicBox.cgi?action=reset"
 
 ## 🔗 Recursos externos
 
-- Documentación oficial Dahua API: https://www.dahuasecurity.com/support/api
+- Documentación oficial Dahua: https://www.dahuasecurity.com/
 - ONVIF standard: https://www.onvif.org
 - Dahua WizSense: https://www.dahuasecurity.com/products/wizsense
 - Dahua WizMind: https://www.dahuasecurity.com/products/wizmind

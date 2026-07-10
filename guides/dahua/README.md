@@ -49,7 +49,7 @@ No cubren:
 
 - [Referencia rápida de comandos](../../reference/dahua-cheatsheet.md)
 - [Escenarios prácticos](../../scenarios/dahua/)
-- Documentación oficial Dahua API: https://www.dahuasecurity.com/support/api
+- Documentación oficial Dahua: https://www.dahuasecurity.com/
 - ONVIF standard: https://www.onvif.org
 
 ---
