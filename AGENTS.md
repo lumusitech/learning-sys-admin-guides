@@ -62,18 +62,21 @@ pnpm validate          # Todo lo anterior
 
 ---
 
-## 🧩 Skills disponibles (`.skills/`)
+## 🧩 Skills disponibles (invocables con `skill()`)
+
+Los skills del proyecto están en `.opencode/skills/<nombre>/SKILL.md`. Opencode los carga automáticamente al invocar `skill("<nombre>")`.
 
 | Skill | Descripción |
 |-------|-------------|
-| `sysadmin-guides-skill.md` | Skill principal: mantiene y expande el repo entero, contiene plantillas, convenciones, workflow Git |
-| `scenario-creator-skill.md` | Crea escenarios SRE con plantilla estándar |
-| `reference-creator-skill.md` | Crea tablas de referencia rápida |
-| `concepts-creator-skill.md` | Crea documentos conceptuales (modelos mentales) |
-| `web-labs-skill.md` | Crea entornos Docker para labs web (CORS, WebSocket) |
-| `short-version-paste-at-init.md` | Resumen ejecutivo del proyecto para iniciar sesiones |
+| `sysadmin-guides` | Skill principal: mantiene y expande el repo entero (plantillas, convenciones, workflow Git) |
+| `scenario-creator` | Crea escenarios SRE con plantilla estándar |
+| `reference-creator` | Crea tablas de referencia rápida |
+| `concepts-creator` | Crea documentos conceptuales (modelos mentales) |
+| `web-labs-creator` | Crea entornos Docker para labs web (CORS, WebSocket) |
 
-**Regla:** Leer el skill relevante antes de crear contenido nuevo.
+Además, `.opencode/instructions.md` se carga al inicio de cada sesión (resumen ejecutivo del proyecto).
+
+**Regla:** Cargar el skill relevante con `skill("<nombre>")` antes de crear contenido nuevo.
 
 ---
 
