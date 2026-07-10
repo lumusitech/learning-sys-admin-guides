@@ -162,3 +162,4 @@ for i in $(seq 1 254); do curl -s -m 0.5 http://192.168.100.$i:80 >/dev/null && 
 - [`dahua-camera-api.md`](dahua-camera-api.md) — una vez descubierta, consultarla
 - [`dahua-mass-config.md`](dahua-mass-config.md) — configurar muchas a la vez
 - [`../nmap.md`](../nmap.md) — guía completa de nmap
+- [`../../labs/docker-compose.dahua.yml`](../../labs/docker-compose.dahua.yml) — laboratorio Docker: `docker compose -f docker-compose.dahua.yml up -d`

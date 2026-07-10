@@ -325,6 +325,31 @@ done
 
 ---
 
+## 🧪 Cómo practicarlo en el lab
+
+El [laboratorio Docker Dahua](../../labs/docker-compose.dahua.yml) incluye cámaras simuladas y NVR para practicar migración masiva:
+
+```bash
+# 1. Iniciar laboratorio
+cd labs && docker compose -f docker-compose.dahua.yml up -d
+
+# 2. Entrar al cliente de diagnóstico
+docker exec -it dahua-client sh
+
+# 3. Verificar que las cámaras responden
+ping -c 3 10.0.100.108
+curl -s -u admin:admin "http://10.0.100.108/cgi-bin/magicBox.cgi?action=getSystemInfo"
+
+# 4. Practicar los scripts del escenario adaptándolos a estas IPs
+# (reemplazar 192.168.100.x por 10.0.100.x en los scripts)
+```
+
+**Ejercicio:** Ejecutá el script de backup y cambio de contraseña sobre las cámaras simuladas del lab.
+
+Ver [laboratorio completo →](../../labs/docker-compose.dahua.yml)
+
+---
+
 ## 🔗 Referencias
 
 - [`guides/dahua/dahua-mass-config.md`](../../guides/dahua/dahua-mass-config.md) — scripting masivo

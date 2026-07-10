@@ -266,6 +266,40 @@ curl -s -u admin:admin \
 
 ---
 
+## 🧪 Cómo practicarlo en el lab
+
+El [laboratorio Docker Dahua broken](../../labs/docker-compose.dahua-broken.yml) incluye 6 problemas de cámaras preconfigurados para practicar este escenario:
+
+```bash
+# 1. Iniciar laboratorio roto
+cd labs && docker compose -f docker-compose.dahua-broken.yml up -d
+
+# 2. Entrar al cliente de diagnóstico
+docker exec -it dahua-client-broken sh
+
+# 3. Probar cada cámara problemática
+# Cámara offline
+ping -c 3 10.0.200.10
+
+# Cámara con credenciales incorrectas
+curl -s -u admin:admin http://10.0.200.20/cgi-bin/magicBox.cgi?action=getSystemInfo
+
+# Cámara sin RTSP
+nmap -p 554 10.0.200.30
+
+# Cámara con firmware corrupto
+curl -s -u admin:admin http://10.0.200.50/cgi-bin/magicBox.cgi?action=getSystemInfo | head -5
+
+# Cámara con pérdida de paquetes
+ping -c 10 10.0.200.60
+```
+
+Aplicá los pasos del procedimiento de este escenario para diagnosticar cada caso.
+
+Ver [laboratorio completo →](../../labs/dahua-broken.md)
+
+---
+
 ## 🔗 Referencias
 
 - [`guides/dahua/dahua-discovery.md`](../../guides/dahua/dahua-discovery.md) — descubrir cámaras

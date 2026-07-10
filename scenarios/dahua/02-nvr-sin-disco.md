@@ -259,6 +259,40 @@ ssh admin@192.168.100.100 "mkfs.ext4 /dev/sda1 && mount /dev/sda1 /mnt/sda"
 
 ---
 
+## 🧪 Cómo practicarlo en el lab
+
+El [laboratorio Docker Dahua broken](../../labs/docker-compose.dahua-broken.yml) incluye 3 problemas de NVR preconfigurados para practicar este escenario:
+
+```bash
+# 1. Iniciar laboratorio roto
+cd labs && docker compose -f docker-compose.dahua-broken.yml up -d
+
+# 2. Conectar al NVR sin disco
+ssh root@10.0.200.100 -p 2223
+# Password: admin123
+# Verificar que /mnt/sda no existe
+lsblk
+df -h
+
+# 3. Conectar al NVR con disco lleno
+ssh root@10.0.200.110 -p 2224
+# Verificar uso de disco
+df -h
+
+# 4. Conectar al NVR con servicio caído
+ssh root@10.0.200.120 -p 2225
+# Verificar logs
+cat /var/log/record.log
+# Verificar servicio
+curl -s http://localhost/api/record
+```
+
+Aplicá los pasos del procedimiento de este escenario para diagnosticar cada caso.
+
+Ver [laboratorio completo →](../../labs/dahua-broken.md)
+
+---
+
 ## 🔗 Referencias
 
 - [`guides/dahua/dahua-nvr-ssh.md`](../../guides/dahua/dahua-nvr-ssh.md) — SSH a NVR
