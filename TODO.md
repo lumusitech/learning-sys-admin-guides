@@ -270,9 +270,9 @@ Cada guía Dahua debe referenciar:
 
 ---
 
-## Fase 8 — Reference Dahua cheatsheet
+## Fase 8 — Reference Dahua cheatsheet ✅ COMPLETADA
 
-> Esfuerzo: ~1 hr | Prioridad: 🟡 Alta | **PR: pendiente**
+> Esfuerzo: ~1 hr | Prioridad: 🟡 Alta | **Commit: f4eaa65**
 
 Crear `reference/dahua-cheatsheet.md` con tabla rápida de consulta.
 
@@ -288,34 +288,17 @@ Crear `reference/dahua-cheatsheet.md` con tabla rápida de consulta.
 
 ---
 
-## Fase 9 — Scenarios Dahua: 3 escenarios prácticos
+## Fase 9 — Scenarios Dahua: 3 escenarios prácticos ✅ COMPLETADA
 
-> Esfuerzo: ~3 hrs | Prioridad: 🟡 Alta | **PR: pendiente**
+> Esfuerzo: ~3 hrs | Prioridad: 🟡 Alta | **Commit: c34e160**
 
 Crear `scenarios/dahua/` con 3 escenarios siguiendo plantilla estándar del repo.
 
-### Archivos a crear
+### Archivos creados
 
 1. **`scenarios/dahua/01-camara-no-graba.md`** — Cámara no transmite video
-   - Problema: cámara aparece en NVR pero no muestra video
-   - Diagnóstico: verificar RTSP, firewall, credenciales, codec
-   - Procedimiento: ping, nmap, ffprobe, tcpdump
-   - Mitigación: reboot, reset, reconfigurar
-   - Variante Alpine: no aplica (cámaras no son Linux)
-
 2. **`scenarios/dahua/02-nvr-sin-disco.md`** — NVR no detecta disco
-   - Problema: NVR arranca pero no graba
-   - Diagnóstico: SSH a NVR, smartctl, dmesg, verificar conexión SATA
-   - Procedimiento: verificar disco, formatear, reiniciar servicio
-   - Mitigación: reemplazar disco, verificar cables
-   - Variante Alpine: no aplica
-
 3. **`scenarios/dahua/03-migracion-masiva.md`** — Cambiar contraseña a 50 cámaras
-   - Problema: migrar 50 cámaras de contraseña antigua a nueva
-   - Diagnóstico: descubrir cámaras, verificar conectividad
-   - Procedimiento: script bash con loop, curl, manejo de errores
-   - Mitigación: backup previo, rollback si falla
-   - Variante Alpine: no aplica
 
 ### Labs Docker para Dahua
 
@@ -328,186 +311,59 @@ Crear `labs/docker-compose.dahua.yml` con:
 
 ---
 
-## Fase 10 — Actualizar guías existentes con referencias a Dahua
+## Fase 10 — Actualizar guías existentes con referencias a Dahua ✅ COMPLETADA
 
-> Esfuerzo: ~1 hr | Prioridad: 🟢 Media | **PR: pendiente**
+> Esfuerzo: ~1 hr | Prioridad: 🟢 Media | **Commit: 6830da6**
 
-Agregar secciones o ejemplos en guías existentes para conectar con Dahua.
-
-### Archivos a actualizar
-
-1. **`guides/network_segmentation.md`**
-   - Agregar sección: "VLANs para cámaras IP por pisos"
-   - Esquema típico: Piso 1 (VLAN 100), Piso 2 (VLAN 110), Exterior (VLAN 120), WiFi APs (VLAN 130)
-   - Ejemplo de configuración de subinterfaces
-   - ACLs para aislar tráfico de cámaras
-
-2. **`guides/ip_ss.md`**
-   - Agregar sección: "Diagnóstico de link físico y PoE"
-   - Verificar estado del enlace con ethtool
-   - Ver errores de TX/RX (posible cable defectuoso)
-   - Diagnóstico PoE (si el switch lo soporta)
-
-3. **`guides/ping_traceroute.md`**
-   - Agregar ejemplo: "Verificación masiva de cámaras"
-   - Loop con ping para verificar conectividad de múltiples cámaras
-
-4. **`guides/tcpdump.md`**
-   - Agregar ejemplos: "Capturar tráfico de cámaras en VLAN específica"
-   - Filtros BPF para RTSP (port 554) y Dahua (port 37777)
+Agregar secciones en `network_segmentation.md`, `ip_ss.md`, `ping_traceroute.md`, `tcpdump.md`.
 
 ---
 
-## Fase 11 — Nueva guía: Access Points Enterprise
+## Fase 11 — Access Points Enterprise ✅ COMPLETADA
 
-> Esfuerzo: ~3 hrs | Prioridad: 🟡 Alta | **PR: pendiente**
+> Esfuerzo: ~3 hrs | Prioridad: 🟡 Alta | **Commit: 867c801**
 
-Crear `guides/access_points_enterprise.md` para APs empresariales.
-
-### Marcas a cubrir
-
-- **Ubiquiti UniFi**: controller, CLI, API, discovery
-- **Aruba/HP**: ArubaOS, CLI, AirWave
-- **Cisco**: AireOS, IOS-XE, WLC
-- **Ruckus**: SmartZone, CLI
-
-### Contenido
-
-- Configuración básica de APs enterprise
-- Diagnóstico de señal WiFi (iwconfig, iwlist, iw)
-- Roaming entre APs
-- Problemas comunes: interferencia, canal saturado, baja señal
-- VLANs para WiFi corporativo
-- Captive portal y autenticación (RADIUS, LDAP)
-- Monitoreo de APs (SNMP, logs)
-- Actualización de firmware
-- Backup de configuración
+Crear `guides/access_points_enterprise.md` para APs empresariales (534 líneas).
 
 ---
 
-## Fase 12 — Nueva guía: Access Points Consumer
+## Fase 12 — Access Points Consumer ✅ COMPLETADA
 
-> Esfuerzo: ~2 hrs | Prioridad: 🟢 Media | **PR: pendiente**
+> Esfuerzo: ~2 hrs | Prioridad: 🟢 Media | **Commit: 2fec14c**
 
-Crear `guides/access_points_consumer.md` para APs domésticos/SOHO.
-
-### Marcas a cubrir
-
-- **TP-Link**: configuración web, modo AP/repeater/bridge
-- **D-Link**: configuración web, diagnóstico básico
-- **Tenda**: configuración web, limitaciones
-
-### Contenido
-
-- Configuración básica vía web
-- Modo AP vs repeater vs bridge vs client
-- Diagnóstico básico (ping, traceroute, velocidad)
-- Limitaciones vs enterprise (sin VLANs, sin RADIUS, sin controller)
-- Problemas comunes y soluciones
-- Cuándo usar consumer vs enterprise
+Crear `guides/access_points_consumer.md` para APs domésticos/SOHO (415 líneas).
 
 ---
 
-## Fase 13 — Nueva guía: PoE Switches Managed
+## Fase 13 — PoE Switches Managed ✅ COMPLETADA
 
-> Esfuerzo: ~2 hrs | Prioridad: 🟡 Alta | **PR: pendiente**
+> Esfuerzo: ~2 hrs | Prioridad: 🟡 Alta | **Commit: d85d690**
 
-Crear `guides/poe_switches_managed.md` para switches con PoE gestionable.
-
-### Contenido
-
-- Estándares PoE: 802.3af (15.4W), 802.3at (30W), 802.3bt (60W/100W)
-- Diagnóstico vía SNMP/CLI
-- Ver consumo por puerto (watts, voltaje, corriente)
-- Resetear puerto PoE (power cycle)
-- Logs de errores PoE (sobrecarga, corto, bajo voltaje)
-- Configuración de prioridades PoE
-- Marcas populares: Ubiquiti, TP-Link, Netgear, Cisco, HPE/Aruba
-- Ejemplos de comandos CLI por marca
-- Troubleshooting: cámara no enciende, intermitente, bajo rendimiento
+Crear `guides/poe_switches_managed.md` para switches PoE gestionables (542 líneas).
 
 ---
 
-## Fase 14 — Nueva guía: PoE Injectors
+## Fase 14 — PoE Injectors ✅ COMPLETADA
 
-> Esfuerzo: ~1 hr | Prioridad: 🟢 Media | **PR: pendiente**
+> Esfuerzo: ~1 hr | Prioridad: 🟢 Media | **Commit: 9173512**
 
-Crear `guides/poe_injectors.md` para injectors PoE básicos.
-
-### Contenido
-
-- Tipos de injectors: passive (24V, 48V) vs active (802.3af/at)
-- Diagnóstico con multímetro
-- Verificar voltaje (48V típico para cámaras)
-- Problemas comunes:
-  - Cable largo (>100m) → caída de voltaje
-  - Cable de mala calidad → pérdida de potencia
-  - Injector defectuoso
-  - Cámara incompatible (voltaje incorrecto)
-- Splitters PoE (convertir PoE a DC para dispositivos no-PoE)
-- Cuándo usar injector vs switch PoE
-- Cálculo de presupuesto de potencia (power budget)
+Crear `guides/poe_injectors.md` para injectors PoE básicos (451 líneas).
 
 ---
 
-## Fase 15 — Nueva guía: Cable Diagnostics
+## Fase 15 — Cable Diagnostics ✅ COMPLETADA
 
-> Esfuerzo: ~2 hrs | Prioridad: 🟡 Alta | **PR: pendiente**
+> Esfuerzo: ~2 hrs | Prioridad: 🟡 Alta | **Commit: 7bcd60c**
 
-Crear `guides/cable_diagnostics.md` para diagnóstico de cables de red.
-
-### Contenido
-
-- **ethtool**: velocidad, duplex, link status, auto-negotiation
-- Diagnóstico de errores de TX/RX (posible cable defectuoso)
-- Categorías de cable: Cat5e (1Gbps), Cat6 (10Gbps@55m), Cat6a (10Gbps@100m)
-- Longitud máxima: 100m para Ethernet, 90m + 10m patch cords
-- Herramientas de testing:
-  - Toner probe (rastrear cable)
-  - Cable tester básico (continuidad, cruzado, abierto, corto)
-  - Cable certifier (Fluke, etc.) — para certificación profesional
-- Problemas comunes:
-  - Cable cruzado (crossover) vs recto (straight-through)
-  - Conector RJ45 mal crimpado
-  - Interferencia electromagnética (EMI)
-  - Cable demasiado largo
-  - Cable dañado (mordeduras, dobleces, humedad)
-- Diagnóstico desde Linux:
-  - `ethtool eth0` — ver velocidad y duplex
-  - `ip -s link show eth0` — ver errores de TX/RX
-  - `dmesg | grep eth0` — ver mensajes del kernel
-- Cuándo recablear vs cuándo ajustar configuración
+Crear `guides/cable_diagnostics.md` para diagnóstico de cables de red (635 líneas).
 
 ---
 
-## Fase 16 — Labs Docker para Dahua
+## Fase 16 — Labs Docker Dahua ✅ COMPLETADA
 
-> Esfuerzo: ~2 hrs | Prioridad: 🟡 Alta | **PR: pendiente**
+> Esfuerzo: ~2 hrs | Prioridad: 🟡 Alta | **Commit: cda9bdf**
 
-Crear `labs/docker-compose.dahua.yml` con entorno de práctica para Dahua.
-
-### Servicios
-
-- **dahua-camera-sim**: Simulador de cámara Dahua (nginx con API CGI fake, RTSP fake)
-- **dahua-nvr-sim**: Simulador de NVR (contenedor con SSH y API fake)
-- **dahua-client**: Cliente para ejecutar comandos de diagnóstico (curl, nmap, ffprobe)
-- **Red VLAN**: Red aislada para cámaras (10.0.100.0/24)
-
-### Ejercicios
-
-1. Descubrir cámaras en la red
-2. Consultar información del sistema vía API
-3. Capturar snapshot
-4. Configurar NTP
-5. Cambiar contraseña
-6. Diagnosticar RTSP
-7. Agregar cámara a NVR
-
-### Archivos incluidos
-
-- `labs/dahua/nginx-cgi-fake.conf` — configuración nginx para simular API CGI
-- `labs/dahua/rtsp-sim.sh` — script para simular stream RTSP
-- `labs/dahua/nvr-sim.sh` — script para simular NVR con SSH
+Crear `labs/docker-compose.dahua.yml` con entorno de práctica para Dahua (6 archivos, 265 líneas).
 
 ---
 
@@ -546,18 +402,18 @@ Fase 16 (labs Dahua) → depende de Fase 7
 | 4 | docker.md | ✅ Completada | 3 hrs |
 | 5 | systemd.md | ✅ Completada | 2 hrs |
 | 6 | Mermaid diagrams | Postergado | 1 hr |
-| 7 | Dahua: 8 guías | Pendiente | 8 hrs |
-| 8 | Dahua cheatsheet | Pendiente | 1 hr |
-| 9 | Dahua scenarios | Pendiente | 3 hrs |
-| 10 | Actualizar guías existentes | Pendiente | 1 hr |
-| 11 | APs enterprise | Pendiente | 3 hrs |
-| 12 | APs consumer | Pendiente | 2 hrs |
-| 13 | PoE switches | Pendiente | 2 hrs |
-| 14 | PoE injectors | Pendiente | 1 hr |
-| 15 | Cable diagnostics | Pendiente | 2 hrs |
-| 16 | Labs Docker Dahua | Pendiente | 2 hrs |
+| 7 | Dahua: 8 guías | ✅ Completada | 8 hrs |
+| 8 | Dahua cheatsheet | ✅ Completada | 1 hr |
+| 9 | Dahua scenarios | ✅ Completada | 3 hrs |
+| 10 | Actualizar guías existentes | ✅ Completada | 1 hr |
+| 11 | APs enterprise | ✅ Completada | 3 hrs |
+| 12 | APs consumer | ✅ Completada | 2 hrs |
+| 13 | PoE switches | ✅ Completada | 2 hrs |
+| 14 | PoE injectors | ✅ Completada | 1 hr |
+| 15 | Cable diagnostics | ✅ Completada | 2 hrs |
+| 16 | Labs Docker Dahua | ✅ Completada | 2 hrs |
 
-**Total estimado**: ~36 hrs de trabajo
+**Total estimado**: ~36 hrs de trabajo | **Completado**: ~35 hrs
 
 ---
 
