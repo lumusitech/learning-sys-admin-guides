@@ -135,6 +135,40 @@ awk '{ r=$7; bytes[r]+=$10 } END { for(r in bytes) if(bytes[r]>1048576) printf "
 labs/nginx_access.log | sort -rn | head -10
 ```
 
+### Correlación temporal: 5xx vs deploy
+
+Cuando los errores 5xx aumentan después de un deploy, necesitas confirmar la correlación:
+
+```bash
+# Errores 5xx por minuto (detectar cuándo empezó el problema)
+awk '$9 ~ /^5/ { split($4,t,"[/:]"); minuto=t[4]":"t[5]; err[minuto]++ }
+END { for (m in err) print m, err[m] }' labs/nginx_access.log | sort
+
+# Comparar con logs de deploy (ej: /var/log/deploy.log)
+# Buscar timestamp del último deploy
+grep "deploy completed" /var/log/deploy.log | tail -5
+
+# Si el deploy fue a las 14:30 y los 5xx empezaron a las 14:32 → correlación fuerte
+# Si los 5xx empezaron a las 10:00 y el deploy fue a las 14:30 → no relacionado
+```
+
+**Workflow de diagnóstico post-deploy:**
+
+1. Identificar timestamp del último deploy
+2. Graficar errores 5xx por minuto (el comando awk anterior)
+3. Si los 5xx aumentaron <5 min después del deploy → rollback inmediato
+4. Si los 5xx empezaron horas antes → problema independiente
+
+```bash
+# Rollback rápido si hay correlación temporal
+git log --oneline -5  # ver últimos commits
+git revert HEAD       # revertir último commit
+# o
+git checkout <commit-anterior>  # volver a versión estable
+```
+
+> **Regla de oro**: si los errores aumentaron inmediatamente después de un deploy, asume correlación hasta demostrar lo contrario. Rollback primero, diagnóstico después.
+
 ---
 
 ## 🧯 Mitigación

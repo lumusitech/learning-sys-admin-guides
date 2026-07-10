@@ -142,6 +142,8 @@ El objetivo no es "probar cosas", sino **entender el sistema**.
 | Procesos en `S` (sleeping) | Mayoría | Minoría → sistema idle anómalo |
 | Fork rate | < 100/s | > 1.000/s → fork bomb o app mal escrita |
 
+> **⚠️ Nota sobre los umbrales**: Los valores de esta tabla son referenciales y dependen del hardware. Un servidor con 64 cores puede tener load average de 30 sin problema. Un servidor con 2 cores a load 5 está saturado. **Establece tu propia baseline** comparando el sistema en estado normal vs bajo carga. Los umbrales absolutos son punto de partida, no verdad absoluta.
+
 ---
 
 ## 🔍 Embudo de diagnóstico (capas OSI)
@@ -202,6 +204,143 @@ Los logs no se leen línea por línea, se interpretan por patrones:
 - origen (IP, servicio, usuario)
 
 Un solo error no es problema. Un patrón repetido sí.
+
+---
+
+## 📖 Caso de estudio: Aplicando el modelo mental
+
+### El síntoma
+
+**Lunes 10:15 AM**: El equipo reporta que "la app va lenta". No hay alertas automáticas.
+
+### Paso 1: Observar (no asumir)
+
+Primer impulso: "es la base de datos, seguro". **NO**. Primero observás.
+
+```bash
+# ¿Qué capa? Empezar por conectividad
+curl -I https://app.empresa.com
+# Respuesta en 8 segundos (normal: <500ms)
+
+# ¿El servidor responde?
+ping app-server
+# 0.3ms — servidor vivo, red OK
+```
+
+**Hipótesis descartada**: no es problema de red (ping rápido).
+
+### Paso 2: Reducir el problema (embudo OSI)
+
+```bash
+# ¿El puerto está abierto?
+nc -zv app-server 443
+# Connection successful — puerto OK
+
+# ¿El servicio responde?
+curl -w "%{time_total}\n" -o /dev/null -s https://app.empresa.com
+# 8.234 segundos — lento, pero responde
+```
+
+**Hipótesis descartada**: no es problema de puerto ni servicio caído. La app responde, pero lento.
+
+### Paso 3: Verificar recursos del sistema
+
+```bash
+# ¿CPU?
+top -b -n 1 | grep "Cpu(s)"
+# Cpu(s): 15.2% us, 8.1% sy, 76.7% idle
+# CPU OK — no es proceso runaway
+
+# ¿Memoria?
+free -h
+#               total   used   free   shared  buff/cache  available
+# Mem:           16Gi   12Gi   1.2Gi   512Mi    2.8Gi       3.5Gi
+# Swap:         2.0Gi   1.8Gi   200Mi
+# ⚠️ Swap al 90% — presión de memoria
+```
+
+**Hallazgo**: swap creciendo. Esto puede causar lentitud (I/O en disco en vez de RAM).
+
+### Paso 4: Identificar la causa
+
+```bash
+# ¿Qué procesos consumen más memoria?
+ps aux --sort=-%mem | head -10
+# USER       PID %MEM    VSZ   RSS COMMAND
+# app_user  2341  45.2  8.2G  7.3G java -jar app.jar
+# app_user  2342  22.1  4.1G  3.6G java -jar app.jar
+# postgres  1892  12.3  2.3G  2.0G postgres: writer
+
+# ¿Cuánta memoria usa la app en total?
+ps aux | grep "java -jar app.jar" | awk '{sum+=$6} END {print sum/1024/1024 " GB"}'
+# 10.9 GB — la app usa 11GB de 16GB disponibles
+```
+
+**Hallazgo**: la app Java consume 11GB. Con 16GB totales, queda poco para el sistema y PostgreSQL.
+
+### Paso 5: Correlacionar con cambios recientes
+
+```bash
+# ¿Cambió algo recientemente?
+journalctl -u app --since "2 hours ago" | tail -20
+# 10:02:15 app-server systemd[1]: Started app.service
+# 10:02:16 app app.jar[2341]: Starting application...
+# 10:03:01 app app.jar[2341]: Application started in 45s
+
+# ¿Deploy reciente?
+ls -lth /opt/app/ | head -5
+# -rw-r--r-- 1 app_user app_user  85M Mon Apr 14 10:00 app.jar  ← deploy hace 15 min
+```
+
+**Correlación**: deploy a las 10:00, lentitud reportada a las 10:15. La nueva versión consume más memoria.
+
+### Paso 6: Decidir y mitigar
+
+**Opciones**:
+
+1. Rollback inmediato (más seguro)
+2. Reiniciar la app (temporal, no resuelve root cause)
+3. Aumentar RAM (requiere downtime planificado)
+
+**Decisión**: rollback inmediato + análisis post-mortem.
+
+```bash
+# Rollback
+cd /opt/app
+cp app.jar app.jar.broken
+cp app.jar.2025-04-07 app.jar  # versión anterior
+systemctl restart app
+
+# Verificar
+free -h
+# Swap: 2.0Gi  800Mi  1.2Gi  ← swap bajó de 1.8Gi a 800Mi
+curl -w "%{time_total}\n" -o /dev/null -s https://app.empresa.com
+# 0.342 segundos  ← volvió a normal
+```
+
+### Paso 7: Verificar y documentar
+
+```bash
+# ¿El síntoma desapareció?
+# ✅ App responde en <500ms
+# ✅ Swap bajó a 800MB
+# ✅ CPU idle >90%
+
+# Documentar para el post-mortem
+echo "$(date): Deploy 2025-04-14 causó memory leak. Rollback a versión 2025-04-07. Root cause: nueva versión consume 11GB vs 6GB anterior." >> /var/log/incidents.log
+```
+
+### Lecciones del caso
+
+1. **No asumas**: el primer impulso fue "es la base de datos". Si hubieras reiniciado PostgreSQL sin diagnosticar, habrías perdido tiempo y no resuelto el problema.
+
+2. **Reduce sistemáticamente**: cada comando descartó una capa (red → puerto → servicio → recursos → causa raíz).
+
+3. **Correlaciona con cambios**: el deploy fue la pista clave. Sin `journalctl` o `ls -lth`, habrías tardado más en encontrar la causa.
+
+4. **Rollback primero, diagnóstico después**: cuando hay correlación temporal fuerte, revertir es más seguro que debuggear en producción.
+
+5. **Documenta**: el próximo incidente puede ser idéntico. Tener el log ayuda a detectar patrones.
 
 ---
 
