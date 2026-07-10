@@ -16,7 +16,7 @@ Sistema de aprendizaje para **administración de servidores Linux y redes**: gu�
 | 🚨 [Escenarios](scenarios/) | 57 |
 | 🧪 [Entornos Docker](labs/) | 14 |
 | 🧠 [Conceptos](concepts/) | 15 |
-| 📚 [Referencias rápidas](reference/) | 6 |
+| 📚 [Referencias rápidas](reference/) | 12 |
 | 🎯 [Proyecto integrador](scenarios/infrastructure/07-integrative-project.md) | 1 |
 
 ---
