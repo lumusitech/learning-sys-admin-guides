@@ -12,7 +12,7 @@
 
 # 🐧 sys-admin-guides
 
-Colección completa de guías de referencia para administración de servidores Linux y redes. **61 guías** (más 7 subguías especializadas en [dahua/](dahua/)) que cubren cada herramienta desde lo más básico hasta escenarios profesionales, explicando cada opción y la interpretación de salidas en contextos de éxito, falla y ataque.
+Colección completa de guías de referencia para administración de servidores Linux y redes. **62 guías** (más 7 subguías especializadas en [dahua/](dahua/)) que cubren cada herramienta desde lo más básico hasta escenarios profesionales, explicando cada opción y la interpretación de salidas en contextos de éxito, falla y ataque.
 
 ---
 
@@ -133,6 +133,7 @@ entender → aprender → practicar → aplicar
 | Guía | Nivel | Descripción |
 |------|-------|-------------|
 | [`pacman.md`](pacman.md) | 🟡 Intermedio | Gestor de paquetes de Arch Linux. Sincronización, dependencias, repos locales/remotos, verificaciones, yay/AUR |
+| [`apt.md`](apt.md) | 🟢 Básico | Gestor de paquetes de Debian/Ubuntu. apt + dpkg, dependencias rotas, repos locales/remotos, checksums |
 
 ### Alpine Linux
 

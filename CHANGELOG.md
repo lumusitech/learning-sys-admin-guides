@@ -10,8 +10,9 @@ Todas las versiones notables de sys-admin-guides.
 
 - `guides/pacman.md` — pacman (Arch Linux): sintaxis, dependencias, repos locales/remotos, bases de datos locales, checksums y firmas PGP, yay/AUR
 - `guides/docker_debug_container.md` — contenedores efímeros de diagnóstico (netshoot, `--net=host`, `--pid=host`)
+- `guides/apt.md` — apt/dpkg (Debian/Ubuntu): dependencias rotas, repos locales/remotos, bases de datos locales, checksums
 
-**Stats:** 61 guías · 57 escenarios · 14 conceptos · 14 labs · 12 referencias
+**Stats:** 62 guías · 57 escenarios · 14 conceptos · 14 labs · 12 referencias
 
 ---
 
