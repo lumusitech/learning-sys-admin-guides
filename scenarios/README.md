@@ -80,7 +80,7 @@ Niveles: 🟡 Intermedio · 🔴 Avanzado
 
 ## 🧪 Laboratorio Docker
 
-Usá los entornos Docker en [`labs/`](../labs/) para practicar. Hay **15 entornos** según el tipo de práctica:
+Usá los entornos Docker en [`labs/`](../labs/) para practicar. Hay **16 entornos** según el tipo de práctica:
 
 | Archivo | Para qué |
 |---------|----------|
@@ -96,6 +96,7 @@ Usá los entornos Docker en [`labs/`](../labs/) para practicar. Hay **15 entorno
 | `docker-compose.web-websocket.yml` | WebSocket timeout |
 | `docker-compose.docker.yml` | Docker crash loop, OOM, resource limits |
 | `docker-compose.system-packages.yml` | Dependencias de paquetes rotas (Debian + Alpine) |
+| `docker-compose.system-aur.yml` | AUR con yay: compilar desde AUR e instalar paquetes reales |
 | `docker-compose.dahua.yml` | Cámaras Dahua simuladas (API CGI, RTSP, NVR) |
 | `docker-compose.integrative.yml` | Proyecto integrador (PYME completa) |
 | `docker-compose.monitoring.yml` | Prometheus + node_exporter + Grafana para monitoreo |

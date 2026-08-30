@@ -1,0 +1,17 @@
+# Laboratorio: AUR con yay — Práctica de paquetes desde AUR
+# Uso: docker compose -f docker-compose.system-aur.yml up -d --build
+# La imagen compila yay desde AUR una sola vez (docker compose build).
+
+services:
+
+  pkg-aur:
+    build: ./system-aur
+    container_name: pkg-aur
+    hostname: pkg-aur
+    command: sleep infinity
+    networks:
+      - lab-aur
+
+networks:
+  lab-aur:
+    driver: bridge
