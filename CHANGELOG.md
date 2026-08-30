@@ -13,6 +13,7 @@ Todas las versiones notables de sys-admin-guides.
 - `guides/pacman.md` — caso "el gestor se rompe a sí mismo" (libcurl): recuperación con `bsdtar` desde la caché
 - `guides/pacman.md` — sección práctica de yay/AUR: instalar yay desde AUR (makepkg, usuario de build no-root) validado en contenedor
 - `guides/docker_debug_container.md` — walkthrough práctico de `nsenter` (CAP_SYS_ADMIN, entrar al netns de un proceso real)
+- `reference/package-managers.md` — nota AUR (no es un repo con índices) + fila "el gestor se rompe a sí mismo" (bsdtar)
 
 **Stats:** 63 guías · 58 escenarios · 14 conceptos · 15 labs · 12 referencias
 
