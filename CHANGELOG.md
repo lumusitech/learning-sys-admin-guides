@@ -12,7 +12,12 @@ Todas las versiones notables de sys-admin-guides.
 - `guides/docker_debug_container.md` — contenedores efímeros de diagnóstico (netshoot, `--net=host`, `--pid=host`)
 - `guides/apt.md` — apt/dpkg (Debian/Ubuntu): dependencias rotas, repos locales/remotos, bases de datos locales, checksums
 
-**Stats:** 62 guías · 57 escenarios · 14 conceptos · 14 labs · 12 referencias
+### Escenario y laboratorio
+
+- `scenarios/system/16-package-dependencies-broken.md` — runbook de dependencias de paquetes rotas (ldd, dpkg -V, apk audit, debsums)
+- `labs/docker-compose.system-packages.yml` — laboratorio Debian + Alpine con librerías eliminadas
+
+**Stats:** 62 guías · 58 escenarios · 14 conceptos · 15 labs · 12 referencias
 
 ---
 

@@ -1,0 +1,49 @@
+# Laboratorio: Paquetes con dependencias rotas — Práctica de reparación
+# Uso: docker compose -f docker-compose.system-packages.yml up -d
+# Cada servicio tiene un paquete con una librería compartida eliminada.
+# Tarea: detectar con ldd/dpkg -V/apk audit, reparar reinstalando el paquete.
+
+services:
+
+  # === 1. DEBIAN — curl SIN libssl ===
+  # Problema: /usr/lib/x86_64-linux-gnu/libssl.so.3 fue eliminada
+  # Tarea: ldd detecta "not found", dpkg -V marca el checksum, reinstalar
+  pkg-debian:
+    image: debian:12
+    container_name: pkg-debian
+    hostname: pkg-debian
+    command: >
+      sh -c "
+        apt-get update -qq &&
+        apt-get install -y -qq curl &&
+        rm /usr/lib/x86_64-linux-gnu/libssl.so.3 &&
+        echo '=== Paquete roto en Debian: curl sin libssl ===' &&
+        echo 'Prueba: ldd /usr/bin/curl | grep not.found' &&
+        echo 'Solucion: apt install --reinstall curl' &&
+        tail -f /dev/null
+      "
+    networks:
+      - lab-packages
+
+  # === 2. ALPINE — curl SIN libcurl ===
+  # Problema: /usr/lib/libcurl.so.4 fue eliminada
+  # Tarea: ldd (musl) reporta "Error loading shared library", reinstalar con apk del + apk add
+  pkg-alpine:
+    image: alpine:3.19
+    container_name: pkg-alpine
+    hostname: pkg-alpine
+    command: >
+      sh -c "
+        apk add --no-cache curl &&
+        rm /usr/lib/libcurl.so.4 &&
+        echo '=== Paquete roto en Alpine: curl sin libcurl ===' &&
+        echo 'Prueba: ldd /usr/bin/curl 2>&1 | grep -i error.loading' &&
+        echo 'Solucion: apk del curl && apk add curl' &&
+        tail -f /dev/null
+      "
+    networks:
+      - lab-packages
+
+networks:
+  lab-packages:
+    driver: bridge

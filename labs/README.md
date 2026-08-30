@@ -55,6 +55,7 @@ docker compose version  # o docker-compose
 | `docker compose -f docker-compose.web-cors.yml up -d` | CORS bloqueado (frontend + API sin headers) |
 | `docker compose -f docker-compose.web-websocket.yml up -d` | WebSocket timeout (proxy sin configuración) |
 | `docker compose -f docker-compose.docker.yml up -d` | Docker crash loop, OOM, resource limits |
+| `docker compose -f docker-compose.system-packages.yml up -d` | Dependencias de paquetes rotas (curl sin librerías) |
 | `docker compose -f docker-compose.integrative.yml up -d --build` | Proyecto integrador (PYME completa) |
 
 > **Importante**: Usa `-f` para elegir el archivo. Si no pones `-f`, usa el `docker-compose.yml` por defecto (el original).
@@ -711,6 +712,59 @@ docker compose -f docker-compose.integrative.yml up -d --build
 ### Fases del proyecto
 
 Ver [`scenarios/infrastructure/07-integrative-project.md`](../scenarios/infrastructure/07-integrative-project.md)
+
+---
+
+## 13. Paquetes rotos (`docker-compose.system-packages.yml`)
+
+Dos contenedores con paquetes que perdieron una librería compartida: `curl` sin `libssl` (Debian) y sin `libcurl` (Alpine). El binario está instalado pero no arranca.
+
+```bash
+docker compose -f docker-compose.system-packages.yml up -d
+```
+
+### Servicios
+
+| Servicio | Problema simulado | Escenario relacionado |
+|----------|-------------------|----------------------|
+| `pkg-debian` | Debian 12: `libssl.so.3` eliminada → curl roto | 16-package-dependencies-broken |
+| `pkg-alpine` | Alpine 3.19: `libcurl.so.4` eliminada → curl roto | 16-package-dependencies-broken |
+
+### Ejemplo: diagnosticar y reparar
+
+```bash
+# 1. Confirmar el síntoma
+docker exec -it pkg-debian sh
+curl -v https://example.com
+# curl: error while loading shared libraries: libssl.so.3: cannot open shared object file
+
+# 2. Identificar la librería faltante
+ldd /usr/bin/curl | grep "not found"
+# libssl.so.3 => not found
+
+# 3. Verificar integridad del paquete
+dpkg -V curl libssl3
+
+# 4. Reparar reinstalando el paquete
+apt install --reinstall -y curl libssl3
+
+# 5. Verificar
+ldd /usr/bin/curl | grep "not found"   # sin salida = OK
+curl -v https://example.com
+```
+
+Para Alpine:
+
+```bash
+docker exec -it pkg-alpine sh
+ldd /usr/bin/curl 2>&1 | grep -i "error loading"   # musl: "Error loading shared library libcurl.so.4"
+apk del curl && apk add curl     # reinstalar limpio (restaura archivos)
+ldd /usr/bin/curl 2>&1 | grep -i "error loading"   # sin salida = OK
+```
+
+> Nota: `apk fix` repara transacciones interrumpidas, pero no restaura archivos borrados a mano: reinstalar con `apk del` + `apk add`.
+
+Ver [`scenarios/system/16-package-dependencies-broken.md`](../scenarios/system/16-package-dependencies-broken.md) para el runbook completo.
 
 ---
 

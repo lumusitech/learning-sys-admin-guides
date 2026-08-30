@@ -46,9 +46,9 @@ Cámaras IP, NVR, configuración masiva.
 
 Niveles: 🟡 Intermedio · 🔴 Avanzado
 
-### [🖥️ system/](system/) — 15 escenarios
+### [🖥️ system/](system/) — 16 escenarios
 
-Procesos, memoria, disco, I/O, logs, cron, provisioning, context switches, fork bombs, zombies, Docker troubleshooting, config drift.
+Procesos, memoria, disco, I/O, logs, cron, provisioning, context switches, fork bombs, zombies, Docker troubleshooting, config drift, dependencias de paquetes rotas.
 
 Niveles: 🟢 Básico · 🟡 Intermedio · 🔴 Avanzado
 
@@ -80,7 +80,7 @@ Niveles: 🟡 Intermedio · 🔴 Avanzado
 
 ## 🧪 Laboratorio Docker
 
-Usá los entornos Docker en [`labs/`](../labs/) para practicar. Hay **14 entornos** según el tipo de práctica:
+Usá los entornos Docker en [`labs/`](../labs/) para practicar. Hay **15 entornos** según el tipo de práctica:
 
 | Archivo | Para qué |
 |---------|----------|
@@ -95,6 +95,7 @@ Usá los entornos Docker en [`labs/`](../labs/) para practicar. Hay **14 entorno
 | `docker-compose.web-cors.yml` | CORS bloqueado (frontend + API) |
 | `docker-compose.web-websocket.yml` | WebSocket timeout |
 | `docker-compose.docker.yml` | Docker crash loop, OOM, resource limits |
+| `docker-compose.system-packages.yml` | Dependencias de paquetes rotas (Debian + Alpine) |
 | `docker-compose.dahua.yml` | Cámaras Dahua simuladas (API CGI, RTSP, NVR) |
 | `docker-compose.integrative.yml` | Proyecto integrador (PYME completa) |
 | `docker-compose.monitoring.yml` | Prometheus + node_exporter + Grafana para monitoreo |
