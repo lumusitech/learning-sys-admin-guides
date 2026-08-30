@@ -62,6 +62,9 @@ entender → aprender → practicar → aplicar
 - PR #83: `guides/pacman.md` — caso "el gestor se rompe a sí mismo" (libcurl → recuperación con `bsdtar` desde caché)
 - PR #84: `guides/pacman.md` — sección práctica yay/AUR (instalar yay desde AUR con makepkg, usuario de build no-root)
 - PR #85: `guides/docker_debug_container.md` — walkthrough práctico de `nsenter` contra un servicio real (requiere `CAP_SYS_ADMIN`)
+- PR #87: `reference/package-managers.md` — AUR no es un repo con índices + fila "gestor se rompe a sí mismo" (bsdtar)
+- PR #88: `labs/docker-compose.system-aur.yml` + `labs/system-aur/Dockerfile` — lab AUR (yay compilado desde AUR, paquete real) → 16 labs
+- PR #89: `guides/docker.md` — cross-link a nsenter/docker_debug_container
 
 ## 🔄 Última sesión (jul-2026)
 
