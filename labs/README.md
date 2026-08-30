@@ -56,6 +56,7 @@ docker compose version  # o docker-compose
 | `docker compose -f docker-compose.web-websocket.yml up -d` | WebSocket timeout (proxy sin configuración) |
 | `docker compose -f docker-compose.docker.yml up -d` | Docker crash loop, OOM, resource limits |
 | `docker compose -f docker-compose.system-packages.yml up -d` | Dependencias de paquetes rotas (curl sin librerías) |
+| `docker compose -f docker-compose.system-aur.yml up -d --build` | AUR con yay: compilar yay desde AUR e instalar un paquete real |
 | `docker compose -f docker-compose.integrative.yml up -d --build` | Proyecto integrador (PYME completa) |
 
 > **Importante**: Usa `-f` para elegir el archivo. Si no pones `-f`, usa el `docker-compose.yml` por defecto (el original).
@@ -781,6 +782,44 @@ ldd /usr/bin/curl | grep "not found"   # sin salida = OK
 > OJO: borrar `libcurl.so.4` rompe pacman mismo (depende de libcurl): el gestor no puede repararse solo; la recuperación es desde la caché con `bsdtar`. La imagen `archlinux:latest` descarga índices al arrancar (`pacman -Sy`): el primer `up` tarda unos segundos extra.
 
 Ver [`scenarios/system/16-package-dependencies-broken.md`](../scenarios/system/16-package-dependencies-broken.md) para el runbook completo.
+
+---
+
+## 14. AUR con yay (`docker-compose.system-aur.yml`)
+
+Imagen Arch Linux con **yay compilado desde AUR** (su propio PKGBUILD) y un paquete AUR real instalado (`pipes.sh`). El build ocurre una sola vez; el arranque posterior es inmediato.
+
+```bash
+docker compose -f docker-compose.system-aur.yml up -d --build
+```
+
+### Servicios
+
+| Servicio | Contenido | Práctica |
+|----------|-----------|----------|
+| `pkg-aur` | Arch + yay (13.x, desde AUR) + pipes.sh (AUR) | yay -Ss/-Si/-Qm, makepkg, paquetes AUR |
+
+### Ejemplo: consultar e identificar paquetes AUR
+
+```bash
+docker exec -it pkg-aur su - builder
+
+yay -Ss "git-credential"        # buscar en repos + AUR (resultados con prefijo aur/)
+yay -Si pipes.sh                # info remota: Repository: aur, Version, Popularity
+yay -Qm                         # instalados que NO vienen de repos oficiales (AUR)
+```
+
+`pkg-aur` ya tiene `yay` y `pipes.sh` instalados: los paquetes de AUR se ven con `yay -Qm`, confirmando que no son de los repos oficiales. Para probar el binario: `TERM=xterm pipes.sh` (necesita un terminal).
+
+### Ejemplo: instalar otro paquete AUR desde el lab
+
+```bash
+docker exec -it pkg-aur su - builder
+yay -Ss <termino>          # encontrar el paquete
+yay -S <paquete>           # yay lo compila con makepkg y lo instala
+```
+
+> ⚠️ El build de `pkg-aur` descarga `git base-devel go` y compila yay: la primera vez tarda unos minutos. Usar `--build` solo si se cambió el Dockerfile.
 
 ---
 
