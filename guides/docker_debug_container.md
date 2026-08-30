@@ -233,6 +233,6 @@ docker run --rm -it --net=host --pid=host alpine sh              # espejo del si
 ## 🔗 Referencias internas
 
 - [`docker`](docker.md) — diagnóstico de contenedores Docker
-- [`apt`](apt.md) — alternativa a instalar paquetes en el host
+- guía `apt` — alternativa a instalar paquetes en el host
 - [`kubectl`](kubectl.md) — pod de diagnóstico `netshoot` dentro de Kubernetes
 - [`scenario`](../scenarios/system/14-docker-troubleshooting.md) — troubleshooting de contenedores
