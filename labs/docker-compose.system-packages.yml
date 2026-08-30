@@ -44,6 +44,27 @@ services:
     networks:
       - lab-packages
 
+# === 3. ARCH — curl SIN libcurl ===
+  # Problema: /usr/lib/libcurl.so.4 fue eliminada
+  # Tarea: ldd imprime "not found" y pacman TAMBIÉN se rompe (depende de libcurl)
+  # Solucion: bsdtar -xpf /var/cache/pacman/pkg/curl-*.pkg.tar.zst -C /
+  pkg-arch:
+    image: archlinux:latest
+    container_name: pkg-arch
+    hostname: pkg-arch
+    command: >
+      sh -c "
+        pacman -Sy --noconfirm curl >/dev/null 2>&1 &&
+        rm /usr/lib/libcurl.so.4 &&
+        echo '=== Paquete roto en Arch: curl sin libcurl ===' &&
+        echo 'Prueba: ldd /usr/bin/curl | grep not.found' &&
+        echo 'OJO: pacman tambien falla (depende de libcurl)' &&
+        echo 'Solucion: bsdtar -xpf /var/cache/pacman/pkg/curl-*.pkg.tar.zst -C /' &&
+        tail -f /dev/null
+      "
+    networks:
+      - lab-packages
+
 networks:
   lab-packages:
     driver: bridge

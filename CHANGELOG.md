@@ -7,6 +7,8 @@ Todas las versiones notables de sys-admin-guides.
 ## v0.14.1 — 2026-08-30
 
 - `guides/dnf.md` — dnf/yum + rpm (RHEL/Fedora): repos locales/remotos, rpmdb, historial de transacciones, verificaciones
+- `labs/docker-compose.system-packages.yml` — nuevo servicio `pkg-arch` (Arch Linux, misma falla con pacman)
+- `scenarios/system/16-package-dependencies-broken.md` — variante Arch Linux (pacman -Qo/-Qkk/reinstall)
 
 **Stats:** 63 guías · 58 escenarios · 14 conceptos · 15 labs · 12 referencias
 
