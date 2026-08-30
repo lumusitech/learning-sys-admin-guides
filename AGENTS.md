@@ -59,6 +59,9 @@ entender → aprender → practicar → aplicar
 - PR #79: `guides/dnf.md` — dnf/yum + rpm (RHEL/Fedora)
 - PR #80: escenario 16 + lab: variante Arch Linux (pacman se rompe a sí mismo → recuperación con `bsdtar` desde caché)
 - PR #81: `guides/apk.md` — precisión: `apk audit`/`apk fix` no restauran archivos borrados; nota musl en `ldd`
+- PR #83: `guides/pacman.md` — caso "el gestor se rompe a sí mismo" (libcurl → recuperación con `bsdtar` desde caché)
+- PR #84: `guides/pacman.md` — sección práctica yay/AUR (instalar yay desde AUR con makepkg, usuario de build no-root)
+- PR #85: `guides/docker_debug_container.md` — walkthrough práctico de `nsenter` contra un servicio real (requiere `CAP_SYS_ADMIN`)
 
 ## 🔄 Última sesión (jul-2026)
 
