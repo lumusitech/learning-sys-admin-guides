@@ -729,6 +729,7 @@ docker compose -f docker-compose.system-packages.yml up -d
 |----------|-------------------|----------------------|
 | `pkg-debian` | Debian 12: `libssl.so.3` eliminada → curl roto | 16-package-dependencies-broken |
 | `pkg-alpine` | Alpine 3.19: `libcurl.so.4` eliminada → curl roto | 16-package-dependencies-broken |
+| `pkg-arch` | Arch Linux: `libcurl.so.4` eliminada → curl roto | 16-package-dependencies-broken |
 
 ### Ejemplo: diagnosticar y reparar
 
@@ -763,6 +764,21 @@ ldd /usr/bin/curl 2>&1 | grep -i "error loading"   # sin salida = OK
 ```
 
 > Nota: `apk fix` repara transacciones interrumpidas, pero no restaura archivos borrados a mano: reinstalar con `apk del` + `apk add`.
+
+Para Arch:
+
+```bash
+docker exec -it pkg-arch sh
+ldd /usr/bin/curl | grep "not found"   # glibc: imprime "not found"
+pacman -S curl                         # FALLA: pacman también depende de libcurl
+# Reparar desde la caché de paquetes sin el gestor:
+ls /var/cache/pacman/pkg/ | grep curl
+bsdtar -xpf /var/cache/pacman/pkg/curl-*.pkg.tar.zst -C /
+pacman -Qkk curl                       # 565 total files, 0 altered files
+ldd /usr/bin/curl | grep "not found"   # sin salida = OK
+```
+
+> OJO: borrar `libcurl.so.4` rompe pacman mismo (depende de libcurl): el gestor no puede repararse solo; la recuperación es desde la caché con `bsdtar`. La imagen `archlinux:latest` descarga índices al arrancar (`pacman -Sy`): el primer `up` tarda unos segundos extra.
 
 Ver [`scenarios/system/16-package-dependencies-broken.md`](../scenarios/system/16-package-dependencies-broken.md) para el runbook completo.
 

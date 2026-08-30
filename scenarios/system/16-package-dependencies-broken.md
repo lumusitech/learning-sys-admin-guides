@@ -203,6 +203,41 @@ En Alpine no existe systemctl; los servicios se administran con `rc-service` y `
 
 ---
 
+## 🐧 Variante Arch Linux (pacman)
+
+El lab incluye `pkg-arch` (misma falla con pacman). Arch usa glibc, así que `ldd` imprime `not found` igual que Debian. Pero hay un giro: **en Arch, pacman mismo depende de libcurl**, así que borrar `libcurl.so.4` rompe también al gestor.
+
+```bash
+docker exec -it pkg-arch sh
+ldd /usr/bin/curl | grep "not found"        # libcurl.so.4 => not found
+pacman -S curl                              # FALLA: error while loading shared libraries
+```
+
+No podés reparar con el gestor porque el gestor está roto: hay que restaurar el archivo **desde la caché de paquetes** (`/var/cache/pacman/pkg/`), donde pacman dejó el `.pkg.tar.zst` al instalar:
+
+```bash
+ls /var/cache/pacman/pkg/ | grep curl       # curl-8.21.0-1-x86_64.pkg.tar.zst
+bsdtar -xpf /var/cache/pacman/pkg/curl-*.pkg.tar.zst -C /
+```
+
+Verificar que el gestor y el binario volvieron:
+
+```bash
+ldd /usr/bin/curl | grep "not found"        # sin salida = OK
+pacman -Qkk curl                            # 565 total files, 0 altered files
+pacman -Qo /usr/lib/libcurl.so.4            # owned by curl 8.21.0-1
+curl -s -o /dev/null -w "%{http_code}" https://example.com
+```
+
+Notas:
+
+- `pacman -Qkk` compara checksums contra la BD local (`/var/lib/pacman/local/`) y reporta archivos faltantes o modificados.
+- `bsdtar` viene en la base de Arch (libarchive): extrae el paquete sin necesidad de pacman.
+- Si la caché no tuviera el paquete, la alternativa es descargarlo del mirror con cualquier medio disponible (wget/curl desde otra máquina) y extraerlo igual.
+- Si otro paquete pisa archivos, reinstalar con `pacman -S <paquete> --overwrite '*'`.
+
+---
+
 ## 🔗 Referencias
 
 - [`guides/apt.md`](../../guides/apt.md) — dependencias rotas y checksums en Debian/Ubuntu
