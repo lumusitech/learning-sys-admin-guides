@@ -316,7 +316,7 @@ Para probar una herramienta sin ensuciar el sistema con paquetes, se puede usar 
 docker run --rm -it --net=host --pid=host nicolaka/netshoot
 ```
 
-Es especialmente útil para probar utilidades de red (curl, dig, tcpdump) que no querés instalar en el host. Ver [`docker_debug_container`](docker_debug_container.md) para qué se puede testear y qué solo funciona en el host nativo.
+Es especialmente útil para probar utilidades de red (curl, dig, tcpdump) que no querés instalar en el host. Ver la guía `docker_debug_container` para qué se puede testear y qué solo funciona en el host nativo.
 
 ---
 
@@ -445,7 +445,7 @@ dpkg -V nginx                       # verificar integridad de un paquete
 
 - [`package-managers`](../reference/package-managers.md) — equivalencias entre apt, apk, yum/dnf y pacman
 - [`apk`](apk.md) — gestor de paquetes de Alpine (equivalente minimalista)
-- [`docker_debug_container`](docker_debug_container.md) — probar herramientas sin ensuciar el host
+- guía `docker_debug_container` — probar herramientas sin ensuciar el host
 - [`curl`](curl.md) — descargar paquetes manualmente
 - [`wget`](wget.md) — alternativa a curl para descargas
 - [`tar`](tar.md) — extraer tarballs con fuentes
