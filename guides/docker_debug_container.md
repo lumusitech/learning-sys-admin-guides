@@ -145,14 +145,51 @@ Ideal para: leer configs y logs sin riesgo de modificación.
 
 ### Entrar al namespace de un proceso (`nsenter`)
 
-Con `--pid=host` podés identificar el PID y con `nsenter` entrar a sus namespaces:
+`nsenter` permite meterse en los namespaces de un proceso en ejecución: ver la red, el filesystem o el hostname **desde adentro** de ese proceso. Es el equivalente a "teletransportarse" al contexto del proceso.
+
+**Requisito:** `nsenter` necesita `CAP_SYS_ADMIN` (con `--pid=host` solo se ve el proceso, no se entra a sus namespaces):
 
 ```bash
-nsenter -t <PID> -n sh        # shell dentro de la red de ese proceso
-nsenter -t <PID> -m sh        # shell dentro de su mount namespace
+docker run --rm -it --net=host --pid=host --cap-add=SYS_ADMIN nicolaka/netshoot
 ```
 
-Requiere los privilegios adecuados (`--privileged` o capabilities puntuales). Útil para ver la red "desde adentro" de un proceso.
+**Walkthrough contra un servicio real** (nginx del lab `docker-compose.broken.yml`):
+
+```bash
+# 1. Levantar el servicio y obtener su PID real (visto desde el host)
+docker compose -f labs/docker-compose.broken.yml up -d nginx-broken
+docker inspect --format '{{.State.Pid}}' nginx-broken
+
+# 2. Desde un contenedor de diagnóstico con --pid=host --cap-add=SYS_ADMIN:
+ps aux | grep "nginx: master"        # confirmar el PID también acá
+nsenter -t <PID> -n ip addr          # interfaces DENTRO del netns del proceso
+nsenter -t <PID> -n ss -tuln         # puertos en escucha dentro de su red
+nsenter -t <PID> -m ls /etc/nginx    # ver su filesystem (mount namespace)
+nsenter -t <PID> -u hostname         # ver su hostname (UTS namespace)
+```
+
+Salida clave de `nsenter -t <PID> -n ip addr` contra el contenedor nginx:
+
+```text
+inet 127.0.0.1/8 scope host lo
+inet 172.17.0.2/16 brd 172.17.255.255 scope global eth0
+```
+
+Interpretación:
+
+- Ves la **red del proceso**, no la del host: `eth0` con `172.17.0.2` es la IP del contenedor, invisible desde `--net=host`.
+- `nsenter -t <PID> -n ss -tuln` muestra `0.0.0.0:80` escuchando: es el nginx del contenedor, aunque el debug container esté en la red del host.
+- Útil para: diagnosticar por qué un proceso "no ve" un servicio (están en netns distintos), ver su IP real, o capturar solo su tráfico con `tcpdump` dentro de su red.
+
+| Flag | Namespace que entra |
+|------|---------------------|
+| `-n` | Red (interfaces, rutas, sockets) |
+| `-m` | Mount (filesystem) |
+| `-u` | UTS (hostname) |
+| `-i` | IPC (memoria compartida) |
+| `-p` | PID (procesos visibles) |
+
+Sin `--cap-add=SYS_ADMIN` (o `--privileged`) falla con `nsenter: reassociate to namespaces failed: Operation not permitted`.
 
 ---
 
@@ -214,6 +251,7 @@ docker run --rm -it --net=host --pid=host alpine sh              # espejo del si
 | `ss` no muestra los puertos del host | No usaste `--net=host` | Agregar `--net=host` |
 | `ps` no muestra los procesos del host | No usaste `--pid=host` | Agregar `--pid=host` |
 | `journalctl: No journal files` | No hay systemd en el contenedor | Diagnóstico de logs en el host; o `--pid=host -v /var/log/...` |
+| `nsenter: reassociate to namespaces failed: Operation not permitted` | Falta `CAP_SYS_ADMIN` | `--cap-add=SYS_ADMIN` (o `--privileged`) |
 | `docker: host network requested but not available` | Docker Desktop / WSL2 sin soporte de `--net=host` | Usar `-p` con puertos o ejecutar en una VM/Linux nativo |
 | El contenedor sale al instante | El comando terminó (ej. sin `sh` interactivo) | `-it` + `sh` al final |
 
