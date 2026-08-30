@@ -9,8 +9,9 @@ Todas las versiones notables de sys-admin-guides.
 ### Gestores de paquetes — guías nuevas
 
 - `guides/pacman.md` — pacman (Arch Linux): sintaxis, dependencias, repos locales/remotos, bases de datos locales, checksums y firmas PGP, yay/AUR
+- `guides/docker_debug_container.md` — contenedores efímeros de diagnóstico (netshoot, `--net=host`, `--pid=host`)
 
-**Stats:** 60 guías · 57 escenarios · 14 conceptos · 14 labs · 12 referencias
+**Stats:** 61 guías · 57 escenarios · 14 conceptos · 14 labs · 12 referencias
 
 ---
 

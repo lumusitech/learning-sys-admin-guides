@@ -12,7 +12,7 @@
 
 # 🐧 sys-admin-guides
 
-Colección completa de guías de referencia para administración de servidores Linux y redes. **60 guías** (más 7 subguías especializadas en [dahua/](dahua/)) que cubren cada herramienta desde lo más básico hasta escenarios profesionales, explicando cada opción y la interpretación de salidas en contextos de éxito, falla y ataque.
+Colección completa de guías de referencia para administración de servidores Linux y redes. **61 guías** (más 7 subguías especializadas en [dahua/](dahua/)) que cubren cada herramienta desde lo más básico hasta escenarios profesionales, explicando cada opción y la interpretación de salidas en contextos de éxito, falla y ataque.
 
 ---
 
@@ -95,6 +95,7 @@ entender → aprender → practicar → aplicar
 | [`ssh.md`](ssh.md) | 🟡 Intermedio | Administración remota, hardening, claves, túneles, ProxyJump, automatización |
 | [`systemd.md`](systemd.md) | 🟡 Intermedio | Sistema de init systemd. Unidades, targets, timers, resource control, análisis de arranque |
 | [`docker.md`](docker.md) | 🟡 Intermedio | Diagnóstico de contenedores Docker. Crash loops, OOM, resource limits, networking |
+| [`docker_debug_container.md`](docker_debug_container.md) | 🟢 Básico | Contenedores efímeros de diagnóstico. `--net=host`/`--pid=host`, netshoot, qué testear sin ensuciar el host |
 | [`tmux.md`](tmux.md) | 🟢 Básico | Multiplexor de terminales. Sesiones, ventanas, paneles, persistencia SSH |
 | [`cron.md`](cron.md) | 🟡 Intermedio | Planificador de tareas. Crontab, logs, troubleshooting, systemd timers vs cron |
 | [`kubectl.md`](kubectl.md) | 🟡 Intermedio | Diagnóstico de clusters Kubernetes. Pods, nodos, eventos, logs, recursos, troubleshooting |
