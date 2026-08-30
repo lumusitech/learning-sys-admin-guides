@@ -4,6 +4,16 @@ Todas las versiones notables de sys-admin-guides.
 
 ---
 
+## v0.14.0 — 2026-08-30
+
+### Gestores de paquetes — guías nuevas
+
+- `guides/pacman.md` — pacman (Arch Linux): sintaxis, dependencias, repos locales/remotos, bases de datos locales, checksums y firmas PGP, yay/AUR
+
+**Stats:** 60 guías · 57 escenarios · 14 conceptos · 14 labs · 12 referencias
+
+---
+
 ## v0.12.0 — 2026-07-10
 
 ### Sprint 4 — 8 nuevos escenarios
