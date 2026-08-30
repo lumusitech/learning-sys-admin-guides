@@ -42,12 +42,20 @@ entender → aprender → practicar → aplicar
 
 | Categoría | Cantidad |
 |-----------|:--------:|
-| Guías | 59 |
-| Escenarios | 57 |
-| Entornos Docker (labs) | 14 |
+| Guías | 62 |
+| Escenarios | 58 |
+| Entornos Docker (labs) | 15 |
 | Conceptos | 14 |
 | Referencias rápidas | 12 |
 | Proyecto integrador | 1 |
+
+## 🔄 Última sesión (ago-2026)
+
+- PR #74: `guides/pacman.md` — pacman (Arch) + yay/AUR, BDs locales, checksums y firmas PGP
+- PR #75: `guides/apt.md` — apt/dpkg (Debian), dependencias rotas, repos locales, checksums
+- PR #76: `guides/docker_debug_container.md` — contenedores efímeros (netshoot, `--net=host`/`--pid=host`)
+- PR #77: `scenarios/system/16-package-dependencies-broken.md` + `labs/docker-compose.system-packages.yml`
+- PR #78: `reference/package-managers.md` (pacman, BDs, checksums, repos locales) + `concepts/linux-fhs.md` (7 directorios nuevos)
 
 ## 🔄 Última sesión (jul-2026)
 

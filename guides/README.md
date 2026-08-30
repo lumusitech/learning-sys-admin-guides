@@ -134,12 +134,12 @@ entender → aprender → practicar → aplicar
 |------|-------|-------------|
 | [`pacman.md`](pacman.md) | 🟡 Intermedio | Gestor de paquetes de Arch Linux. Sincronización, dependencias, repos locales/remotos, verificaciones, yay/AUR |
 | [`apt.md`](apt.md) | 🟢 Básico | Gestor de paquetes de Debian/Ubuntu. apt + dpkg, dependencias rotas, repos locales/remotos, checksums |
+| [`apk.md`](apk.md) | 🟢 Básico | Gestor de paquetes de Alpine. Búsqueda, instalación, repositorios, actualización |
 
 ### Alpine Linux
 
 | Guía | Nivel | Descripción |
 |------|-------|-------------|
-| [`apk.md`](apk.md) | 🟢 Básico | Gestor de paquetes de Alpine. Búsqueda, instalación, repositorios, actualización |
 | [`openrc.md`](openrc.md) | 🟡 Intermedio | Sistema de inicio y servicios de Alpine. rc-service, rc-update, runlevels |
 | [`busybox.md`](busybox.md) | 🟢 Básico | Toolchain mínima de Alpine. Comandos integrados, detección de linked binaries |
 
