@@ -450,6 +450,18 @@ docker volume ls -q | xargs docker volume inspect --format '{{.Name}} {{.Mountpo
   awk '{print $1, system("du -sh " $2 " 2>/dev/null")}'
 ```
 
+### docker + nsenter (inspeccionar namespaces de un contenedor)
+
+Desde el host (o un contenedor de diagnóstico con `--pid=host`), `nsenter` entra a los namespaces de un contenedor en ejecución: ver su red, filesystem o hostname "desde adentro":
+
+```bash
+docker inspect --format '{{.State.Pid}}' <contenedor>   # PID real (host)
+nsenter -t <PID> -n ip addr                             # red del contenedor (requiere --cap-add=SYS_ADMIN)
+nsenter -t <PID> -m ls /etc/nginx                       # su filesystem
+```
+
+Ver [`docker_debug_container`](docker_debug_container.md) para el walkthrough completo (namespaces, `--net=host`/`--pid=host`, netshoot).
+
 ---
 
 ## 💡 Uno-liners imprescindibles
@@ -651,3 +663,4 @@ COPY . /app
 - [`labs/docker-compose.docker.yml`](../labs/docker-compose.docker.yml) — laboratorio de Docker troubleshooting
 - [`guides/systemd_journalctl`](systemd_journalctl.md) — gestión de servicios (analogía con Docker)
 - [`guides/production_server`](production_server.md) — Docker en producción
+- [`guides/docker_debug_container`](docker_debug_container.md) — contenedores efímeros de diagnóstico (netshoot, namespaces, nsenter)

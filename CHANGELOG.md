@@ -15,6 +15,7 @@ Todas las versiones notables de sys-admin-guides.
 - `guides/docker_debug_container.md` — walkthrough práctico de `nsenter` (CAP_SYS_ADMIN, entrar al netns de un proceso real)
 - `reference/package-managers.md` — nota AUR (no es un repo con índices) + fila "el gestor se rompe a sí mismo" (bsdtar)
 - `labs/docker-compose.system-aur.yml` + `labs/system-aur/Dockerfile` — lab AUR: yay compilado desde AUR + paquete real instalado
+- `guides/docker.md` — cross-link a `docker_debug_container` (nsenter para inspeccionar namespaces de un contenedor)
 
 **Stats:** 63 guías · 58 escenarios · 14 conceptos · 16 labs · 12 referencias
 
