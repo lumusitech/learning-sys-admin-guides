@@ -17,6 +17,11 @@ Todas las versiones notables de sys-admin-guides.
 - `scenarios/system/16-package-dependencies-broken.md` — runbook de dependencias de paquetes rotas (ldd, dpkg -V, apk audit, debsums)
 - `labs/docker-compose.system-packages.yml` — laboratorio Debian + Alpine con librerías eliminadas
 
+### Referencias y conceptos
+
+- `reference/package-managers.md` — columna pacman, BDs locales, checksums/firmas, repos locales, yay/AUR
+- `concepts/linux-fhs.md` — secciones nuevas: `/usr`, `/var`, `/home`/`/root`, `/opt`, `/boot`, `/run`/`/dev`/`/tmp`/`/mnt`/`/srv`
+
 **Stats:** 62 guías · 58 escenarios · 14 conceptos · 15 labs · 12 referencias
 
 ---

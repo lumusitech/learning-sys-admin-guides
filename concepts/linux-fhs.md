@@ -250,6 +250,161 @@ Cuando ocurre algo inesperado:
 
 ---
 
+## 📁 `/usr` — El software del sistema
+
+### ¿Qué contiene?
+
+`/usr` (Unix System Resources) aloja binarios, librerías y datos del software instalado. Idealmente es de solo lectura: el software no cambia durante el funcionamiento normal.
+
+### Archivos clave
+
+| Ruta | Contiene |
+|------|----------|
+| `/usr/bin` | Binarios principales de los paquetes |
+| `/usr/sbin` | Binarios de administración (en muchas distros, symlink a `/bin`/`/sbin` por usrmerge) |
+| `/usr/lib` | Librerías compartidas (`.so`) |
+| `/usr/share` | Datos independientes de arquitectura: man pages, docs, locales |
+| `/usr/local` | Software compilado o instalado a mano (**no lo gestiona el gestor de paquetes**) |
+| `/usr/src` | Código fuente |
+
+### ⚠️ Lo que NO hacer
+
+- No instalar software en `/usr/local` y esperar que dpkg/rpm/apk/pacman lo conozcan: queda fuera del inventario.
+- No borrar librerías de `/usr/lib` "para liberar espacio": rompés todos los binarios que las usan (`error while loading shared libraries`).
+
+### Relación con herramientas
+
+- `ldd /usr/bin/<binario>` → qué librerías de `/usr/lib` necesita
+- `dpkg -L <paq>` / `pacman -Ql <paq>` / `apk info -L <paq>` → qué archivos de `/usr` instaló un paquete
+- `dpkg -S` / `pacman -Qo` / `apk info --who-owns` → qué paquete instaló un archivo de `/usr`
+
+---
+
+## 📁 `/var` — Los datos variables
+
+### ¿Qué contiene?
+
+`/var` guarda todo lo que cambia en tiempo de ejecución: logs, colas, caches, bases de datos de paquetes y de servicios. Es el directorio que más crece solo.
+
+### Archivos clave
+
+| Ruta | Contiene |
+|------|----------|
+| `/var/log` | Logs del sistema (ver sección dedicada) |
+| `/var/lib` | BDs de paquetes y servicios: `/var/lib/dpkg/`, `/var/lib/pacman/`, `/var/lib/mysql/`, `/var/lib/docker/` |
+| `/var/cache` | Caches de paquetes: `/var/cache/apt/`, `/var/cache/apk/`, `/var/cache/pacman/pkg/` |
+| `/var/spool` | Colas pendientes: cron, mail, print |
+| `/var/tmp` | Temporales que **sí sobreviven al reboot** (a diferencia de `/tmp`) |
+| `/var/backups` | Backups automáticos de configuraciones |
+| `/var/run` | Symlink a `/run` (datos volátiles de runtime) |
+
+### ⚠️ Lo que NO hacer
+
+- No borrar `/var/lib/dpkg/` ni `/var/lib/pacman/` a mano: es el inventario de los gestores de paquetes, sin él no hay reparación posible.
+- No borrar `/var/cache/apt/archives/` indiscriminadamente si querés poder reinstalar sin descargar (en pacman, la caché permite downgrades).
+- No ignorar `/var` lleno: `/var/log` sin rotación y caches acumulados son las causas más comunes.
+
+### Relación con herramientas
+
+- `df -h /var` y `du -sh /var/*` → qué subdirectorio crece
+- `apt clean` / `apk cache clean` / `pacman -Scc` → limpiar caches
+- `logrotate` → evitar que `/var/log` llene el disco
+
+---
+
+## 📁 `/home` y `/root` — Los usuarios
+
+### ¿Qué contiene?
+
+`/home/<usuario>` es el directorio personal de cada usuario; `/root` es el del administrador. Contienen configuraciones de usuario (puntos al inicio), documentos y datos personales.
+
+### Archivos clave
+
+| Ruta | Contiene |
+|------|----------|
+| `/home/<usuario>/.ssh/` | Claves y authorized_keys del usuario |
+| `/home/<usuario>/.bash_history` | Historial de comandos |
+| `/home/<usuario>/.config/` | Configuraciones de aplicaciones |
+| `/root/` | Home del administrador (no es `/home/root`) |
+| `/root/.bash_history` | Historial de comandos de root — clave en incidentes de seguridad |
+
+### ⚠️ Lo que NO hacer
+
+- No confundir `/root` con `/home/root`: romper permisos de `/root` deja al administrador sin login.
+- No ignorar `.bash_history` de root al investigar un incidente: muestra qué ejecutó el atacante.
+
+### Relación con herramientas
+
+- `useradd -m` / `userdel -r` → crear/eliminar homes
+- `ls -la /home/<usuario>` → detectar archivos sospechosos (`.ssh`, historiales, backdoors)
+- `tar` → backups de homes
+
+---
+
+## 📁 `/opt` — El software de terceros
+
+### ¿Qué contiene?
+
+`/opt` aloja software comercial o autocontenido que no sigue el layout estándar del sistema (apps de fabricantes, herramientas empaquetadas con sus propias librerías).
+
+### ⚠️ Lo que NO hacer
+
+- No asumir que el gestor de paquetes lo conoce: se instala/actualiza manualmente.
+- No borrar `/opt/<app>` sin verificar que no esté en uso: apps autocontenidas suelen tener config y datos dentro de su propio directorio.
+
+### Relación con herramientas
+
+- `du -sh /opt/*` → cuánto ocupa cada app
+- `find /opt -name "*.log"` → logs propios de las apps de terceros
+- `tar` → empaquetar una app de `/opt` para migrarla a otra máquina
+
+---
+
+## 📁 `/boot` — El arranque
+
+### ¿Qué contiene?
+
+`/boot` guarda el kernel (`vmlinuz-*`), la initramfs y el bootloader (GRUB). Sin él, el sistema no arranca.
+
+### ⚠️ Lo que NO hacer
+
+- No dejar `/boot` sin espacio: es una partición chica y los updates de kernel la llenan, rompiendo el arranque.
+- No borrar kernels viejos "para liberar espacio" sin revisar qué versión está activa.
+
+### Relación con herramientas
+
+- `uname -r` → kernel en uso; `ls /boot` → kernels instalados
+- `df -h /boot` → espacio antes y después de updates
+- `grub-mkconfig` / `update-grub` → regenerar el menú de arranque
+
+---
+
+## 📁 `/run`, `/dev`, `/tmp`, `/mnt`, `/media`, `/srv` — Runtime y montajes
+
+### ¿Qué contiene?
+
+| Ruta | Contiene |
+|------|----------|
+| `/run` | tmpfs volátil: PIDs, sockets de servicios, locks. **Se pierde al reiniciar** |
+| `/dev` | Archivos de dispositivo, gestionados por udev |
+| `/tmp` | Temporales de cualquier usuario. Se limpia al reiniciar (o antes) |
+| `/mnt`, `/media` | Puntos de montaje manual (`/mnt`) y de medios removibles (`/media`) |
+| `/srv` | Datos servidos por servicios: web, FTP |
+
+### ⚠️ Lo que NO hacer
+
+- No guardar nada importante en `/run` ni `/tmp`: no persisten.
+- No crear archivos de dispositivo en `/dev` a mano: los gestiona udev.
+- No montar en `/mnt` sin pensar: un mount point ocupado enmascara el contenido anterior.
+
+### Relación con herramientas
+
+- `mount` / `umount` → montajes; `df -h` → qué está montado
+- `systemctl` → sockets y PIDs en `/run` de servicios activos
+- `lsblk` → dispositivos de bloque que aparecen en `/dev`/`/sys`
+
+---
+
 ## 🧠 Modelo mental
 
 Pensá en estos directorios como los paneles de instrumentos de un servidor:
@@ -278,3 +433,4 @@ Un sysadmin que conoce el FHS no necesita adivinar: sabe exactamente dónde mira
 - [`scenario`](../scenarios/system/06-disk-full-inodes.md) — troubleshooting de disco lleno por inodos y logs en `/var/log/`
 - [`how-to-think-like-sysadmin`](how-to-think-like-sysadmin.md) — modelo mental de diagnóstico
 - [`baseline-and-anomalies`](baseline-and-anomalies.md) — establecimiento de baseline con métricas de `/proc` y `/sys`
+- [`disk-layout`](../reference/disk-layout.md) — mapa completo de directorios raíz en una tabla

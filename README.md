@@ -12,9 +12,9 @@ Sistema de aprendizaje para **administración de servidores Linux y redes**: gu�
 
 | Categoría | Cantidad |
 |-----------|:--------:|
-| 🛠️ [Guías](guides/) | 59 |
-| 🚨 [Escenarios](scenarios/) | 57 |
-| 🧪 [Entornos Docker](labs/) | 14 |
+| 🛠️ [Guías](guides/) | 62 |
+| 🚨 [Escenarios](scenarios/) | 58 |
+| 🧪 [Entornos Docker](labs/) | 15 |
 | 🧠 [Conceptos](concepts/) | 14 |
 | 📚 [Referencias rápidas](reference/) | 12 |
 | 🎯 [Proyecto integrador](scenarios/infrastructure/07-integrative-project.md) | 1 |
