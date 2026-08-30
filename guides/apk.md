@@ -2,7 +2,7 @@
 
 **Nivel:** 🟢 Básico
 **Archivos de práctica:** Sistema en vivo (Alpine Linux)
-**Ver escenarios relacionados:** [`system/03-new-server-provisioning`](../scenarios/system/03-new-server-provisioning.md), [`infrastructure/01-migrate-to-production`](../scenarios/infrastructure/01-migrate-to-production.md)
+**Ver escenarios relacionados:** [`system/03-new-server-provisioning`](../scenarios/system/03-new-server-provisioning.md), [`infrastructure/01-migrate-to-production`](../scenarios/infrastructure/01-migrate-to-production.md), [`system/16-package-dependencies-broken`](../scenarios/system/16-package-dependencies-broken.md)
 
 ---
 
@@ -222,6 +222,21 @@ apk audit                  # Verificar archivos modificados respecto al paquete 
 apk audit --backup         # Archivos de configuración modificados
 apk audit --recursive      # Incluir dependencias
 ```
+
+> ⚠️ `apk audit` no detecta archivos **borrados a mano**: compara contra la base de datos de apk, pero un `rm` posterior a la instalación no se refleja. Para detectar librerías faltantes, usar `ldd` (en musl reporta `Error loading shared library <lib>`, no `not found` como glibc).
+
+### Archivos borrados a mano
+
+Si un binario falla por una librería eliminada (`error while loading shared libraries`):
+
+```bash
+ldd /usr/bin/<binario> 2>&1 | grep -i "error loading"   # qué librería falta (musl)
+apk info -R <paquete>                                    # dependencias del paquete
+apk info -L <paquete-propietario>                        # archivos del paquete
+apk del <paquete> && apk add <paquete>                   # reinstalar limpio (restaura archivos)
+```
+
+> ⚠️ `apk fix` repara transacciones interrumpidas (estados rotos en la base de datos), pero **no restaura archivos borrados a mano**: para eso hay que reinstalar el paquete con `apk del` + `apk add`.
 
 ---
 
