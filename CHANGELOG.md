@@ -11,6 +11,7 @@ Todas las versiones notables de sys-admin-guides.
 - `scenarios/system/16-package-dependencies-broken.md` — variante Arch Linux (pacman -Qo/-Qkk/reinstall)
 - `guides/apk.md` — precisión: `apk audit` no detecta archivos borrados; `apk fix` no los restaura (reinstalar con `apk del` + `apk add`); nota musl en `ldd`
 - `guides/pacman.md` — caso "el gestor se rompe a sí mismo" (libcurl): recuperación con `bsdtar` desde la caché
+- `guides/pacman.md` — sección práctica de yay/AUR: instalar yay desde AUR (makepkg, usuario de build no-root) validado en contenedor
 
 **Stats:** 63 guías · 58 escenarios · 14 conceptos · 15 labs · 12 referencias
 

@@ -335,6 +335,38 @@ Detalles:
 
 > ⚠️ Seguridad AUR: cualquiera puede publicar un PKGBUILD. Leerlo antes de instalar (`yay -G`) y preferir paquetes con buena reputación y mantenimiento.
 
+### Practicá yay/AUR (instalar yay desde AUR)
+
+yay no está en los repos oficiales: se instala compilando su PKGBUILD con `makepkg`. Flujo completo validado:
+
+```bash
+# 1. Dependencias de build (yay está escrito en Go)
+pacman -S --needed --noconfirm git base-devel go
+
+# 2. Crear un usuario de build: makepkg NO corre como root
+useradd -m builder
+echo "builder ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/builder
+
+# 3. Clonar el PKGBUILD de yay y compilarlo como builder
+git clone https://aur.archlinux.org/yay.git
+chown -R builder:builder yay
+cd yay && su builder -c "makepkg -si --noconfirm"
+```
+
+Verificar que quedó instalado y probar las consultas AUR (siempre como usuario normal, no root):
+
+```bash
+yay --version
+yay -Ss google-chrome     # busca en AUR (resultados con prefijo aur/)
+yay -Si google-chrome     # info remota: Repository: aur, Version, Popularity
+```
+
+Notas:
+
+- `makepkg -si` necesita sudo sin password para instalar las dependencias de build y el paquete resultante.
+- `makepkg` verifica los `sha256sums=` del PKGBUILD contra las fuentes descargadas antes de compilar.
+- yay advierte con `Avoid running yay as root/sudo`: los builds de AUR no se hacen como root.
+
 ---
 
 ## 🔍 Uso en troubleshooting
