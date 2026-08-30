@@ -42,7 +42,7 @@ entender → aprender → practicar → aplicar
 
 | Categoría | Cantidad |
 |-----------|:--------:|
-| Guías | 62 |
+| Guías | 63 |
 | Escenarios | 58 |
 | Entornos Docker (labs) | 15 |
 | Conceptos | 14 |
@@ -56,6 +56,9 @@ entender → aprender → practicar → aplicar
 - PR #76: `guides/docker_debug_container.md` — contenedores efímeros (netshoot, `--net=host`/`--pid=host`)
 - PR #77: `scenarios/system/16-package-dependencies-broken.md` + `labs/docker-compose.system-packages.yml`
 - PR #78: `reference/package-managers.md` (pacman, BDs, checksums, repos locales) + `concepts/linux-fhs.md` (7 directorios nuevos)
+- PR #79: `guides/dnf.md` — dnf/yum + rpm (RHEL/Fedora)
+- PR #80: escenario 16 + lab: variante Arch Linux (pacman se rompe a sí mismo → recuperación con `bsdtar` desde caché)
+- PR #81: `guides/apk.md` — precisión: `apk audit`/`apk fix` no restauran archivos borrados; nota musl en `ldd`
 
 ## 🔄 Última sesión (jul-2026)
 

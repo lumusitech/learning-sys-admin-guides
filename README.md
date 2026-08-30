@@ -12,7 +12,7 @@ Sistema de aprendizaje para **administración de servidores Linux y redes**: gu�
 
 | Categoría | Cantidad |
 |-----------|:--------:|
-| 🛠️ [Guías](guides/) | 62 |
+| 🛠️ [Guías](guides/) | 63 |
 | 🚨 [Escenarios](scenarios/) | 58 |
 | 🧪 [Entornos Docker](labs/) | 15 |
 | 🧠 [Conceptos](concepts/) | 14 |
