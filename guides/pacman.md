@@ -2,7 +2,7 @@
 
 **Nivel:** 🟡 Intermedio
 **Archivos de práctica:** Sistema Arch Linux en vivo
-**Ver escenarios relacionados:** [`system/03-new-server-provisioning`](../scenarios/system/03-new-server-provisioning.md), [`infrastructure/02-build-pyme-infrastructure`](../scenarios/infrastructure/02-build-pyme-infrastructure.md)
+**Ver escenarios relacionados:** [`system/03-new-server-provisioning`](../scenarios/system/03-new-server-provisioning.md), [`infrastructure/02-build-pyme-infrastructure`](../scenarios/infrastructure/02-build-pyme-infrastructure.md), [`system/16-package-dependencies-broken`](../scenarios/system/16-package-dependencies-broken.md)
 
 ---
 
@@ -383,6 +383,25 @@ grep -v '^#' /etc/pacman.conf | grep -E '^\[|Include'   # repos habilitados
 timedatectl          # verificar que la hora del sistema sea correcta
 pacman-key --refresh-keys
 ```
+
+### 7. El gestor se rompe a sí mismo
+
+pacman usa `libcurl` para descargar: si una librería de la que depende el propio gestor desaparece (borrada a mano o por corrupción), **pacman deja de funcionar** y no puede repararse solo:
+
+```bash
+pacman -S curl
+# pacman: error while loading shared libraries: libcurl.so.4: cannot open shared object file
+```
+
+La recuperación es **desde la caché de paquetes** (`/var/cache/pacman/pkg/`), donde pacman deja los `.pkg.tar.zst` descargados. Con `bsdtar` (viene en la base de Arch, libarchive) se extrae el paquete sin necesidad de pacman:
+
+```bash
+ls /var/cache/pacman/pkg/ | grep curl       # curl-8.21.0-1-x86_64.pkg.tar.zst
+bsdtar -xpf /var/cache/pacman/pkg/curl-*.pkg.tar.zst -C /
+pacman -Qkk curl                            # verificar que todo quedó íntegro
+```
+
+> Moraleja: no vaciar la caché (`pacman -Scc`) si no hay otra fuente de paquetes: es la red de seguridad cuando el gestor se rompe. Ver [`scenario`](../scenarios/system/16-package-dependencies-broken.md) para el runbook completo con las tres distros.
 
 ---
 
