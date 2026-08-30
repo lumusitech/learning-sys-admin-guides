@@ -108,6 +108,8 @@ No borrar estas rutas a mano: rompen el inventario del gestor y el sistema deja 
 
 Los paquetes de AUR se compilan con `makepkg` desde un PKGBUILD: se verifica el checksum declarado (`sha256sums=`) antes de compilar. ⚠️ Leer el PKGBUILD antes de instalar: cualquiera puede publicar en AUR.
 
+> Nota: AUR **no es un repo con índices** como los de pacman (`/var/lib/pacman/sync/`): es una colección de PKGBUILDs que yay consulta por RPC y compila con makepkg. Para instalaciones offline o locales se usa `pacman -U ./archivo.pkg.tar.zst` o un repo propio con `Server = file:///` en `pacman.conf`.
+
 ---
 
 ## ⚠️ Errores comunes en troubleshooting
@@ -122,8 +124,9 @@ Los paquetes de AUR se compilan con `makepkg` desde un PKGBUILD: se verifica el 
 | `error: target not found: <paq>` (pacman) | Paquete inexistente o repo no habilitado | `pacman -Ss <paq>`; verificar `pacman.conf` |
 | `unable to lock database` (pacman) | `/var/lib/pacman/db.lck` presente | Verificar que no haya pacman activo y borrar el lock |
 | `invalid or corrupted package (PGP signature)` (pacman) | Firma inválida: hora o claves viejas | `timedatectl`; `pacman-key --refresh-keys` |
+| `pacman: error while loading shared libraries` (pacman) | Librería de la que depende pacman borrada: el gestor se rompe a sí mismo | `bsdtar -xpf /var/cache/pacman/pkg/<paq>-*.pkg.tar.zst -C /` |
 | `No package available` (yum) | Repo no configurado o EPEL no instalado | `yum install epel-release` |
-| Dependencias rotas | Paquete de fuente externa o versión incompatible | `apt --fix-broken install` / `apk fix` / `pacman -S <paq>` |
+| Dependencias rotas | Paquete de fuente externa o versión incompatible | `apt --fix-broken install` / `apk del && apk add` / `pacman -S <paq>` |
 | `/var/cache/apt/archives/` lleno | Caché acumulada | `apt clean` o `apt autoclean` |
 
 ---
