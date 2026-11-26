@@ -154,6 +154,7 @@ diff /tmp/orig_files.txt /tmp/backup_files.txt
 - [`rsync`](../../guides/rsync.md) — creación de backups incrementales
 - [`tar`](../../guides/tar.md) — archivado y compresión
 - [`find`](../../guides/find.md) — verificación de archivos
+- [`diff`](../../guides/diff.md) — verificar que el backup coincide con el origen
 - [`du`](../../guides/du.md) — comparación de tamaños
 - [`cron`](../../guides/cron.md) — programación de backups y drills
 - [`scenario`](03-disaster-recovery.md) — recuperación desde backup en emergencia

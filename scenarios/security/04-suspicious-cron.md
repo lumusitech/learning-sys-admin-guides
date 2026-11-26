@@ -198,6 +198,7 @@ Casos comunes:
 
 - [`find`](../../guides/find.md) — búsqueda de archivos
 - [`grep`](../../guides/grep.md) — filtrado de contenido
+- [`diff`](../../guides/diff.md) — comparar el crontab contra la baseline
 - [`scenarios/security/02-suid-audit-and-file-permissions.md`](02-suid-audit-and-file-permissions.md) — auditoría de permisos
 - [`scenarios/security/03-unauthorized-ssh-keys.md`](03-unauthorized-ssh-keys.md) — auditoría de claves SSH
 - [`scenarios/system/11-cron-failure.md`](../system/11-cron-failure.md) — fallos de cron (perspectiva diferente)

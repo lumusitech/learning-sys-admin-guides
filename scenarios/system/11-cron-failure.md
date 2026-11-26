@@ -197,5 +197,6 @@ En Alpine, el servicio se llama `crond` (no `cron`). Los logs van a `/var/log/me
 ## 🔗 Referencias
 
 - [`grep`](../../guides/grep.md) — filtrar logs de cron
+- [`diff`](../../guides/diff.md) — comparar la configuración de cron contra la baseline
 - [`systemd_journalctl`](../../guides/systemd_journalctl.md) — logs de systemd
 - [`scenarios/system/03-new-server-provisioning.md`](03-new-server-provisioning.md) — configuración inicial de servicios

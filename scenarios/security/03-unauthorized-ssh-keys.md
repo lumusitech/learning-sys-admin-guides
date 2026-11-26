@@ -183,5 +183,6 @@ Casos comunes:
 - [`ssh`](../../guides/ssh.md) — configuración y hardening SSH
 - [`find`](../../guides/find.md) — búsqueda de archivos
 - [`grep`](../../guides/grep.md) — filtrado de logs
+- [`diff`](../../guides/diff.md) — comparar el inventario de claves contra la baseline
 - [`scenarios/security/01-detect-and-block-malicious-ips.md`](01-detect-and-block-malicious-ips.md) — detección de IPs maliciosas
 - [`scenarios/security/02-suid-audit-and-file-permissions.md`](02-suid-audit-and-file-permissions.md) — auditoría de permisos
