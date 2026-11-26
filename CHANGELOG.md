@@ -4,6 +4,20 @@ Todas las versiones notables de sys-admin-guides.
 
 ---
 
+## v0.15.3 — 2026-11-26
+
+### Guía nueva
+
+- `guides/smartctl.md` — salud de discos con SMART: atributos críticos (sectores reasignados, CRC, pendientes), ATA/NVMe, discos detrás de RAID y USB, self-tests, `smartd` y máscara de códigos de salida. Nivel 🟡
+
+### Cross-links
+
+- `scenarios/infrastructure/06-raid-degradation.md`, `scenarios/dahua/02-nvr-sin-disco.md`, `guides/dahua/dahua-troubleshooting.md`, `guides/dahua/dahua-nvr-ssh.md` — agregan `smartctl` a sus referencias
+
+**Stats:** 65 guías · 58 escenarios · 14 conceptos · 16 labs · 12 referencias
+
+---
+
 ## v0.15.1 — 2026-11-26
 
 ### Guía nueva
