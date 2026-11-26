@@ -137,5 +137,6 @@ La ruta asimétrica es uno de los problemas de red más difíciles de diagnostic
 - [`tcpdump`](../../guides/tcpdump.md) — confirmar tráfico en ambos extremos
 - [`ping_traceroute`](../../guides/ping_traceroute.md) — diagnóstico de ruta
 - [`nc`](../../guides/nc.md) — test rápido de conectividad TCP
+- [`sysctl`](../../guides/sysctl.md) — `rp_filter` por interfaz y global
 - [`scenario`](../networking/08-firewall-blocked-port.md) — diagnóstico similar, causa diferente
 - [`scenario`](../networking/05-network-packet-loss-latency.md) — pérdida de paquetes

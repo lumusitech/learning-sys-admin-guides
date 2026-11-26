@@ -12,7 +12,7 @@
 
 # 🐧 sys-admin-guides
 
-Colección completa de guías de referencia para administración de servidores Linux y redes. **65 guías** (más 7 subguías especializadas en [dahua/](dahua/)) que cubren cada herramienta desde lo más básico hasta escenarios profesionales, explicando cada opción y la interpretación de salidas en contextos de éxito, falla y ataque.
+Colección completa de guías de referencia para administración de servidores Linux y redes. **66 guías** (más 7 subguías especializadas en [dahua/](dahua/)) que cubren cada herramienta desde lo más básico hasta escenarios profesionales, explicando cada opción y la interpretación de salidas en contextos de éxito, falla y ataque.
 
 ---
 
@@ -102,6 +102,7 @@ entender → aprender → practicar → aplicar
 | [`kubectl.md`](kubectl.md) | 🟡 Intermedio | Diagnóstico de clusters Kubernetes. Pods, nodos, eventos, logs, recursos, troubleshooting |
 | [`kill.md`](kill.md) | 🟢 Básico | Envío de señales a procesos. SIGTERM, SIGKILL, señales comunes, matar por nombre/PID |
 | [`fuser.md`](fuser.md) | 🟡 Intermedio | Identificar procesos por puerto o archivo. Alternativa a lsof en sistemas mínimos |
+| [`sysctl.md`](sysctl.md) | 🟡 Intermedio | Parámetros del kernel en caliente y persistentes. Orden de carga, red, memoria, límites, namespaces |
 | [`smartctl.md`](smartctl.md) | 🟡 Intermedio | Salud de discos con SMART. Atributos críticos, ATA/NVMe, RAID, self-tests, `smartd` |
 
 ### Infraestructura y producción

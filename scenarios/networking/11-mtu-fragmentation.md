@@ -170,5 +170,6 @@ Casos comunes:
 - [`ping_traceroute`](../../guides/ping_traceroute.md) — ping, traceroute y mtr
 - [`ip_ss`](../../guides/ip_ss.md) — redes y sockets
 - [`tcpdump`](../../guides/tcpdump.md) — captura de tráfico
+- [`sysctl`](../../guides/sysctl.md) — `ip_no_pmtu_disc` y parámetros de red
 - [`scenarios/networking/05-network-packet-loss-latency.md`](05-network-packet-loss-latency.md) — pérdida de paquetes (problema relacionado)
 - [`scenarios/networking/07-intermittent-timeouts.md`](07-intermittent-timeouts.md) — timeouts intermitentes

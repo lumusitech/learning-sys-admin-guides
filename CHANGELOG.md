@@ -14,6 +14,22 @@ Todas las versiones notables de sys-admin-guides.
 
 - `scenarios/infrastructure/06-raid-degradation.md`, `scenarios/dahua/02-nvr-sin-disco.md`, `guides/dahua/dahua-troubleshooting.md`, `guides/dahua/dahua-nvr-ssh.md` — agregan `smartctl` a sus referencias
 
+**Stats:** 66 guías · 58 escenarios · 14 conceptos · 16 labs · 12 referencias
+
+---
+
+## v0.15.2 — 2026-11-26
+
+### Guía nueva
+
+- `guides/sysctl.md` — parámetros del kernel en caliente y persistentes: orden de carga de `/etc/sysctl.d`, tuning de red y memoria, límites, `sysctl` por namespace. Nivel 🟡
+
+### Cross-links
+
+- `scenarios/system/10-swap-exhaustion.md`, `scenarios/system/13-high-context-switches.md`, `scenarios/networking/11-mtu-fragmentation.md`, `scenarios/networking/12-asymmetric-routing.md`, `scenarios/infrastructure/01-migrate-to-production.md`, `scenarios/infrastructure/02-build-pyme-infrastructure.md`, `scenarios/infrastructure/03-disaster-recovery.md` — agregan `sysctl` a sus referencias
+
+**Stats:** 65 guías · 58 escenarios · 14 conceptos · 16 labs · 12 referencias
+
 **Stats:** 65 guías · 58 escenarios · 14 conceptos · 16 labs · 12 referencias
 
 ---

@@ -190,4 +190,5 @@ systemctl restart <servicio>        rc-service <servicio> restart
 - [`iostat`](../../guides/iostat.md) — métricas de disco (para descartar I/O)
 - [`top`](../../guides/top.md) — monitoreo en tiempo real
 - [`ps`](../../guides/ps.md) — visualización de procesos
+- [`sysctl`](../../guides/sysctl.md) — parámetros del kernel que influyen en context switches
 - [`scenarios/system/07-high-io-wait.md`](07-high-io-wait.md) — I/O wait (causa relacionada)
