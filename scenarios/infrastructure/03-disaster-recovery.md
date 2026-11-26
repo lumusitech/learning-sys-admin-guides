@@ -400,6 +400,7 @@ journalctl -p err -b --no-pager     logread | grep -i error
 - [`systemd_journalctl`](../../guides/systemd_journalctl.md)
 - [`ssh`](../../guides/ssh.md)
 - [`diff`](../../guides/diff.md) — comparación de configuraciones contra el backup
+- [`sysctl`](../../guides/sysctl.md) — restaurar parámetros del kernel tras el desastre
 - [`apk`](../../guides/apk.md) — Alpine Linux: gestor de paquetes
 - [`openrc`](../../guides/openrc.md) — Alpine Linux: servicios (rc-service, rc-update)
 - [`busybox`](../../guides/busybox.md) — Alpine Linux: toolchain mínima (logread, dmesg)

@@ -444,6 +444,7 @@ apk add util-linux
 - [`production_server`](../../guides/production_server.md)
 - [`iptables`](../../guides/iptables.md)
 - [`ip_ss`](../../guides/ip_ss.md)
+- [`sysctl`](../../guides/sysctl.md) — `ip_forward` para el router Linux
 - [`systemd_journalctl`](../../guides/systemd_journalctl.md)
 - [`apk`](../../guides/apk.md) — Alpine Linux: gestor de paquetes
 - [`openrc`](../../guides/openrc.md) — Alpine Linux: servicios (rc-service, rc-update)

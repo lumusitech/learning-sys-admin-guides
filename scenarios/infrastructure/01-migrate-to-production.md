@@ -365,5 +365,6 @@ O directamente en `/etc/sysctl.conf` si se prefiere un solo archivo.
 - [`storage_backup`](../../guides/storage_backup.md)
 - [`ssh`](../../guides/ssh.md)
 - [`systemd_journalctl`](../../guides/systemd_journalctl.md)
+- [`sysctl`](../../guides/sysctl.md) — tuning de kernel al migrar
 - [`apk`](../../guides/apk.md) — Alpine Linux: gestor de paquetes
 - [`openrc`](../../guides/openrc.md) — Alpine Linux: servicios (rc-service, rc-update)
