@@ -2,7 +2,7 @@
 
 > Este archivo es el backlog. Lo completado vive en [`CHANGELOG.md`](CHANGELOG.md) y en el historial de git (`git log -- TODO.md`).
 
-**Estado actual:** 63 guías · 58 escenarios · 16 labs · 14 conceptos · 12 referencias · 7 subguías Dahua
+**Estado actual:** 64 guías · 58 escenarios · 16 labs · 14 conceptos · 12 referencias · 7 subguías Dahua
 
 ---
 
@@ -12,7 +12,6 @@ Herramientas que los escenarios usan pero no tienen guía propia. La regla del r
 
 | Prioridad | Guía | Escenarios que la usan | Esfuerzo |
 |-----------|------|------------------------|----------|
-| 🟡 Alta | `guides/diff.md` | [config-drift](scenarios/system/15-config-drift.md), [cron-failure](scenarios/system/11-cron-failure.md), [suspicious-cron](scenarios/security/04-suspicious-cron.md), [suid-audit](scenarios/security/02-suid-audit-and-file-permissions.md), [ssh-keys](scenarios/security/03-unauthorized-ssh-keys.md), [backup-restore-drill](scenarios/infrastructure/10-backup-restore-drill.md), [disaster-recovery](scenarios/infrastructure/03-disaster-recovery.md) | 2 hrs |
 | 🟡 Alta | `guides/sysctl.md` | [swap-exhaustion](scenarios/system/10-swap-exhaustion.md), [context-switches](scenarios/system/13-high-context-switches.md), [MTU](scenarios/networking/11-mtu-fragmentation.md), [asymmetric-routing](scenarios/networking/12-asymmetric-routing.md), [migrate-to-production](scenarios/infrastructure/01-migrate-to-production.md), [build-pyme](scenarios/infrastructure/02-build-pyme-infrastructure.md), [disaster-recovery](scenarios/infrastructure/03-disaster-recovery.md) | 2 hrs |
 | 🟢 Media | `guides/smartctl.md` | [raid-degradation](scenarios/infrastructure/06-raid-degradation.md), [nvr-sin-disco](scenarios/dahua/02-nvr-sin-disco.md) | 2 hrs |
 | 🟢 Media | `guides/certbot.md` | [tls-expired](scenarios/infrastructure/04-tls-expired.md), [cert-rotation](scenarios/infrastructure/09-cert-rotation.md) | 1-2 hrs |

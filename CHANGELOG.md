@@ -4,6 +4,21 @@ Todas las versiones notables de sys-admin-guides.
 
 ---
 
+## v0.15.1 — 2026-11-26
+
+### Guía nueva
+
+- `guides/diff.md` — comparación de archivos y árboles: config drift, auditorías SUID, verificación de backups, `diff -u` + `patch`, inventarios entre hosts. Nivel 🟡, POSIX puro (sin process substitution ni `find -printf`)
+
+### Cross-links
+
+- `scenarios/system/15-config-drift.md` — restaura el link a `guides/diff.md` (era `cut.md`)
+- `scenarios/system/11-cron-failure.md`, `scenarios/security/04-suspicious-cron.md`, `scenarios/security/02-suid-audit-and-file-permissions.md`, `scenarios/security/03-unauthorized-ssh-keys.md`, `scenarios/infrastructure/10-backup-restore-drill.md`, `scenarios/infrastructure/03-disaster-recovery.md` — agregan `diff` a sus referencias
+
+**Stats:** 64 guías · 58 escenarios · 14 conceptos · 16 labs · 12 referencias
+
+---
+
 ## v0.15.0 — 2026-11-26
 
 ### Consolidación de documentación

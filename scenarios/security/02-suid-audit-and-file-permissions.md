@@ -174,3 +174,4 @@ find / -type f -perm -4000 2>/dev/null | head -20
 - [`guides/xargs.md`](../../guides/xargs.md) — ejecución sobre resultados
 - [`guides/awk.md`](../../guides/awk.md) — formateo y filtrado
 - [`guides/sort.md`](../../guides/sort.md) — ordenamiento
+- [`diff`](../../guides/diff.md) — comparar el inventario SUID contra la baseline
