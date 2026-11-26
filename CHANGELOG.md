@@ -4,6 +4,38 @@ Todas las versiones notables de sys-admin-guides.
 
 ---
 
+## v0.15.0 — 2026-11-26
+
+### Consolidación de documentación
+
+- `reference/README.md` — índice de las 12 referencias rápidas; era la única sección sin README
+- `TODO.md` — reescrito como backlog abierto: solo ítems pendientes con evidencia; lo completado queda archivado acá y en `git log -- TODO.md`
+- Contadores sincronizados: 58 escenarios en `README.md` y `scenarios/README.md`
+- Links cruzados corregidos: `guides/htop.md` (`kill`), `guides/stat.md` (`ls -l`), `scenarios/system/15-config-drift.md` (`diff` sin guía todavía)
+
+### Historial archivado (fases 0-16 y sprints 1-5)
+
+| Fase | Tema | Estado |
+|------|------|--------|
+| 0 | Links rotos y correcciones urgentes | ✅ |
+| 1 | Quick wins en guías existentes | ✅ |
+| 2 | Mejoras en scenarios y concepts | ✅ |
+| 3 | `guides/nftables.md` | ✅ |
+| 4 | `guides/docker.md` | ✅ |
+| 5 | `guides/systemd.md` | ✅ |
+| 6 | Diagramas Mermaid | 🔵 postergado |
+| 7 | Estructura Dahua: 8 guías especializadas | ✅ |
+| 8 | Reference Dahua cheatsheet | ✅ |
+| 9 | Scenarios Dahua: 3 escenarios | ✅ |
+| 10 | Referencias cruzadas Dahua | ✅ |
+| 11-15 | Access Points, PoE switches, PoE injectors, cable diagnostics | ✅ |
+| 16 | Labs Docker Dahua | ✅ |
+| Sprint 1-5 | Correcciones, conceptos, guías, escenarios y crecimiento | ✅ |
+
+**Stats:** 63 guías · 58 escenarios · 14 conceptos · 16 labs · 12 referencias
+
+---
+
 ## v0.14.1 — 2026-08-30
 
 - `guides/dnf.md` — dnf/yum + rpm (RHEL/Fedora): repos locales/remotos, rpmdb, historial de transacciones, verificaciones
