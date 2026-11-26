@@ -280,3 +280,4 @@ Usá el [laboratorio Docker Dahua](../../labs/docker-compose.dahua.yml) para sim
 - [`guides/dahua/dahua-nvr-ssh.md`](../../guides/dahua/dahua-nvr-ssh.md) — SSH a NVR
 - [`guides/dahua/dahua-troubleshooting.md`](../../guides/dahua/dahua-troubleshooting.md) — troubleshooting
 - [`reference/dahua-cheatsheet.md`](../../reference/dahua-cheatsheet.md) — referencia rápida
+- [`smartctl`](../../guides/smartctl.md) — salud del disco, atributos y self-tests

@@ -180,5 +180,6 @@ Casos comunes:
 
 - [`du`](../../guides/du.md) — uso de disco
 - [`df`](../../guides/df.md) — espacio en disco
+- [`smartctl`](../../guides/smartctl.md) — salud del disco y atributos SMART
 - [`scenarios/infrastructure/03-disaster-recovery.md`](03-disaster-recovery.md) — disaster recovery
 - [`scenarios/system/07-high-io-wait.md`](../system/07-high-io-wait.md) — I/O wait (problema relacionado)
