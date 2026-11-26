@@ -658,5 +658,6 @@ for i in $(seq 10 30); do curl -s -m 2 -u admin:admin "http://192.168.100.$i/cgi
 - [`dahua-discovery.md`](dahua-discovery.md) — descubrir cámaras
 - [`dahua-camera-api.md`](dahua-camera-api.md) — API completa
 - [`dahua-rtsp-stream.md`](dahua-rtsp-stream.md) — diagnóstico RTSP
+- [`smartctl`](../smartctl.md) — salud del disco del NVR (SMART, sectores reasignados)
 - [`../../scenarios/dahua/`](../../scenarios/dahua/) — escenarios prácticos
 - [`../../labs/docker-compose.dahua.yml`](../../labs/docker-compose.dahua.yml) — laboratorio Dahua: `cd labs && docker compose -f docker-compose.dahua.yml up -d`

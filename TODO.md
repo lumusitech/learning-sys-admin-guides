@@ -2,7 +2,7 @@
 
 > Este archivo es el backlog. Lo completado vive en [`CHANGELOG.md`](CHANGELOG.md) y en el historial de git (`git log -- TODO.md`).
 
-**Estado actual:** 65 guías · 58 escenarios · 16 labs · 14 conceptos · 12 referencias · 7 subguías Dahua
+**Estado actual:** 67 guías · 58 escenarios · 16 labs · 14 conceptos · 12 referencias · 7 subguías Dahua
 
 ---
 
