@@ -45,6 +45,8 @@ Todas las versiones notables de sys-admin-guides.
 
 **Stats:** 65 guías · 58 escenarios · 14 conceptos · 16 labs · 12 referencias
 
+**Stats:** 65 guías · 58 escenarios · 14 conceptos · 16 labs · 12 referencias
+
 ---
 
 ## v0.15.1 — 2026-11-26
