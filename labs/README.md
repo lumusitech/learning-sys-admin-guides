@@ -57,6 +57,8 @@ docker compose version  # o docker-compose
 | `docker compose -f docker-compose.docker.yml up -d` | Docker crash loop, OOM, resource limits |
 | `docker compose -f docker-compose.system-packages.yml up -d` | Dependencias de paquetes rotas (curl sin librerías) |
 | `docker compose -f docker-compose.system-aur.yml up -d --build` | AUR con yay: compilar yay desde AUR e instalar un paquete real |
+| `docker compose -f docker-compose.dahua.yml up -d` | Cámaras Dahua simuladas (API CGI, RTSP, NVR con SSH) |
+| `docker compose -f docker-compose.monitoring.yml up -d` | Prometheus + node_exporter + Grafana |
 | `docker compose -f docker-compose.integrative.yml up -d --build` | Proyecto integrador (PYME completa) |
 
 > **Importante**: Usa `-f` para elegir el archivo. Si no pones `-f`, usa el `docker-compose.yml` por defecto (el original).
@@ -823,6 +825,90 @@ yay -S <paquete>           # yay lo compila con makepkg y lo instala
 
 ---
 
+## 15. Dahua (`docker-compose.dahua.yml`)
+
+Simulador de una instalación Dahua: una cámara IP con API CGI y snapshot, una NVR con SSH y disco simulado, y un cliente con herramientas de diagnóstico. Todo en la red aislada `10.0.100.0/24`.
+
+```bash
+docker compose -f docker-compose.dahua.yml up -d
+```
+
+> ⚠️ **Colisión de puertos**: este lab usa `8080`, `8081` y `2222`, los mismos que el laboratorio base (`docker-compose.yml`), y `8080` también en `docker-compose.web-cors.yml`. Bajá el lab base antes: `docker compose down`.
+
+### Servicios
+
+| Servicio | IP | Puertos | Rol |
+|----------|----|---------|-----|
+| `dahua-camera-sim` | 10.0.100.108 | 8080→80, 554 | Cámara IP: nginx con el API CGI Dahua simulado y snapshot estático |
+| `dahua-nvr-sim` | 10.0.100.100 | 2222→22, 8081→80 | NVR: SSH (`root`/`admin123`), interfaz web, disco y logs simulados |
+| `dahua-client` | 10.0.100.200 | — | Cliente con `curl`, `nmap` y `ffmpeg` |
+
+### Ejemplo: descubrir y consultar la cámara
+
+```bash
+# Descubrimiento desde el cliente
+docker exec -it dahua-client sh
+nmap -sT -p 80,554 10.0.100.0/24
+
+# La cámara responde HTTP en 8080 y tiene el puerto 554 mapeado
+curl -s http://10.0.100.108/health      # OK
+curl -s http://10.0.100.108/            # Dahua Camera Simulator
+```
+
+> Los scripts `cgi-bin/configManager.cgi` y `cgi-bin/magicBox.cgi` son fixtures del API Dahua. La imagen `nginx:alpine` no incluye `fcgiwrap`, así que `/cgi-bin/*.cgi` responde `502` hasta que se agregue un intérprete CGI. El snapshot (`cgi-bin/snapshot.jpg`) es una imagen estática. El puerto 554 está mapeado pero no hay servidor RTSP real detrás.
+
+### Ejemplo: entrar al NVR por SSH y auditar el disco
+
+```bash
+ssh -p 2222 root@localhost        # password: admin123
+ls /mnt/sda/record/2025/01/15/    # grabaciones simuladas
+df -h /mnt/sda
+tail -5 /var/log/messages
+```
+
+> Si el login por password falla, revisar `PermitRootLogin` en `/etc/ssh/sshd_config` del contenedor.
+
+Ver [`scenarios/dahua/`](../scenarios/dahua/) para los runbooks de cámara, NVR y migración masiva.
+
+---
+
+## 16. Monitoreo (`docker-compose.monitoring.yml`)
+
+Stack mínimo de observabilidad: Prometheus recolecta métricas del host vía `node_exporter` y Grafana las visualiza con datasource y dashboard ya provisionados.
+
+```bash
+docker compose -f docker-compose.monitoring.yml up -d
+```
+
+### Servicios
+
+| Servicio | Puerto | Rol |
+|----------|--------|-----|
+| `prometheus` | 9090 | Recolección y consulta de métricas (config en `monitoring/prometheus.yml`) |
+| `node_exporter` | 9100 | Métricas del host (`/host`, `/host/proc`, `/host/sys` en solo lectura) |
+| `grafana` | 3000 | Visualización: `admin`/`admin`, datasource y dashboard provisionados |
+
+### Ejemplo: consultar un SLI sin abrir Grafana
+
+```bash
+# Targets que Prometheus está scrapeando
+curl -s http://localhost:9090/api/v1/targets | grep -o '"health":"[a-z]*"'
+
+# Consulta instantánea de carga del host
+curl -s 'http://localhost:9090/api/v1/query?query=node_load1'
+
+# Métricas crudas del exporter
+curl -s http://localhost:9100/metrics | grep '^node_load1'
+```
+
+### Ejemplo: relacionar métricas con SLI/SLO
+
+El dashboard provisionado muestra CPU, memoria y disco del host. Para interpretar qué mirar y con qué criterio, ver [`concepts/sre-fundamentals.md`](../concepts/sre-fundamentals.md).
+
+Ver [`scenarios/infrastructure/08-prometheus-grafana.md`](../scenarios/infrastructure/08-prometheus-grafana.md) para el runbook completo.
+
+---
+
 ## Logs de práctica
 
 Archivos de log incluidos para practicar pattern matching con `grep`, `awk`, `sort`:
@@ -911,6 +997,8 @@ docker compose -f docker-compose.security.yml down -v
 docker compose -f docker-compose.web-cors.yml down -v
 docker compose -f docker-compose.web-websocket.yml down -v
 docker compose -f docker-compose.docker.yml down -v
+docker compose -f docker-compose.dahua.yml down -v
+docker compose -f docker-compose.monitoring.yml down -v
 docker compose -f docker-compose.integrative.yml down -v
 ```
 
@@ -938,6 +1026,10 @@ labs/
 ├── docker-compose.web-cors.yml     # CORS bloqueado (frontend + API)
 ├── docker-compose.web-websocket.yml # WebSocket timeout (proxy)
 ├── docker-compose.docker.yml        # Docker crash loop, OOM, resource limits
+├── docker-compose.system-packages.yml # Dependencias de paquetes rotas
+├── docker-compose.system-aur.yml    # AUR con yay (compila desde AUR)
+├── docker-compose.dahua.yml         # Cámaras Dahua simuladas (CGI, RTSP, NVR)
+├── docker-compose.monitoring.yml    # Prometheus + node_exporter + Grafana
 ├── docker-compose.integrative.yml   # Proyecto integrador (PYME completa)
 ├── cors-setup.sh                    # Script de setup para CORS lab
 ├── ws-setup.sh                      # Script de setup para WebSocket lab
@@ -956,6 +1048,9 @@ labs/
 │   │   ├── app.js
 │   │   └── package.json
 │   └── setup.sh
+├── dahua/                           # Cámara y NVR simulados (nginx, CGI, script)
+├── monitoring/                      # prometheus.yml, datasources, dashboards
+├── system-aur/                      # Dockerfile del lab AUR (yay desde AUR)
 ├── broken/                          # Configuraciones rotas
 │   ├── nginx-bad.conf
 │   ├── nginx-info-leak.conf
