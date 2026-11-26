@@ -4,6 +4,21 @@ Todas las versiones notables de sys-admin-guides.
 
 ---
 
+## v0.15.4 — 2026-11-26
+
+### Guía nueva
+
+- `guides/certbot.md` — certificados con Let's Encrypt: emisión, renovación, deploy hooks, rate limits, desafíos HTTP-01/DNS-01, systemd timer y cron. Nivel 🟡
+
+### Cross-links
+
+- `scenarios/infrastructure/04-tls-expired.md`, `scenarios/infrastructure/09-cert-rotation.md`, `scenarios/web/08-tls-handshake-failure.md` — agregan `certbot` a sus referencias
+- `guides/nginx.md` — enlaza la guía completa desde la sección de Let's Encrypt
+
+**Stats:** 67 guías · 58 escenarios · 14 conceptos · 16 labs · 12 referencias
+
+---
+
 ## v0.15.3 — 2026-11-26
 
 ### Guía nueva

@@ -322,6 +322,8 @@ sudo certbot certonly --nginx -d ejemplo.com
 sudo certbot renew --dry-run
 ```
 
+> Renovación, rate limits, deploy hooks y DNS-01: ver [`certbot`](certbot.md).
+
 ### Configuración SSL manual
 
 ```nginx

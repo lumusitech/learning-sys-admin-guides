@@ -182,6 +182,7 @@ journalctl -u nginx --since "1h"   logread | grep nginx | tail -20
 ## 🔗 Referencias
 
 - [`nginx`](../../guides/nginx.md) — configuración y logs de nginx
+- [`certbot`](../../guides/certbot.md) — renovación y despliegue de certificados
 - [`curl`](../../guides/curl.md) — inspección de respuestas HTTP
 - [`ssh`](../../guides/ssh.md) — configuración de servicios
 - [`scenarios/web/02-nginx-5xx-errors.md`](../web/02-nginx-5xx-errors.md) — errores 5xx

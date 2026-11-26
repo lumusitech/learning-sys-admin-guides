@@ -2,18 +2,15 @@
 
 > Este archivo es el backlog. Lo completado vive en [`CHANGELOG.md`](CHANGELOG.md) y en el historial de git (`git log -- TODO.md`).
 
-**Estado actual:** 66 guías · 58 escenarios · 16 labs · 14 conceptos · 12 referencias · 7 subguías Dahua
+**Estado actual:** 67 guías · 58 escenarios · 16 labs · 14 conceptos · 12 referencias · 7 subguías Dahua
 
 ---
 
 ## 🔴 Huecos de contenido (evidencia en escenarios)
 
-Herramientas que los escenarios usan pero no tienen guía propia. La regla del repo es "guías on demand", así que cada hueco se mide por demanda real.
+Herramientas que los escenarios usan y que todavía no tienen guía propia. Cada hueco se mide por demanda real.
 
-| Prioridad | Guía | Escenarios que la usan | Esfuerzo |
-|-----------|------|------------------------|----------|
-| 🟢 Media | `guides/smartctl.md` | [raid-degradation](scenarios/infrastructure/06-raid-degradation.md), [nvr-sin-disco](scenarios/dahua/02-nvr-sin-disco.md) | 2 hrs |
-| 🟢 Media | `guides/certbot.md` | [tls-expired](scenarios/infrastructure/04-tls-expired.md), [cert-rotation](scenarios/infrastructure/09-cert-rotation.md) | 1-2 hrs |
+Sin huecos abiertos: `diff`, `sysctl`, `smartctl` y `certbot` ya tienen guía.
 
 ---
 

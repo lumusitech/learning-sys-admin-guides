@@ -136,6 +136,7 @@ La clave no es solo renovar: es verificar después de renovar. `openssl s_client
 - [`openssl`](../../guides/openssl.md) — verificación de certificados
 - [`nginx`](../../guides/nginx.md) — configuración SSL
 - [`cron`](../../guides/cron.md) — renovación programada
+- [`certbot`](../../guides/certbot.md) — emisión, renovación y deploy hooks
 - [`systemctl`](../../guides/systemd.md) — timers de systemd
 - [`scenario`](04-tls-expired.md) — qué hacer cuando ya expiró
 - [`scenario`](../web/08-tls-handshake-failure.md) — handshake TLS roto (mismo dominio, problema diferente)
