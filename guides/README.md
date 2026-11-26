@@ -12,7 +12,7 @@
 
 # 🐧 sys-admin-guides
 
-Colección completa de guías de referencia para administración de servidores Linux y redes. **63 guías** (más 7 subguías especializadas en [dahua/](dahua/)) que cubren cada herramienta desde lo más básico hasta escenarios profesionales, explicando cada opción y la interpretación de salidas en contextos de éxito, falla y ataque.
+Colección completa de guías de referencia para administración de servidores Linux y redes. **64 guías** (más 7 subguías especializadas en [dahua/](dahua/)) que cubren cada herramienta desde lo más básico hasta escenarios profesionales, explicando cada opción y la interpretación de salidas en contextos de éxito, falla y ataque.
 
 ---
 
@@ -56,6 +56,7 @@ entender → aprender → practicar → aplicar
 | [`redirections.md`](redirections.md) | 🟢 Básico | Redirección de flujos stdin/stdout/stderr, pipes, here-docs, tee |
 | [`tr.md`](tr.md) | 🟢 Básico | Transformación de caracteres. Clases POSIX, rangos, delete, squeeze, limpieza de output |
 | [`jq.md`](jq.md) | 🟡 Intermedio | Procesamiento JSON en shell. Filtros, transformaciones, APIs, kubectl -o json |
+| [`diff.md`](diff.md) | 🟡 Intermedio | Comparación de archivos y árboles. Config drift, auditorías, verificación de backups, `diff -u` + `patch` |
 
 ### Redes y conectividad
 
