@@ -137,6 +137,7 @@ Un sysadmin que solo verifica "puerto abierto" y "certificado no expirado" puede
 
 - [`openssl`](../../guides/openssl.md) — diagnóstico TLS con s_client
 - [`nginx`](../../guides/nginx.md) — configuración SSL en servidor web
+- [`certbot`](../../guides/certbot.md) — emisión y renovación de certificados
 - [`tcpdump`](../../guides/tcpdump.md) — captura de paquetes TLS
 - [`ss`](../../guides/ip_ss.md) — verificación de puertos
 - [`scenario`](../infrastructure/04-tls-expired.md) — certificado expirado (síntoma similar, causa diferente)
