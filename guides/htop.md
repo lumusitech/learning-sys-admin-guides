@@ -318,4 +318,4 @@ Por default `htop` muestra procesos, no hilos. Usar `-H` para ver hilos.
 - [`top`](top.md) — visor de procesos (alternativa)
 - [`ps`](ps.md) — snapshot de procesos
 - [`free`](free.md) — memoria y swap
-- [`kill`](ps.md) — enviar señales a procesos
+- [`kill`](kill.md) — enviar señales a procesos

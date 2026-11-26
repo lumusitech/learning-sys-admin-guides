@@ -12,7 +12,7 @@
 
 # 🧪 Escenarios prácticos
 
-57 escenarios reales que combinan herramientas de las guías para resolver problemas concretos de administración de servidores Linux y redes.
+58 escenarios reales que combinan herramientas de las guías para resolver problemas concretos de administración de servidores Linux y redes.
 
 ---
 

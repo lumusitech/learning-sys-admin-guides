@@ -94,7 +94,7 @@ Poné todo en práctica: construí una PYME con segmentación de red, desplegá 
 | [📚 reference/](reference/) | Mapas rápidos para troubleshooting |
 | [🛠️ guides/](guides/) | Todas las herramientas explicadas |
 | [🧪 labs/](labs/) | Entornos Docker para practicar |
-| [🚨 scenarios/](scenarios/) | 57 problemas reales resueltos |
+| [🚨 scenarios/](scenarios/) | 58 problemas reales resueltos |
 | [🎯 Proyecto integrador](scenarios/infrastructure/07-integrative-project.md) | Capstone: 5 fases, 4-6 hs |
 
 ---

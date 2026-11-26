@@ -148,7 +148,7 @@ openssl dgst -md5 /etc/nginx/nginx.conf
 
 - [`find`](../../guides/find.md) — búsqueda por fecha de modificación
 - [`stat`](../../guides/stat.md) — metadatos precisos de archivos
-- [`diff`](../../guides/cut.md) — comparación de archivos
+- `diff` — comparación de archivos (guía pendiente)
 - [`grep`](../../guides/grep.md) — filtrado de logs
 - [`scenario`](../security/01-detect-and-block-malicious-ips.md) — detectar IPs de atacantes
 - [`scenario`](../security/07-privilege-escalation-attempt.md) — si el drift es malicioso
