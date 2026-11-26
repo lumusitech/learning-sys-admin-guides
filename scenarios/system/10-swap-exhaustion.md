@@ -178,4 +178,5 @@ Casos comunes:
 - [`vmstat`](../../guides/vmstat.md) — CPU, memoria, I/O en un comando
 - [`ps`](../../guides/ps.md) — visualización de procesos
 - [`top`](../../guides/top.md) — monitoreo en tiempo real
+- [`sysctl`](../../guides/sysctl.md) — `vm.swappiness` y tuning de memoria
 - [`scenarios/system/05-system-memory-issues-oom.md`](05-system-memory-issues-oom.md) — OOM killer (continuación natural)
