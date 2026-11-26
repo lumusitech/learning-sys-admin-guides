@@ -288,6 +288,6 @@ stat -c "access=%x modify=%y change=%z birth=%w" archivo
 - [`find`](find.md) — buscar archivos por metadatos
 - [`du`](du.md) — espacio en disco
 - [`df`](df.md) — espacio en filesystem
-- [`ls -l`](ps.md) — alternativa limitada (no incluye inodo ni change time)
+- `ls -l` — alternativa limitada (no incluye inodo ni change time)
 - [`scenario`](../scenarios/system/06-disk-full-inodes.md) — disco lleno por inodos agotados
 - [`scenario`](../scenarios/security/02-suid-audit-and-file-permissions.md) — permisos y propietario sospechosos
